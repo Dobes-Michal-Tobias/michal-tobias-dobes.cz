@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Menzerath-Altmannův zákon v urbánních datech — Michal Tobiáš Dobeš</title>
+<meta name="description" content="Platí lingvistický Menzerath-Altmannův zákon (čím větší celek, tím menší jeho složky) i pro strukturu měst — uliční sítě a administrativní členění?">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  .back-link { font-family: var(--font-mono); font-size: .8rem; margin-bottom: 1.5rem; display: inline-block; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="site">
+  <div class="site-name"><a href="../index.html">Michal Tobiáš Dobeš</a></div>
+  <nav class="site-nav" aria-label="Hlavní navigace">
+    <a href="../index.html">o mně</a>
+    <a href="../projekty.html" aria-current="page">projekty</a>
+  </nav>
+  <div class="lang-switch">
+    <a class="active" href="menzerath-altmann-urbanni-data.html">CZ</a><span>/</span><a href="#">EN</a>
+  </div>
+</header>
+
+<main>
+  <a class="back-link" href="../projekty.html">&larr; zpět na projekty</a>
+
+  <p class="eyebrow">výpočetní lingvistika × urbanismus</p>
+  <h1 class="page-title">Menzerath-Altmannův zákon v urbánních datech</h1>
+  <p class="subtitle with-dates">Platí lingvistický zákon o vztahu celku a jeho složek i pro strukturu měst?</p>
+  <p class="page-dates">vytvořeno 1. 7. 2026 · aktualizováno 1. 7. 2026</p>
+
+  <section class="block">
+    <p>Menzerath-Altmannův (MA) zákon je jeden ze základních kvantitativních vztahů v lingvistice: čím delší je celek (slovo), tím kratší jsou v průměru jeho složky (slabiky). Stejný vzorec se v poslední době potvrdil i v molekulární biologii — čím delší genom, tím kratší chromozomy. V urbanistice ale MA zákon jako zavedený standard <em>neexistuje</em> — na rozdíl od Zipfova rank-size rozdělení nebo Westova škálovacího zákona zůstává prakticky netestovaný.</p>
+    <p>Tento projekt zkoumá, jestli stejná logika platí i pro fyzický prostor měst: čím větší je město, tím menší jsou v průměru jeho stavební jednotky.</p>
+  </section>
+
+  <section class="block">
+    <h2 class="section-label">dvě hypotézy</h2>
+    <ul class="plain">
+      <li><strong>Uliční síť:</strong> celek = ulice (od začátku do konce), konstituent = segment mezi dvěma křižovatkami. Očekávání: čím větší/hustší město, tím kratší průměrný uliční segment.</li>
+      <li><strong>Administrativní členění:</strong> celek = město, konstituent = katastrální území nebo městská část. Očekávání: čím větší město, tím menší průměrná plocha jeho vnitřních administrativních celků (např. Praha 1 vs. rozlehlý katastr malé obce).</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h2 class="section-label">data a metoda</h2>
+    <p>Uliční sítě se stahují a analyzují pomocí knihovny <a href="https://osmnx.readthedocs.io/">OSMnx</a> (Geoff Boeing) nad daty OpenStreetMap, populační a administrativní data pochází z Českého statistického úřadu. Cílem je otestovat vztah napříč větším vzorkem českých obcí a měst, ne jen na jednotlivých případech.</p>
+    <p class="placeholder">[Doplň: finální metodika, velikost vzorku měst, zdrojové datasety a jejich verze.]</p>
+  </section>
+
+  <section class="block">
+    <h2 class="section-label">výsledky</h2>
+    <p class="placeholder">[Doplň: zatím nejsou k dispozici — projekt je ve fázi přípravy dat. Tato sekce bude doplněna po provedení analýzy.]</p>
+  </section>
+
+  <section class="block">
+    <h2 class="section-label">kód a data</h2>
+    <ul class="plain">
+      <li class="placeholder"><span class="tag">repo</span>[Doplň odkaz na repozitář, jakmile bude veřejný.]</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="site">
+  <span>© 2026 Michal Tobiáš Dobeš</span>
+  <span class="placeholder">https://github.com/Dobes-Michal-Tobias</span>
+</footer>
+
+</div>
+</body>
+</html>

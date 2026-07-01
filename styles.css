@@ -1,0 +1,179 @@
+/* Michal Tobiáš Dobeš — osobní web
+   Token system: bílé pozadí, černý sans text, terakotová akcentní barva, IBM Plex Mono pro štítky/metadata */
+
+:root {
+  --bg: #ffffff;
+  --ink: #14171a;
+  --accent: #c1440e;
+  --accent-soft: #e3a37c;
+  --muted: #696e76;
+  --rule: #e3e1da;
+  --placeholder: #9a9a92;
+  --max-width: 700px;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: var(--accent-soft);
+  text-underline-offset: 3px;
+}
+a:hover { text-decoration-color: var(--accent); }
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 3rem 1.5rem 4rem;
+}
+
+/* Header */
+header.site {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: .75rem 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 2.5rem;
+}
+.site-name {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  letter-spacing: .04em;
+  font-size: .95rem;
+  text-transform: uppercase;
+}
+.site-name a { color: var(--ink); text-decoration: none; }
+
+nav.site-nav { font-family: var(--font-mono); font-size: .85rem; }
+nav.site-nav a {
+  margin-right: 1.1rem;
+  text-decoration: none;
+  color: var(--muted);
+}
+nav.site-nav a:last-child { margin-right: 0; }
+nav.site-nav a:hover,
+nav.site-nav a[aria-current="page"] {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: var(--accent-soft);
+}
+
+.lang-switch { font-family: var(--font-mono); font-size: .8rem; }
+.lang-switch a { text-decoration: none; color: var(--muted); }
+.lang-switch a.active { color: var(--ink); font-weight: 600; }
+.lang-switch span { color: var(--rule); margin: 0 .25em; }
+
+/* Page heading block */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 .35rem;
+}
+h1.page-title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 2rem;
+  margin: 0 0 .35rem;
+}
+.subtitle {
+  font-family: var(--font-mono);
+  font-size: .85rem;
+  color: var(--muted);
+  margin: 0 0 2.5rem;
+  letter-spacing: .01em;
+}
+.subtitle.with-dates { margin-bottom: .5rem; }
+
+.page-dates {
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  color: var(--placeholder);
+  margin: 0 0 2.5rem;
+}
+
+/* Section blocks */
+section.block { margin-bottom: 2.75rem; }
+h2.section-label {
+  font-family: var(--font-mono);
+  font-size: .85rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: .5rem;
+  margin: 0 0 1.25rem;
+}
+
+ul.plain { list-style: none; padding: 0; margin: 0; }
+ul.plain li { position: relative; padding-left: 1.1rem; margin-bottom: .6rem; }
+ul.plain li::before { content: "–"; position: absolute; left: 0; color: var(--accent-soft); }
+
+/* NLP-annotation style tag — the page's signature element */
+.tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent-soft);
+  border-radius: 3px;
+  padding: .1em .45em;
+  margin-right: .5em;
+}
+
+/* Entry cards (projects / courses) */
+.entry { padding: 1.4rem 0; border-bottom: 1px solid var(--rule); }
+.entry:last-child { border-bottom: none; }
+.entry-meta { font-family: var(--font-mono); font-size: .78rem; color: var(--muted); margin: 0 0 .5rem; }
+.entry-title { font-size: 1.2rem; font-weight: 600; margin: 0 0 .5rem; }
+.entry-desc { margin: 0 0 .7rem; }
+.entry-link { font-family: var(--font-mono); font-size: .85rem; margin: 0; }
+
+.placeholder { color: var(--placeholder); font-style: italic; }
+
+/* Footer */
+footer.site {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .5rem 1rem;
+}
+footer.site a { color: var(--muted); }
+
+@media (max-width: 560px) {
+  header.site { flex-direction: column; align-items: flex-start; }
+  .wrap { padding: 2rem 1.25rem 3rem; }
+  h1.page-title { font-size: 1.6rem; }
+}
