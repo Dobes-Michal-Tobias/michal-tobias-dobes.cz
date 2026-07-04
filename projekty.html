@@ -30,38 +30,62 @@
   <h1 class="page-title">Projekty</h1>
   <p class="subtitle">Věci, které nejsou na vlastní paper, a popularizační verze odborných textů.</p>
 
+  <div class="sort-control" role="group" aria-label="Řazení projektů">
+    řadit podle:
+    <button type="button" class="sort-btn active" data-sort="created">vytvoření</button>
+    <span class="sep">/</span>
+    <button type="button" class="sort-btn" data-sort="updated">aktualizace</button>
+  </div>
+
   <section class="block">
+    <div class="entries">
 
-    <div class="entry">
-      <p class="entry-meta"><span class="tag">popularizace</span>vytvořeno 1. 7. 2026 · aktualizováno 1. 7. 2026</p>
-      <h3 class="entry-title">Kolik žen na skautské výpravě menstruuje?</h3>
-      <p class="entry-desc">Statistický odhad podílu menstruujících žen ve skautských oddílech a outdoorových skupinách — od jednoduchého výpočtu po Monte Carlo simulaci, postavené na PeriodSim.</p>
-      <p class="entry-link"><a href="projekty/kolik-zen-menstruuje.html">detail projektu →</a></p>
+      <div class="entry" data-created="2026-07-01" data-updated="2026-07-01">
+        <p class="entry-meta"><span class="tag">Projekt</span>vytvořeno 1. 7. 2026 · aktualizováno 1. 7. 2026</p>
+        <h3 class="entry-title">Kolik žen na skautské výpravě menstruuje?</h3>
+        <p class="entry-desc">Statistický odhad podílu menstruujících žen ve skautských oddílech a outdoorových skupinách — od jednoduchého výpočtu po Monte Carlo simulaci, postavené na PeriodSim.</p>
+        <p class="entry-link"><a href="projekty/kolik-zen-menstruuje.html">detail projektu →</a></p>
+      </div>
+
+      <div class="entry" data-created="2026-07-01" data-updated="2026-07-01">
+        <p class="entry-meta"><span class="tag">Projekt</span>vytvořeno 1. 7. 2026 · aktualizováno 1. 7. 2026</p>
+        <h3 class="entry-title">Menzerath-Altmannův zákon v urbánních datech</h3>
+        <p class="entry-desc placeholder">[Doplň krátký popis, až budou k dispozici první výsledky.] Test lingvistického zákona (čím větší celek, tím menší jeho složky) na uličních sítích a administrativním členění českých měst.</p>
+        <p class="entry-link"><a href="projekty/menzerath-altmann-urbanni-data.html">detail projektu →</a></p>
+      </div>
+
+      <div class="entry" data-created="2026-07-01" data-updated="2026-07-01">
+        <p class="entry-meta"><span class="tag">Projekt</span>vytvořeno 1. 7. 2026 · aktualizováno 1. 7. 2026</p>
+        <h3 class="entry-title">Kolik českých obcí končí na -ice?</h3>
+        <p class="entry-desc placeholder">[Doplň krátký popis, až budou k dispozici první výsledky.] Gramatické číslo a geografie sufixu -ice v místopisu ČR, s mapou výsledků.</p>
+        <p class="entry-link"><a href="projekty/obce-na-ice.html">detail projektu →</a></p>
+      </div>
+
     </div>
-
-    <div class="entry">
-      <p class="entry-meta"><span class="tag">projekt</span>vytvořeno 07/2026 · aktualizováno 07/2026</p>
-      <h3 class="entry-title">Menzerath-Altmannův zákon v urbánních datech</h3>
-      <p class="entry-desc placeholder">[Doplň krátký popis, až budou k dispozici první výsledky.] Test lingvistického zákona (čím větší celek, tím menší jeho složky) na uličních sítích a administrativním členění českých měst.</p>
-      <p class="entry-link"><a href="projekty/menzerath-altmann-urbanni-data.html">detail projektu →</a></p>
-    </div>
-
-    <div class="entry">
-      <p class="entry-meta"><span class="tag">projekt</span>vytvořeno 07/2026 · aktualizováno 07/2026</p>
-      <h3 class="entry-title">Kolik českých obcí končí na -ice?</h3>
-      <p class="entry-desc placeholder">[Doplň krátký popis, až budou k dispozici první výsledky.] Gramatické číslo a geografie sufixu -ice v místopisu ČR, s mapou výsledků.</p>
-      <p class="entry-link"><a href="projekty/obce-na-ice.html">detail projektu →</a></p>
-    </div>
-
-    <div class="entry">
-      <p class="entry-meta"><span class="tag">popularizace</span><span class="placeholder">vytvořeno [MM/RRRR] · aktualizováno [MM/RRRR]</span></p>
-      <h3 class="entry-title placeholder">[Doplň název textu — popularizační verze paperu]</h3>
-      <p class="entry-desc placeholder">[Doplň krátký popis a odkaz na původní odborný text.]</p>
-      <p class="entry-link placeholder">[odkaz →]</p>
-    </div>
-
   </section>
 </main>
+
+<script>
+(function () {
+  var list = document.querySelector('.entries');
+  var buttons = document.querySelectorAll('.sort-btn');
+  if (!list || !buttons.length) return;
+
+  function sortBy(key) {
+    var entries = Array.prototype.slice.call(list.querySelectorAll('.entry'));
+    entries.sort(function (a, b) { return b.dataset[key].localeCompare(a.dataset[key]); });
+    entries.forEach(function (el) { list.appendChild(el); });
+  }
+
+  buttons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      buttons.forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      sortBy(btn.dataset.sort);
+    });
+  });
+})();
+</script>
 
 <footer class="site">
   <span>© 2026 Michal Tobiáš Dobeš</span>
