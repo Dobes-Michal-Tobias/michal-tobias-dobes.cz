@@ -28,6 +28,10 @@
   .embed-note { font-family: var(--font-mono); font-size: .78rem; color: var(--muted); margin-top: .6rem; }
   .back-link { font-family: var(--font-mono); font-size: .8rem; margin-bottom: 1.5rem; display: inline-block; }
   .stat-highlight { font-family: var(--font-mono); font-size: 1.1rem; text-align: center; margin: 1.5rem 0; }
+  .info-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: .92rem; }
+  .info-table th, .info-table td { border: 1px solid var(--rule); padding: .55rem .8rem; text-align: left; vertical-align: top; }
+  .info-table th { font-family: var(--font-mono); font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); font-weight: 600; }
+  .info-table caption { font-family: var(--font-mono); font-size: .78rem; color: var(--muted); text-align: left; margin-bottom: .5rem; caption-side: top; }
 </style>
 </head>
 <body>
@@ -47,10 +51,10 @@
 <main>
   <a class="back-link" href="../projekty.html">&larr; zpět na projekty</a>
 
-  <p class="eyebrow">aplikovaná statistika</p>
+  <p class="eyebrow">Projekt</p>
   <h1 class="page-title">Kolik žen na skautské výpravě menstruuje?</h1>
   <p class="subtitle with-dates">Statistický odhad pro skautské tábory, puťáky a vodní výpravy</p>
-  <p class="page-dates">vytvořeno 1. 7. 2026 · aktualizováno 1. 7. 2026</p>
+  <p class="page-dates">vytvořeno 3. 7. 2026 · aktualizováno 4. 7. 2026</p>
 
   <section class="block">
     <p>Třídenní puťák s krosnou na zádech. Tábor v lese, kde je latrína sto metrů od stanu a sprcha není každý den. Vodní výprava, kde je soukromí prostor mezi dvěma kánoemi. Na skautských akcích se logistika obvykle plánuje podle zkušenosti vedoucích — kolik náhradních hygienických potřeb do lékárničky, jak dlouhou pauzu si naplánovat na řece. Otázka, kolik dívek a žen bude zrovna menstruovat, se ale obvykle neřeší čísly, řeší se odhadem od oka.</p>
@@ -59,7 +63,7 @@
 
   <section class="block">
     <h2 class="section-label">nejjednodušší odhad</h2>
-    <p>Menstruační cyklus trvá v průměru kolem 28 dní, krvácení zhruba 5 dní [1], [2]. To znamená, že v kterýkoli konkrétní den je pravděpodobnost, že žena zrovna krvácí, přibližně:</p>
+    <p>Menstruační cyklus trvá v průměru kolem 28 dní, krvácení zhruba 5 dní [7], [3]. To znamená, že v kterýkoli konkrétní den je pravděpodobnost, že žena zrovna krvácí, přibližně:</p>
     <p class="stat-highlight">5 / 28 ≈ <strong>18 %</strong></p>
     <p>Na 30 dívek to vychází zhruba na 5–6 menstruujících v daný okamžik. Tento výpočet se označuje jako <em>analytický baseline</em> — přímočará pravděpodobnostní kalkulace, která slouží jako referenční bod. Pokud by nám složitější model vrátil číslo jiného řádu, víme, kde hledat chybu.</p>
     <p>Baseline ale ignoruje dvě vrstvy variability: cykly nejsou u všech žen stejně dlouhé (<em>variabilita mezi ženami</em>), a ani u jedné ženy cyklus nechodí jako hodinky (<em>variabilita v čase</em>). Aby odhad zachytil i tuto nejistotu, je potřeba simulace.</p>
@@ -76,12 +80,26 @@
     <h2 class="section-label">odkud se berou vstupní parametry</h2>
     <p>Model generuje pro každou ženu dvě hodnoty z normálního rozdělení, oříznuté na klinicky rozumný rozsah. Parametry vycházejí z lékařské literatury:</p>
     <ul class="plain">
-      <li>délka cyklu: průměr 28–29 dní — Horský et al. (1981) [1]; Cole et al. (2009) [2]. Literatura udává SD v rozsahu 3,3–4,7 dne; homogenní referenční model níže počítá s konzervativnější hodnotou 3,3 dne, věkově stratifikovaný model (viz níže) používá SD 3,0–4,5 dne podle věkové skupiny</li>
-      <li>rozsah cyklu po oříznutí: 21–40 dní — Grieger &amp; Norman (2020) [3]</li>
+      <li>délka cyklu: průměr 28–29 dní — Horský et al. (1981) [7]; Cole et al. (2009) [3]. Homogenní referenční model níže počítá s konzervativní SD 3,3 dne (Horský, celá populace 15–44 let). Věkově stratifikovaný model (viz níže) používá SD podle konkrétní věkové skupiny — 6,9–8,95 dne — protože Horský udává tuto hodnotu i zvlášť podle věku, ne jen jako jedno číslo za celou populaci</li>
+      <li>rozsah cyklu po oříznutí: 21–40 dní pro dospělé ženy — Grieger &amp; Norman (2020) [5]. POZOR: tato studie zahrnovala výhradně ženy nad 18 let, proto se pro dívky (15–19 a 11–14 let) v modelu nepoužívá — tam je rozsah širší, 20–45 dní (viz tabulka a poznámka níže)</li>
       <li>délka krvácení: 5 ± 1,5 dne — klinický konsensus</li>
     </ul>
     <p>Pro každou ženu se navíc generuje náhodná počáteční fáze cyklu — kde v cyklu se nachází v den 0 akce. Bez toho by všechny ženy v simulaci menstruovaly synchronně, což by byl nesmysl.</p>
-    <p>Ve verzi s věkovou stratifikací dostane každá věková skupina vlastní parametry — mladší ženy mívají nepravidelnější cyklus [1], [3], [4]. Model umí zohlednit i podíl žen na hormonální antikoncepci, která cyklus zkracuje a zpravidelňuje. Tato prevalence je ale vždy expertní odhad vedoucího, ne číslo z literatury — a citlivostní analýza níže ukazuje, jak moc na ní záleží.</p>
+    <p>Ve verzi s věkovou stratifikací dostane každá věková skupina vlastní parametry — mladší ženy mívají nepravidelnější cyklus [7], [5], [9], [6], [11]. Model umí zohlednit i podíl žen na hormonální antikoncepci, která cyklus zkracuje a zpravidelňuje. Tato prevalence je ale vždy expertní odhad vedoucího, ne číslo z literatury — a citlivostní analýza níže ukazuje, jak moc na ní záleží.</p>
+
+    <table class="info-table">
+      <caption>Orientační rozsahy pro dospívající — Adams Hillard (2008) [1], zkráceno a přeloženo</caption>
+      <thead>
+        <tr><th>parametr</th><th>typická hodnota</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>délka cyklu (adolescentky)</td><td>20–45 dní</td></tr>
+        <tr><td>délka menstruačního krvácení</td><td>2–7 dní</td></tr>
+        <tr><td>výměna vložky/tamponu</td><td>v průměru každé 3–4 hodiny</td></tr>
+        <tr><td>nadměrné krvácení (riziko anemie)</td><td>≥ 85 ml za cyklus</td></tr>
+      </tbody>
+    </table>
+    <p>Rozsah krvácení, který model používá (2–7 dní po oříznutí), odpovídá této tabulce přesně. Rozsah délky cyklu 20–45 dní z této tabulky model skutečně používá — ale jen pro skupiny dívek (15–19 a 11–14 let); pro vedoucí a homogenní referenční model zůstává užší rozsah 21–40 dní podle Grieger &amp; Norman (2020) [5], protože ta studie mladší dívky vůbec nezahrnovala.</p>
   </section>
 
   <section class="block">
@@ -108,7 +126,7 @@
   <section class="block">
     <h2 class="section-label">co hrozí v nejhorším dni?</h2>
     <p>Průměr říká, co čekat za normálních okolností. Logistika ale potřebuje vědět, co nastane ve výjimečně náročný den — ne jen průměr, ale ocasek distribuce, který se musí zvládnout.</p>
-    <p>Práh 40 % skupiny (= 12 žen ze 30) překročí méně než 0,5 % simulací — extrémní situace, ale ne nemožná. Prakticky to znamená: pro záchody nebo klidový prostor na louce stačí konzervativní plánování pro 9–10 žen, nikoli 15.</p>
+    <p>Práh 2/5 skupiny (40 % = 12 žen ze 30) je čistě ilustrativní kulaté číslo — není odvozený z žádné kapacitní ani logistické studie, jen ukazuje, že podobný souběh dat není nemožný. I tak: takový den překročí méně než 0,5 % simulací — extrémní situace, ale ne nemožná. Prakticky to znamená: pro záchody nebo klidový prostor na louce stačí konzervativní plánování pro 9–10 žen, nikoli 15.</p>
 
     <div class="figure">
       <img src="../assets/img/periodsim/black-day-risk.png" alt="Distribuce denního maxima menstruujících žen — riziko nejhoršího dne">
@@ -118,24 +136,29 @@
 
   <section class="block">
     <h2 class="section-label">záleží, kdo je v oddíle — věková stratifikace</h2>
-    <p>Věkové složení skupiny mění výsledky. Dívky 15–19 mají nepravidelnější cyklus (vyšší SD) a průměrně delší krvácení než vedoucí ve třiceti. Porovnáváme tři scénáře: kurz dívek (A: 25 dívek + 5 vedoucích), smíšený kurz (B: 15 dívek + 15 vedoucích různého věku) a homogenní model jako reference.</p>
-    <p>Průměrné denní počty jsou si blízké — věková struktura je posouvá jen o desetiny ženy. Hlavní rozdíl je v <em>šířce intervalu spolehlivosti</em>: kurz dívek je logisticky těžší předvídat, zatímco smíšená skupina vedoucích dává stabilnější prognózu. Homogenní model konzervativně nadhodnocuje — bezpečný výchozí bod pro plánování bez znalosti věkové struktury.</p>
+    <p>Věkové složení skupiny mění výsledky. Dívky 15–19 mají nepravidelnější cyklus (vyšší SD — 8,95 dne dle Horský et al. 1981 [7], přímo změřeno pro tuto věkovou skupinu) a průměrně delší krvácení než vedoucí ve třiceti (SD ~6,9 dne). Porovnáváme tři scénáře: kurz dívek (A: 25 dívek + 5 vedoucích), smíšený kurz (B: 15 dívek + 15 vedoucích různého věku) a homogenní model jako reference.</p>
+    <p>Průměrné denní počty jsou si blízké — věková struktura je posouvá jen o desetiny ženy (5,0–5,4 ženy denně napříč scénáři). Překvapivý výsledek: při reálně podložených hodnotách SD (viz výše) je i <em>šířka intervalu spolehlivosti</em> mezi scénáři A a B prakticky totožná (95% CI unikátních žen [4, 13] v obou případech) — rozdíl mezi "kurzem dívek" a "smíšeným kurzem" je na této velikosti skupiny (30 žen) menší, než by se čekalo, a leží v šumu simulace. Homogenní model dává mírně širší CI ([4, 14]) a o něco vyšší průměr — zůstává tedy konzervativním, bezpečným výchozím bodem pro plánování bez znalosti věkové struktury, ale rozdíl oproti věkově stratifikovaným scénářům je malý.</p>
 
     <div class="figure">
       <img src="../assets/img/periodsim/age-stratified-daily-ci.png" alt="Srovnání denního počtu menstruujících žen pro tři věkové scénáře">
-      <p class="figure-caption">Denní průměr a 95% CI pro tři scénáře: A — kurz dívek, B — smíšený kurz, homogenní reference. Offsety v grafu slouží k čitelnosti, data jsou pro stejné dny. Věková struktura posouvá průměr jen mírně, ale ovlivňuje šíři CI.</p>
+      <p class="figure-caption">Denní průměr a 95% CI pro tři scénáře: A — kurz dívek, B — smíšený kurz, homogenní reference. Offsety v grafu slouží k čitelnosti, data jsou pro stejné dny. Věková struktura posouvá průměr i šíři CI jen mírně.</p>
     </div>
 
     <div class="figure">
       <img src="../assets/img/periodsim/age-stratified-total-unique.png" alt="Celkový počet unikátních menstruujících žen za akci — srovnání věkových scénářů">
       <p class="figure-caption">Distribuce unikátních menstruujících žen za 4denní akci — KDE pro tři scénáře. Překryv distribucí ukazuje, že věková struktura v tomto měřítku mění odhad zásobování jen minimálně. Rozptyl uvnitř každého scénáře je větší než rozdíl mezi nimi.</p>
     </div>
+
+    <p>Scénáře výše počítají s nejmladší skupinou 15–19 let. Ve skautských oddílech ale běžně bývají mnohem mladší dívky — a menarché (první menstruace) může přijít podstatně dřív. Typicky nastává mezi 10. a 16. rokem, průměrně kolem 12,4 let; do 15 let už menstruovalo zhruba 98 % dívek [8]. První 1–2 roky po menarché (tzv. první gynekologický rok) mají navíc cyklus v průměru 32,2 dne [8] a jsou nepravidelné — teprve postupně se ustálí na typickém rozsahu 24–38 dní [2]. Dashboard níže proto nabízí i skupinu "dívky 11–14" s tímto průměrem a odpovídajícím širším rozsahem parametrů (20–45 dní, cycle_std 9,5 dne). Přesná směrodatná odchylka pro toto období v literatuře chybí (autoři citované studie [2] to sami popisují jako mezeru ve výzkumu) — jde tedy o hrubší odhad SD než u ostatních skupin, ale střední hodnota cyklu (32,2 dne) už je přímo citované číslo, ne odhad.</p>
+    <p>Nezávislé potvrzení: nová analýza stejné kohorty Apple Women's Health Study (Mortimer et al., 2026 [11], 15 586 žen) odhaduje průměrnou délku cyklu pro ženy pod 20 let na 29,5–30,4 dne — prakticky totožné s Horského číslem 30,5 dne z roku 1981, přestože jde o zcela jiná data sebraná o více než 40 let později. Tahle shoda dvou nezávislých zdrojů je důvod, proč model cycle_mean pro dívky 15–19 nemění.</p>
+    <p>Model má tu ale jeden důležitý limit: neumí rozlišit dívky, které ještě menarché neprodělaly. Do počtu žen v jakékoli skupině patří jen ty, které už menstruují — pokud by vedoucí zahrnul celý počet mladších dívek v oddíle bez ohledu na to, zda už menstruují, model by počet menstruujících nadhodnotil.</p>
   </section>
 
   <section class="block">
     <h2 class="section-label">co změní antikoncepce?</h2>
-    <p>Jedním z parametrů, který vedoucí může odhadnout, ale nikdy přesně znát, je podíl žen na hormonální antikoncepci. Antikoncepce zpravidelňuje a zkracuje cyklus. Přesná prevalence pro danou skupinu ale z literatury nevychází — je to expertní odhad.</p>
-    <p>Citlivostní analýza ukazuje vliv tohoto předpokladu pro rozsah 0–60 % žen na antikoncepci. Denní průměr klesá od ~5,4 k ~4,4 ženám lineárně a bez překvapení. Ponaučení: i při velké nejistotě o antikoncepci jsou odhadované rozsahy natolik podobné, že pro zásobování stačí konzervativní horní odhad bez antikoncepce.</p>
+    <p>Jedním z parametrů, který vedoucí může odhadnout, ale nikdy přesně znát, je podíl žen na hormonální antikoncepci. Tady je důležité rozlišit dvě různé věci: <em>jak</em> antikoncepce cyklus mění — to podložené je — a <em>kolik</em> žen v konkrétním oddíle ji používá — to podložené není.</p>
+    <p>Fyziologický efekt je dobře zdokumentovaný: standardní cyklické dávkování kombinované hormonální antikoncepce je buď 21 dní aktivních tablet + 7 dní bez hormonů, nebo novější režim 24 dní aktivních + 4 dny bez hormonů; krvácení v pauze bývá kratší a slabší než přirozená menstruace [4]. Model proto pro ženy na antikoncepci počítá s cyklem o délce 24 dní a kratším krvácením. Přesná prevalence pro danou skupinu ale z literatury nevychází — je to jediná neznámá, a proto ji model neodhaduje jedním číslem, ale prochází jako rozsah.</p>
+    <p>Citlivostní analýza ukazuje vliv tohoto předpokladu pro rozsah 0–60 % žen na antikoncepci. Denní průměr klesá od ~5,6 k ~4,5 ženám lineárně a bez překvapení. Ponaučení: i při velké nejistotě o tom, kolik žen antikoncepci používá, jsou odhadované rozsahy natolik podobné, že pro zásobování stačí konzervativní horní odhad bez antikoncepce.</p>
 
     <div class="figure">
       <img src="../assets/img/periodsim/sensitivity-contraceptive-daily.png" alt="Citlivostní analýza: vliv podílu žen na antikoncepci na denní počet menstruujících">
@@ -150,8 +173,8 @@
 
   <section class="block">
     <h2 class="section-label">menstruační bolest — neviditelná zátěž</h2>
-    <p>Kapacita záchodů a zásoby vložek jsou jedna věc. Druhou, méně viditelnou, je bolest. Primární dysmenorea — menstruační křeče v prvním dni krvácení — postihuje odhadem 10–25 % menstruujících žen s dopadem na denní aktivity; u mladých dívek je prevalence vyšší (přesná data pro českou populaci chybí).</p>
-    <p>Simulace s expertními odhady (18 % těžká dysmenorea u dívek 15–19, 10 % u vedoucích) ukazuje: v daný jednotlivý den akce je typicky 0 žen (84 % dnů) nebo 1 žena (15 % dnů) omezena bolestí v 1. dni periody; dva a více případů najednou nastane jen zhruba v 1,3 % dnů. Za celou 4denní akci ale platí, že alespoň jeden takový den se vyskytne zhruba v polovině (51 %) simulovaných akcí — tedy zhruba každá druhá, ne každá třetí. Plánovat, jako by se to nestalo, je statistický optimismus.</p>
+    <p>Kapacita záchodů a zásoby vložek jsou jedna věc. Druhou, méně viditelnou, je bolest. Primární dysmenorea — menstruační křeče v prvním dni krvácení — postihuje 50–90 % menstruujících žen obecně; těžké symptomy s dopadem na denní aktivity hlásí zhruba 30–50 % z nich [10]. Prostý součin těchto dvou rozsahů (ne přímo publikované číslo, jen aritmetický odhad) dává 15–45 % celé populace. U mladých dívek je prevalence vyšší (přesná data pro českou populaci chybí).</p>
+    <p>Simulace s expertními odhady (18 % těžká dysmenorea u dívek 15–19, 10 % u vedoucích) ukazuje: v daný jednotlivý den akce je typicky 0 žen (83 % dnů) nebo 1 žena (15 % dnů) omezena bolestí v 1. dni periody; dva a více případů najednou nastane jen zhruba v 1,4 % dnů. Za celou 4denní akci ale platí, že alespoň jeden takový den se vyskytne zhruba v polovině (52 %) simulovaných akcí — tedy zhruba každá druhá, ne každá třetí. Plánovat, jako by se to nestalo, je statistický optimismus.</p>
 
     <div class="figure">
       <img src="../assets/img/periodsim/dysmenorrhea-distribution.png" alt="Distribuce počtu žen s těžkou dysmenoreou v daný den">
@@ -171,7 +194,7 @@
     <ul class="plain">
       <li>Pro 30 žen na 4denní akci: každý den menstruuje 5–6 žen průměrně, ale zásobte se pro 9–10 (horní okraj 95% CI).</li>
       <li>Za celou akci bude hygienické potřeby potřebovat průměrně 8–9 unikátních žen — s reálnou variabilitou od 4 do 14.</li>
-      <li>Věková struktura mění rozptyl víc než průměr — kurz dívek je logisticky méně předvídatelný než smíšená skupina.</li>
+      <li>Věková struktura mění rozptyl víc než průměr — při reálně podložených hodnotách variability (Horský 1981) je šíře intervalu spolehlivosti mezi "kurzem dívek" a "smíšenou skupinou" na velikosti oddílu 30 žen prakticky stejná — rozdíl mezi scénáři je menší, než by se čekalo.</li>
       <li>Zhruba každá druhá akce přinese den, kdy bude alespoň jedna žena limitována bolestí. Ibuprofen je stejně logistické opatření jako zásoby vložek.</li>
       <li>Statistika zachytí kapacitu, ale ne sociální rozměr — kdo se odváží říci, že potřebuje pomoc? To je otázka pro navazující část s Agent-Based Modeling.</li>
     </ul>
@@ -180,15 +203,17 @@
   <section class="block">
     <h2 class="section-label">limity tohoto modelu</h2>
     <ul class="plain">
-      <li>Normální rozdělení délky cyklu je aproximace — reálná data jsou pravostranně zešikmená (<em>right-skewed</em>); log-normální nebo Weibullovo rozdělení by bylo přesnější.</li>
-      <li>Prevalence antikoncepce a těžké dysmenorey nejsou z CZ/EU peer-reviewed dat pro tuto populaci — jsou expertním odhadem. Citlivostní analýzy ukazují, v jakém rozsahu výsledek kolísá.</li>
-      <li>Model nezohledňuje stres, fyzickou zátěž ani sociální dynamiku — to je téma navazujícího ABM.</li>
+      <li>Normální rozdělení délky cyklu je aproximace — reálná data jsou pravostranně zešikmená (<em>right-skewed</em>); log-normální nebo Weibullovo rozdělení by bylo přesnější. Ale nemáme dostatečnou odbornou literaturu pro potvrzení tohoto předpokladu.</li>
+      <li>Prevalence antikoncepce a těžké dysmenorey dle věku nejsou z CZ/EU peer-reviewed dat pro tuto populaci — jsou expertním odhadem/citlivostní analýzou v rámci literaturou podloženého rozsahu, ne přímo citovaným číslem.</li>
+      <li>Model neumí rozlišit dívky, které ještě neprodělaly menarché — do počtu žen v jakékoli skupině (zejména nejmladší, 11–14 let) patří jen ty, které už menstruují, jinak model výsledek nadhodnotí.</li>
+      <li>Parametry pro skupinu "dívky 11–14" (první gynekologický rok) má přímo citovanou průměrnou délku cyklu 32,2 dne [8], ale směrodatná odchylka pro toto období v literatuře chybí a zůstává hrubším odhadem než u ostatních skupin.</li>
+      <li>Model nezohledňuje stres, fyzickou zátěž ani sociální dynamiku — to je téma navazujícího projektu využivajícího metod multiagentního modelování (<em>Agent-Based Modeling</em>).</li>
     </ul>
   </section>
 
   <section class="block">
     <h2 class="section-label">interaktivní dashboard</h2>
-    <p>Parametry akce (počet žen, délka, věkové skupiny) si lze nastavit přímo v nástroji níže a okamžitě vidět odhad zásob a kapacit.</p>
+    <p>Parametry akce (počet žen, délka, věkové skupiny) si lze nastavit přímo v nástroji níže a okamžitě vidět odhad zásob a kapacit. Antikoncepce v nástroji záměrně chybí — jednotlivé zadané procento by mohlo v interaktivním nástroji působit jako fakt, ne jako odhad; citlivostní rozsah výše (grafy) je pro tento parametr poctivější způsob, jak nejistotu ukázat.</p>
     <div class="breakout-stage">
       <div class="breakout-inner">
         <iframe class="embed-frame" src="https://dobes-michal-tobias-periodsim.hf.space/" title="PeriodSim dashboard"></iframe>
@@ -200,10 +225,17 @@
   <section class="block">
     <h2 class="section-label">reference</h2>
     <ul class="plain">
-      <li>[1] Horský, J., et al. (1981). Symptomatic classification of disorders of the menstrual cycle. In J. Horský et al., <em>Ovarian function and its disorders</em> (pp. 149–150). Martinus Nijhoff Publishers.</li>
-      <li>[2] Cole, L. A., Ladner, D. G., &amp; Byrn, F. W. (2009). The normal variabilities of the menstrual cycle. <em>Fertility and Sterility, 91</em>(2), 522–527.</li>
-      <li>[3] Grieger, J. A., &amp; Norman, R. J. (2020). Menstrual cycle length and patterns in a global cohort of women using a mobile phone app: Retrospective cohort study. <em>Journal of Medical Internet Research, 22</em>(6), e17109.</li>
-      <li>[4] Li, H., Gibson, E. A., Jukic, A. M., et al. (2023). Menstrual cycle length variation by demographic characteristics from the Apple Women's Health Study. <em>npj Digital Medicine, 6</em>, 100.</li>
+      <li>[1] Adams Hillard, P. J. (2008). Menstruation in adolescents: What's normal? <em>The Medscape Journal of Medicine, 10</em>(12), 295. Volný přístup: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC2644006/">PMC2644006</a>.</li>
+      <li>[2] Carlson, L. J., &amp; Shaw, N. D. (2019). Development of ovulatory menstrual cycles in adolescent girls. <em>Journal of Pediatric and Adolescent Gynecology, 32</em>(3), 249–253. Volný přístup: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6570576/">PMC6570576</a>.</li>
+      <li>[3] Cole, L. A., Ladner, D. G., &amp; Byrn, F. W. (2009). The normal variabilities of the menstrual cycle. <em>Fertility and Sterility, 91</em>(2), 522–527. Za paywallem, volná verze nenalezena — odkaz: <a href="https://pubmed.ncbi.nlm.nih.gov/18433748/">PubMed</a>.</li>
+      <li>[4] Edelman, A., Micks, E., Motu'apuaka, M. L., Benson, L. S., &amp; Stewart, F. (2014). Continuous or extended cycle vs. cyclic use of combined hormonal contraceptives for contraception. <em>Cochrane Database of Systematic Reviews, 7</em>, CD004695. Volný přístup: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6837850/">PMC6837850</a>.</li>
+      <li>[5] Grieger, J. A., &amp; Norman, R. J. (2020). Menstrual cycle length and patterns in a global cohort of women using a mobile phone app: Retrospective cohort study. <em>Journal of Medical Internet Research, 22</em>(6), e17109. Volný přístup: <a href="https://www.jmir.org/2020/6/e17109/">JMIR Publications</a>.</li>
+      <li>[6] Harvard T.H. Chan School of Public Health. (2024, 17. července). <em>Menstrual cycles today: How menstrual cycles vary by age, weight, race, and ethnicity</em> [Study Updates, Apple Women's Health Study]. Volný přístup: <a href="https://hsph.harvard.edu/research/apple-womens-health-study/study-updates/menstrual-cycles-today-how-menstrual-cycles-vary-by-age-weight-race-and-ethnicity/">hsph.harvard.edu</a>.</li>
+      <li>[7] Horský, J., et al. (1981). Symptomatic classification of disorders of the menstrual cycle. In J. Horský et al., <em>Ovarian function and its disorders</em> (pp. 149–150). Martinus Nijhoff Publishers. Za paywallem (vyžaduje přihlášení) — odkaz: <a href="https://link.springer.com/chapter/10.1007/978-94-009-8195-9_6">Springer</a>.</li>
+      <li>[8] Lacroix, A. E., Gondal, H., Shumway, K. R., &amp; Langaker, M. D. (2023). Physiology, Menarche. In <em>StatPearls</em>. StatPearls Publishing. Volný přístup: <a href="https://www.ncbi.nlm.nih.gov/books/NBK470216/">NBK470216</a>.</li>
+      <li>[9] Li, H., Gibson, E. A., Jukic, A. M., Baird, D. D., Wilcox, A. J., Curry, C. L., Fischer-Colbrie, T., Onnela, J.-P., Williams, M. A., Hauser, R., Coull, B. A., &amp; Mahalingaiah, S. (2023). Menstrual cycle length variation by demographic characteristics from the Apple Women's Health Study. <em>npj Digital Medicine, 6</em>, 100. Volný přístup: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10226714/">PMC10226714</a>.</li>
+      <li>[10] MacGregor, B., Allaire, C., Bedaiwy, M. A., Yong, P. J., &amp; Bougie, O. (2023). Disease burden of dysmenorrhea: Impact on life course potential. <em>International Journal of Women's Health, 15</em>, 499–509. Volný přístup: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10081671/">PMC10081671</a>.</li>
+      <li>[11] Mortimer, R., Asokan, G., Baird, D. D., Wilcox, A. J., Abrams, K., Curry, C. L., Onnela, J.-P., Coull, B. A., Hauser, R., Williams, M. A., Wang, Z., &amp; Mahalingaiah, S. (2026). Variability of menstrual cycles by age, polycystic ovary syndrome, and early-life cycle irregularity in the Apple Women's Health Study. <em>American Journal of Obstetrics &amp; Gynecology, 234</em>(4), 1042–1052. https://doi.org/10.1016/j.ajog.2025.11.031</li>
     </ul>
   </section>
 
