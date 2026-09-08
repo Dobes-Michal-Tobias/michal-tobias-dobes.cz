@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vyhrává, kdo začíná? Přesné řešení rodinné prstové hry — Michal Tobiáš Dobeš</title>
+<meta name="description" content="Manželka vymyslela prstovou hru z rodiny Chopsticks. Retrográdní analýzou jsem ji vyřešil úplně přesně, otestoval vlastní strategické hypotézy na datech a jednu z nich vyvrátil.">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="cs_CZ">
+<meta property="og:title" content="Vyhrává, kdo začíná? Přesné řešení rodinné prstové hry — Michal Tobiáš Dobeš">
+<meta property="og:description" content="Manželka vymyslela prstovou hru z rodiny Chopsticks. Retrográdní analýzou jsem ji vyřešil úplně přesně, otestoval vlastní strategické hypotézy na datech a jednu z nich vyvrátil.">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  .figure { margin: 2rem 0; }
+  .figure img { width: 100%; display: block; border: 1px solid var(--rule); }
+  .figure-caption { font-family: var(--font-mono); font-size: .78rem; color: var(--muted); margin-top: .6rem; }
+  .back-link { font-family: var(--font-mono); font-size: .8rem; margin-bottom: 1.5rem; display: inline-block; }
+  .stat-highlight { font-family: var(--font-mono); font-size: 1.1rem; text-align: center; margin: 1.5rem 0; }
+  .info-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: .92rem; }
+  .info-table th, .info-table td { border: 1px solid var(--rule); padding: .55rem .8rem; text-align: left; vertical-align: top; }
+  .info-table th { font-family: var(--font-mono); font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); font-weight: 600; }
+  .info-table caption { font-family: var(--font-mono); font-size: .78rem; color: var(--muted); text-align: left; margin-bottom: .5rem; caption-side: top; }
+
+  /* Interactive advisor widget */
+  .chopsticks-app { border: 1px solid var(--rule); padding: 1.5rem; }
+  .chopsticks-controls { display: flex; flex-wrap: wrap; gap: 2rem; margin-bottom: 1.25rem; }
+  .chopsticks-player-label { display: block; font-family: var(--font-mono); font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-bottom: .5rem; }
+  .chopsticks-player select { font-family: var(--font-mono); font-size: .95rem; padding: .35em .5em; border: 1px solid var(--rule); background: var(--bg); color: var(--ink); margin-right: .4em; }
+  .chopsticks-toggles { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--rule); }
+  .chopsticks-result { min-height: 4rem; }
+  .cw-verdict { font-size: 1.02rem; margin: 0 0 .8rem; }
+  .cw-status { font-family: var(--font-mono); font-weight: 600; letter-spacing: .04em; margin-right: .5em; }
+  .cw-win { color: var(--ink); }
+  .cw-draw { color: var(--muted); }
+  .cw-loss { color: var(--accent); }
+  .cw-moves-label { font-family: var(--font-mono); font-size: .8rem; color: var(--muted); margin: 0 0 .4rem; }
+  .cw-move-note { color: var(--muted); font-size: .92rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="site">
+  <div class="site-name"><a href="../index.html">Michal Tobiáš Dobeš</a></div>
+  <nav class="site-nav" aria-label="Hlavní navigace">
+    <a href="../index.html">o mně</a>
+    <a href="../projekty.html" aria-current="page">projekty</a>
+  </nav>
+</header>
+
+<main>
+  <a class="back-link" href="../projekty.html">&larr; zpět na projekty</a>
+
+  <p class="eyebrow">Projekt</p>
+  <h1 class="page-title">Vyhrává, kdo začíná?</h1>
+  <p class="subtitle with-dates">Přesné řešení rodinné prstové hry, testování vlastních strategických hypotéz a jeden vyvrácený mýtus</p>
+  <p class="page-dates">vytvořeno 31. 8. 2026 · aktualizováno 31. 8. 2026</p>
+
+  <section class="block">
+    <p>Manželka vymyslela hru. Dvě ruce, na každé dva vztyčené prsty, plácáte se navzájem a sčítáte — klasika z rodiny her, které se ve světě říká <em>Chopsticks</em>. Zeptala se mě, jestli existuje "nejlepší způsob", jak hrát. Nevěděl jsem — ale z pravidel se dalo pár tušených pouček odhadnout rovnou. Prstová aritmetika modulo 5 přímo napovídá pár intuic: třeba že kombinace jedničky proti soupeřově čtyřce je silná (1 + 4 = 5 ≡ 0, vyřadí ruku), nebo že mít vlastní ruku se 4 prsty je nebezpečně zranitelné.</p>
+    <p>Jenže odhad z pravidel není totéž co ověřený fakt. Zněl věrohodně, ale věrohodně zní i spousta věcí, co nejsou pravda.</p>
+    <p>Tak jsem hru skutečně vyřešil — všech 450 pozic, přesně, ne odhadem — a své vlastní tušené poučky jsem si nechal ověřit daty místo abych jim věřil naslepo. Jedna z nich se ukázala jako opak pravdy.</p>
+  </section>
+
+  <section class="block">
+    <h2 class="section-label">pravidla hry</h2>
+    <p><span class="tag">vysvětlení pro každého</span>Dva hráči, každý má dvě ruce. Na začátku má každá ruka 2 vztyčené prsty. Hráči se střídají po tazích. Jeden tah je "plácnutí" — hráč na tahu přičte počet prstů své ruky k počtu prstů na jedné ze soupeřových živých rukou. Součet se počítá modulo 5: dosáhne-li přesně 5, ruka je vyřazená (0 prstů); je-li součet vyšší, zůstává zbytek po dělení pěti (např. 4 + 3 = 7 → zůstanou 2 prsty).</p>
+    <p>Hráč prohrává, jakmile má obě ruce vyřazené. Existuje i volitelné pravidlo <em>split</em>: má-li hráč jednu ruku vyřazenou a druhou se sudým počtem prstů, může ji na svém tahu rozdělit na dvě (např. 4 → 2 a 2) a vrátit tak vyřazenou ruku do hry. Není jisté, jestli je tohle pravidlo součástí domácí verze — proto níže řeším obě varianty vedle sebe.</p>
+  </section>
+
+  <section class="block">
+    <h2 class="section-label">proč přesné řešení, ne simulace</h2>
+    <p>Dalo by se napsat program, co odehraje miliony náhodných partií, a sledovat, co vyhrává. Nebylo by to ale spolehlivé: hra obsahuje cykly (žádná strana nemusí nikdy udělat rozhodující chybu), takže náhodná simulace špatně rozpozná, kdy je pozice skutečně remízová, a navíc vůbec nezachytí, jak by hra dopadla mezi dvěma dokonale racionálními hráči.</p>
+    <p>Naštěstí to není potřeba. Ruce mohou mít 0–4 prstů a na pořadí rukou jednoho hráče nezáleží, takže existuje jen 15 možných konfigurací rukou na hráče. Dohromady s tím, kdo je na tahu, dá to 15 × 15 × 2 = 450 pozic — dost málo na to, aby šla hra vyřešit <em>úplně</em>, algoritmem zvaným retrográdní analýza (stejný princip jako u koncovkových tabulek v šachu nebo dámě): od koncových pozic (prohra) se postupuje zpětně a každé pozici se přiřadí, jestli je pro hráče na tahu výhra, prohra, nebo remíza — a přesně za kolik tahů.</p>
+  </section>
+
+  <section class="block">
+    <h2 class="section-label">je výchozí pozice fér?</h2>
+    <p>První otázka: má hráč, co začíná, výhodu? Odpověď je <strong>ne</strong> — pozice (2,2) proti (2,2) je při dokonalé hře <strong>remíza</strong>. Ani jeden hráč si nemůže vynutit výhru; kdo vyhraje, záleží čistě na tom, kdo udělá chybu. Manželka tedy nevědomky vybrala jednu z fér startovních konfigurací.</p>
+    <p>To je vidět i vizuálně. Níže je celý dosažitelný stavový prostor hry (398 pozic ze 450 celkových) jako síťový graf — uzly jsou pozice, hrany jsou legální tahy. Modrá = výhra pro hráče na tahu, šedá = remíza, terakota = prohra. Výchozí pozice (černý obrys) leží přímo uprostřed hustého šedého jádra, kde se hra dá donekonečna protahovat, aniž by kdokoli udělal chybu.</p>
+
+    <div class="figure">
+      <img src="../assets/img/chopsticks/state-network.png" alt="Síťový graf celého dosažitelného stavového prostoru hry, obarvený podle výhry/remízy/prohry pro hráče na tahu">
+      <p class="figure-caption">Celý dosažitelný stavový prostor (základní pravidla, bez split). Remízové pozice tvoří propojený střed — hra se v nich dá cyklit; výherní a prohrané pozice visí spíš na okrajích, blíž ke konci hry.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2 class="section-label">pravidlo split hru zásadně zklidňuje</h2>
+    <p>Porovnal jsem obě varianty pravidel na všech 450 myslitelných konfiguracích rukou (ne jen na těch dosažitelných ze startu). Bez pravidla split je remíza 41 % pozic, výhra 38 % a prohra 21 %. Se split pravidlem remízy skočí na 64 % pozic — logicky: možnost oživit vyřazenou ruku dává obránci skoro vždy únikovou cestu.</p>
+
+    <div class="figure">
+      <img src="../assets/img/chopsticks/outcome-distribution.png" alt="Sloupcový graf srovnávající počet výherních, remízových a prohraných pozic se split pravidlem a bez něj">
+      <p class="figure-caption">Rozdělení výsledků napříč všemi 450 pozicemi, pro obě varianty pravidel. Se split pravidlem je hra podstatně "remízovější".</p>
+    </div>
+
+    <p>Prakticky to znamená: pokud vaše domácí verze pravidlo split používá, je hru mnohem těžší fakticky někoho porazit, než kdyby se hrálo bez něj.</p>
+  </section>
+
+  <section class="block">
+    <h2 class="section-label">testování vlastních hypotéz daty</h2>
+    <p>Měl jsem dvě konkrétní hypotézy: že kombinace "mám 1 prst, soupeř má 4" je silná útočná zbraň (1 + 4 = 5 ≡ 0, vyřadí ruku) a že mít vlastní ruku se 4 prsty je nebezpečně zranitelné. První hypotézu jsem otestoval na datech ze všech pozic — a drží: pravděpodobnost výhry hráče na tahu vyskočí z běžných 41 % na 64 %, když má útočník jedničku a soupeř čtyřku (byť na relativně menší podmnožině pozic, n=50 z 420).</p>
+    <p class="stat-highlight">41 % → <strong>64 %</strong> šance na výhru s kombinací "1 proti soupeřově 4"</p>
+    <p>Druhá hypotéza ale neplatí. Mít ruku se 4 prsty nemá na pravděpodobnost výhry prakticky žádný vliv (43 % vs. 40 % bez ní) — a v přesnějším modelu (logistická regrese kontrolující na počet živých rukou a další vlastnosti pozice současně) dokonce znatelně <em>snižuje</em> šanci na prohru (na necelou polovinu, poměr šancí 0,45). Čtyřka je spíš ochranná než zranitelná — přesný opak toho, co jsem čekal.</p>
+
+    <div class="figure">
+      <img src="../assets/img/chopsticks/heuristic-tests.png" alt="Sloupcový graf srovnávající pravděpodobnost výhry v základní situaci, s killer 1v4 kombinací, s rukou se 4 prsty a bez ní">
+      <p class="figure-caption">Podmíněná pravděpodobnost výhry hráče na tahu za různých podmínek, napříč všemi pozicemi. "Killer 1v4" má reálný efekt; vlastnictví ruky se 4 prsty prakticky žádný.</p>
+    </div>
+
+    <p>Nejsilnější prediktor výhry ale nebyla žádná konkrétní hodnota na ruce — byl to prostě počet živých rukou. Se dvěma živými rukama proti soupeřově jedné vyhrává hráč na tahu v 90 % případů; s jednou rukou proti soupeřovým dvěma prohrává ve 70 %. Konkrétní čísla na rukou rozhodují mnohem méně než to, kolik jich vůbec máte ve hře.</p>
+  </section>
+
+  <section class="block">
+    <h2 class="section-label">pomáhají tyhle rady fakt vyhrát?</h2>
+    <p>Statistický test na vyřešených pozicích je jedna věc. Otázka, co zajímá hráče u stolu, je jiná: pomůže mi tahle poučka opravdu vyhrát víc partií? Odpověď jsem získal simulací — bot, co hraje čistě podle mých tušených pouček (bez nahlížení do vyřešené tabulky), proti náhodnému hráči a proti dokonalé hře.</p>
+    <p>Proti náhodnému hráči heuristika skoro zdvojnásobí šanci na výhru oproti tomu, jak by dopadla náhodná hra sama proti sobě (67 % vs. 42 % baseline). Proti dokonalé hře je ale úplně bezmocná — 0 % výher, stejně jako čistě náhodná hra.</p>
+
+    <div class="figure">
+      <img src="../assets/img/chopsticks/bot-simulation.png" alt="Sloupcový graf s podílem vyhraných partií pro různé kombinace bota s heuristikami, náhodného hráče a dokonalé hry">
+      <p class="figure-caption">Podíl vyhraných partií (3 000 simulovaných her na zápas, se střídáním, kdo hraje první). Heuristika reálně pomáhá proti běžnému soupeři, ale negarantuje nic proti hráči, co zná vyřešenou tabulku.</p>
+    </div>
+
+    <p>Poctivý závěr: tušené poučky nejsou skutečná strategie, spíš rychlá zkratka. Fungují dobře proti komukoli, kdo nehraje dokonale — což je skoro každý — ale nejsou matematická jistota.</p>
+  </section>
+
+  <section class="block">
+    <h2 class="section-label">nesymetrické starty a handicap</h2>
+    <p>Co když hra nezačíná (2,2) proti (2,2)? Spočítal jsem výsledek pro všech 225 možných kombinací startovních rukou obou hráčů — i těch, kde obě strany nezačínají stejně. Ze 210 skutečně nesymetrických kombinací (obě strany začínají jinak) jich zůstává fér (remíza) 84, tedy 40 %.</p>
+
+    <div class="figure">
+      <img src="../assets/img/chopsticks/start-position-grid.png" alt="Mapa výsledků pro všech 225 kombinací startovních rukou obou hráčů">
+      <p class="figure-caption">Kdo vyhrává při daném startu, pro každou kombinaci startovních rukou P1 a P2 (hráč 1 je na tahu první). Modrá = P1 vyhrává, šedá = remíza, terakota = P1 prohrává.</p>
+    </div>
+
+    <p>To se dá využít prakticky — třeba jako handicap, když proti sobě hraje zkušenější hráč se začátečníkem. Mapa přesně ukazuje, které nevyrovnané starty jsou pořád fér a které dávají výhodu jedné straně.</p>
+  </section>
+
+  <section class="block">
+    <h2 class="section-label">jak velká je to vlastně hra?</h2>
+    <p>Proto šlo hru vyřešit celou za zlomek sekundy na běžném notebooku — je extrémně malá ve srovnání se známými hrami. Hodnoty pro ostatní hry jsou přibližné, běžně citované odhady state-space complexity z literatury, ne výstup tohoto projektu.</p>
+
+    <table class="info-table">
+      <caption>Přibližný počet pozic, orientační srovnání</caption>
+      <thead>
+        <tr><th>hra</th><th>přibl. počet pozic</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>tahle hra (dosažitelné pozice)</td><td>398</td></tr>
+        <tr><td>tahle hra (všechny konfigurace)</td><td>450</td></tr>
+        <tr><td>piškvorky (tic-tac-toe)</td><td>5 478</td></tr>
+        <tr><td>Connect Four</td><td>4,5 × 10¹²</td></tr>
+        <tr><td>dáma (checkers)</td><td>5 × 10²⁰</td></tr>
+        <tr><td>šachy (odhad)</td><td>~10⁴⁷</td></tr>
+        <tr><td>go, 19×19 (odhad)</td><td>~10¹⁷⁰</td></tr>
+      </tbody>
+    </table>
+    <p>Piškvorky mají řádově desetitisíce pozic a přesto je většina lidí nevyřeší v hlavě dokonale. Tahle hra je o další řád menší — proto šlo místo odhadu nebo natrénované AI použít úplně přesné řešení.</p>
+  </section>
+
+  <section class="block">
+    <h2 class="section-label">co z toho plyne</h2>
+    <ul class="plain">
+      <li>Výchozí pozice (2,2)/(2,2) je fér — nikdo nemá vynucenou výhru, záleží na chybách.</li>
+      <li>Pravidlo split hru zásadně zklidňuje — remízy skočí ze 41 % na 64 % pozic.</li>
+      <li>Kombinace "1 proti soupeřově 4" reálně pomáhá (41 % → 64 % šance na výhru); "ruka se 4 je zranitelná" je mýtus — ve skutečnosti mírně chrání.</li>
+      <li>Počet živých rukou rozhoduje víc než konkrétní čísla na nich.</li>
+      <li>Tušené poučky skoro zdvojnásobí šanci proti běžnému hráči, ale proti dokonalé hře nic negarantují.</li>
+      <li>40 % nesymetrických startů zůstává fér — použitelné jako handicap.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h2 class="section-label">limity</h2>
+    <ul class="plain">
+      <li>Pravidla vycházejí z jednoho popisu manželčiny hry — nejsou ověřená proti tomu, jak se hra v praxi skutečně hraje na dalších detailech (např. co přesně se počítá jako legální split, nebo jestli existují další varianty pravidel).</li>
+      <li>Není jasné, jestli je pravidlo split součástí domácí verze — proto je v celém textu řešeno jako samostatná varianta, ne jako potvrzené pravidlo.</li>
+      <li>Statistické testy (killer 1v4, vliv ruky se 4 prsty) běží nad kompletním výčtem všech pozic, ne nad náhodným vzorkem — klasická interpretace p-hodnot (nezávislá pozorování) tu neplatí doslovně, protože sousední pozice jsou navzájem provázané stavy jednoho grafu. Efekty berte jako míru síly a směru, ne jako přísný inferenční důkaz.</li>
+      <li>Bot řízený heuristikami hraje jednoduchá, pevná pravidla — reální hráči si všímají víc kontextu, takže 67% výhra proti náhodnému hráči je spíš dolní odhad reálné výhody, ne přesné číslo pro konkrétního člověka.</li>
+    </ul>
+  </section>
+
+  <section class="block" id="interactive-tool">
+    <h2 class="section-label">vyzkoušej si to sám</h2>
+    <p>Zadejte, kolik prstů má kdo na stole a kdo je na tahu — nástroj vrátí verdikt a doporučené tahy z kompletně vyřešené tabulky.</p>
+
+    <div class="chopsticks-app" id="chopsticks-app">
+      <div class="chopsticks-controls">
+        <div class="chopsticks-player">
+          <span class="chopsticks-player-label">hráč 1</span>
+          <select data-role="p1a" aria-label="Hráč 1, první ruka">
+            <option value="0">0</option><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option>
+          </select>
+          <select data-role="p1b" aria-label="Hráč 1, druhá ruka">
+            <option value="0">0</option><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option>
+          </select>
+        </div>
+        <div class="chopsticks-player">
+          <span class="chopsticks-player-label">hráč 2</span>
+          <select data-role="p2a" aria-label="Hráč 2, první ruka">
+            <option value="0">0</option><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option>
+          </select>
+          <select data-role="p2b" aria-label="Hráč 2, druhá ruka">
+            <option value="0">0</option><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option>
+          </select>
+        </div>
+      </div>
+      <div class="chopsticks-toggles">
+        <div class="sort-control" role="group" aria-label="Kdo je na tahu">
+          na tahu:
+          <button type="button" class="sort-btn active" data-turn="0">hráč 1</button>
+          <span class="sep">/</span>
+          <button type="button" class="sort-btn" data-turn="1">hráč 2</button>
+        </div>
+        <div class="sort-control" role="group" aria-label="Pravidla">
+          pravidla:
+          <button type="button" class="sort-btn active" data-ruleset="basic">základní</button>
+          <span class="sep">/</span>
+          <button type="button" class="sort-btn" data-ruleset="split">se split</button>
+        </div>
+      </div>
+      <div class="chopsticks-result" data-role="result">
+        <p class="placeholder">Načítám data…</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2 class="section-label">kód a data</h2>
+    <ul class="plain">
+      <li><span class="tag">repo</span><a href="https://github.com/Dobes-Michal-Tobias/ChopsticsGame" target="_blank" rel="noopener noreferrer">github.com/Dobes-Michal-Tobias/ChopsticsGame</a></li>
+      <li>Solver, statistické testy a bot simulace jsou v <code>src/game.py</code>, celý postup krok za krokem v notebooocích (<code>notebooks/01</code>–<code>03</code>).</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="site">
+  <span>© 2026 Michal Tobiáš Dobeš</span>
+  <a href="https://github.com/Dobes-Michal-Tobias" target="_blank" rel="noopener noreferrer">https://github.com/Dobes-Michal-Tobias</a>
+</footer>
+
+</div>
+
+<script src="../assets/chopsticks/chopsticks-widget.js" defer></script>
+</body>
+</html>
