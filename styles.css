@@ -167,6 +167,18 @@ ul.plain li::before { content: "–"; position: absolute; left: 0; color: var(--
 .sort-control .sort-btn:hover { color: var(--accent); }
 .sort-control .sort-btn.active { color: var(--ink); font-weight: 600; text-decoration: underline; text-decoration-color: var(--accent-soft); }
 .sort-control .sep { color: var(--rule); }
+.sort-control .sort-dir-btn {
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: .6em;
+  cursor: pointer;
+  color: var(--ink);
+  line-height: 1;
+}
+.sort-control .sort-dir-btn:hover { color: var(--accent); }
 
 /* Entry cards (projects / courses) */
 .entry { padding: 1.4rem 0; border-bottom: 1px solid var(--rule); }
