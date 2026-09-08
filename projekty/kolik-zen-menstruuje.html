@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kolik žen na skautské výpravě menstruuje? — Michal Tobiáš Dobeš</title>
 <meta name="description" content="Statistický odhad podílu menstruujících žen ve skautských oddílech a outdoorových skupinách — od jednoduchého výpočtu po Monte Carlo simulaci.">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="cs_CZ">
+<meta property="og:title" content="Kolik žen na skautské výpravě menstruuje? — Michal Tobiáš Dobeš">
+<meta property="og:description" content="Statistický odhad podílu menstruujících žen ve skautských oddílech a outdoorových skupinách — od jednoduchého výpočtu po Monte Carlo simulaci.">
+<meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -24,7 +30,7 @@
     margin: 0 auto;
     padding: 0 1.5rem;
   }
-  .embed-frame { width: 100%; height: 760px; border: 1px solid var(--rule); display: block; }
+  .embed-frame { width: 100%; height: 900px; border: 1px solid var(--rule); display: block; transition: height .2s ease; }
   .embed-note { font-family: var(--font-mono); font-size: .78rem; color: var(--muted); margin-top: .6rem; }
   .back-link { font-family: var(--font-mono); font-size: .8rem; margin-bottom: 1.5rem; display: inline-block; }
   .stat-highlight { font-family: var(--font-mono); font-size: 1.1rem; text-align: center; margin: 1.5rem 0; }
@@ -32,6 +38,40 @@
   .info-table th, .info-table td { border: 1px solid var(--rule); padding: .55rem .8rem; text-align: left; vertical-align: top; }
   .info-table th { font-family: var(--font-mono); font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); font-weight: 600; }
   .info-table caption { font-family: var(--font-mono); font-size: .78rem; color: var(--muted); text-align: left; margin-bottom: .5rem; caption-side: top; }
+
+  .dashboard-hint {
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    z-index: 40;
+    display: inline-flex;
+    align-items: center;
+    gap: .5em;
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    padding: .6em 1.05em;
+    font-family: var(--font-mono);
+    font-size: .75rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: opacity .25s ease, transform .25s ease, color .15s ease, border-color .15s ease;
+  }
+  .dashboard-hint:hover { color: var(--accent); border-color: var(--accent-soft); }
+  .dashboard-hint-arrow { display: inline-block; animation: dashboard-hint-bounce 1.6s ease-in-out infinite; }
+  .dashboard-hint.is-hidden { opacity: 0; transform: translateY(.5rem); pointer-events: none; }
+  @keyframes dashboard-hint-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(3px); }
+  }
+  @media (max-width: 560px) {
+    .dashboard-hint { right: 1rem; bottom: 1rem; font-size: .68rem; padding: .55em .85em; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .dashboard-hint-arrow { animation: none; }
+    .dashboard-hint { transition: none; }
+  }
 </style>
 </head>
 <body>
@@ -43,9 +83,6 @@
     <a href="../index.html">o mně</a>
     <a href="../projekty.html" aria-current="page">projekty</a>
   </nav>
-  <div class="lang-switch">
-    <a class="active" href="kolik-zen-menstruuje.html">CZ</a><span>/</span><a href="#">EN</a>
-  </div>
 </header>
 
 <main>
@@ -53,12 +90,17 @@
 
   <p class="eyebrow">Projekt</p>
   <h1 class="page-title">Kolik žen na skautské výpravě menstruuje?</h1>
-  <p class="subtitle with-dates">Statistický odhad pro skautské tábory, puťáky a vodní výpravy</p>
-  <p class="page-dates">vytvořeno 3. 7. 2026 · aktualizováno 4. 7. 2026</p>
+  <p class="subtitle with-dates">Statistický odhad pro skautské tábory, puťáky a akce všeho druhu</p>
+  <p class="page-dates">vytvořeno 3. 7. 2026 · aktualizováno 25. 8. 2026</p>
 
   <section class="block">
-    <p>Třídenní puťák s krosnou na zádech. Tábor v lese, kde je latrína sto metrů od stanu a sprcha není každý den. Vodní výprava, kde je soukromí prostor mezi dvěma kánoemi. Na skautských akcích se logistika obvykle plánuje podle zkušenosti vedoucích — kolik náhradních hygienických potřeb do lékárničky, jak dlouhou pauzu si naplánovat na řece. Otázka, kolik dívek a žen bude zrovna menstruovat, se ale obvykle neřeší čísly, řeší se odhadem od oka.</p>
-    <p>Dá se to ale spočítat. Ne přesně pro konkrétní osobu — to není cílem a ani by to nebylo etické — ale pro <em>skupinu</em>. Pokud známe velikost a věkové složení oddílu, dá se statisticky odhadnout, kolik dívek a žen bude v libovolný den akce menstruovat a jak moc se toto číslo může lišit den od dne. Přesně to je předmětem této první části — od nejjednoduššího odhadu po Monte Carlo simulaci.</p>
+    <p> Ležím ve spacáku na skautském kurzu, je pozdě v noci, určitě jsem jeden z posledních vzhůru. Nedaří se mi usnout. Jelikož vím minimálně o jedné dívce s menstruací, počítám toalety. Je dospělá, všichni jsou tu dospělí a toto je víkendová část kurzu v civilizované klubovně ve středočeském městě. Přec jenom mám pocit, že záchodů je tu málo a soukromí snad ještě méně. Ale kolik takových slečen tu je? Rozepínám spacák, beru notebook a píši první řádky kódu. Narychlo aproximuji počet žen s menstruací na našem kurzu.</p>
+
+    <p> Z noční otázky se nakonec vyklubal mnohem větší problém. Uvědomil jsem si, že během skautské činnosti potkávají ženy a dívky nespočet faktorů, které jim život s menstruací ztěžují a my přitom vůbec nevíme, kolik z nich na dané akce menstruuje.
+
+    <p> Třídenní puťák s krosnou na zádech. Tábor v lese, kde je latrína sto metrů od stanu a sprcha není každý den. Vodácká výprava, kde je soukromí tvořeno prostorem mezi dvěma kánoemi. Od jednoduchého výpočtu jsem se  dostal až ke <em>stochastickým</em> simulacím a <a href="#interactive-dashboard">vlastnímu nástroji</a>, který může nejen skautským vedoucím pomoci lépe plánovat hygienické zázemí na akcích, ale také tematizovat menstruaci jako naprosto běžnou součást života.</p>
+   
+    <p>Cílem není počítat cyklus pro konkrétní osobu, ale odhadovat počet žen v daném společenství s probíhající menstruací. Pokud známe velikost a věkové složení oddílu, dá se statisticky odhadnout, kolik dívek a žen bude v libovolný den akce menstruovat a jak moc se toto číslo může lišit den od dne. </p>
   </section>
 
   <section class="block">
@@ -66,26 +108,25 @@
     <p>Menstruační cyklus trvá v průměru kolem 28 dní, krvácení zhruba 5 dní [7], [3]. To znamená, že v kterýkoli konkrétní den je pravděpodobnost, že žena zrovna krvácí, přibližně:</p>
     <p class="stat-highlight">5 / 28 ≈ <strong>18 %</strong></p>
     <p>Na 30 dívek to vychází zhruba na 5–6 menstruujících v daný okamžik. Tento výpočet se označuje jako <em>analytický baseline</em> — přímočará pravděpodobnostní kalkulace, která slouží jako referenční bod. Pokud by nám složitější model vrátil číslo jiného řádu, víme, kde hledat chybu.</p>
-    <p>Baseline ale ignoruje dvě vrstvy variability: cykly nejsou u všech žen stejně dlouhé (<em>variabilita mezi ženami</em>), a ani u jedné ženy cyklus nechodí jako hodinky (<em>variabilita v čase</em>). Aby odhad zachytil i tuto nejistotu, je potřeba simulace.</p>
+    <p>Baseline ale ignoruje dvě vrstvy variability: cykly nejsou u všech žen stejně dlouhé (<em>variabilita mezi ženami</em>), a ani u jedné ženy cyklus nemsuí být pravidelný (<em>variabilita v čase</em>). Aby odhad zachytil i tuto nejistotu, je potřeba složitějších nástrojů.</p>
   </section>
 
   <section class="block">
     <h2 class="section-label">co je monte carlo simulace</h2>
-    <p><span class="tag">pro každého</span>Představte si, že chcete zjistit průměrnou délku hry, kde hodně záleží na hodu kostkou. Nechce se vám to počítat — je v tom příliš náhody. Tak ji v počítači prostě tisíckrát odehrajete (za zlomek sekundy) a změříte průměr a rozptyl výsledků.</p>
-    <p>Monte Carlo simulace dělá přesně to: vygeneruje tisíce virtuálních žen, každé přiřadí náhodnou, ale realisticky rozdělenou délku cyklu a krvácení, a pak simuluje, kdo menstruuje který den. Zopakuje to 5 000krát — a z výsledků spočítá nejen průměr, ale i to, jak moc se výsledky liší: tzv. <em>interval spolehlivosti</em>.</p>
-    <p>Název pochází z kasina v Monaku — stejně jako u hazardní hry je výsledek jednoho tahu řízen náhodou, ale s tisíci opakováními roste přesnost odhadu: chyba odhadu klesá zhruba s odmocninou počtu iterací.</p>
+    <p><span class="tag"> vysvětlení pro každého</span>Čelit variabilitě a nejistotě nám pomohou tzv. Monte Carlo simulace. Vygenerujeme tisíce virtuálních <em>žen</em> na základě klinických dat, každé přiřadíme náhodnou, ale realistickou délku cyklu a krvácení, a pak simulujeme, kdo menstruuje který den. Zopakujeme to v řádech tisíců — a z výsledků spočítáme nejen průměr, ale i to, jak moc se výsledky liší: tzv. <em>interval spolehlivosti</em>.</p>
+    <p>Autoři simulace — věhlasní matematici Stanisław Marcin Ulam a John von Neumann — se nechali inspirovat kolem rulety z kasina v Monaku (původně pro jiné potřeby než odhadování menstruujících skautek, viz Los Alamos). Stejně jako u hazardní hry je výsledek jednoho tahu řízen náhodou, ale s tisíci opakováními roste přesnost odhadu. Chyba odhadu klesá zhruba s odmocninou počtu iterací.</p>
   </section>
 
   <section class="block">
     <h2 class="section-label">odkud se berou vstupní parametry</h2>
     <p>Model generuje pro každou ženu dvě hodnoty z normálního rozdělení, oříznuté na klinicky rozumný rozsah. Parametry vycházejí z lékařské literatury:</p>
     <ul class="plain">
-      <li>délka cyklu: průměr 28–29 dní — Horský et al. (1981) [7]; Cole et al. (2009) [3]. Homogenní referenční model níže počítá s konzervativní SD 3,3 dne (Horský, celá populace 15–44 let). Věkově stratifikovaný model (viz níže) používá SD podle konkrétní věkové skupiny — 6,9–8,95 dne — protože Horský udává tuto hodnotu i zvlášť podle věku, ne jen jako jedno číslo za celou populaci</li>
+      <li>délka cyklu: průměr 28–29 dní — Horský et al. (1981) [7]; Cole et al. (2009) [3]. Homogenní referenční model níže počítá s konzervativní směrodatnou odchylkou (dále jako <em>SD</em>) 3,3 dne (Horský, celá populace 15–44 let). Věkově stratifikovaný model (viz níže) používá SD podle konkrétní věkové skupiny — 6,9–8,95 dne — protože Horský udává tuto hodnotu i zvlášť podle věku, ne jen jako jedno číslo za celou populaci</li>
       <li>rozsah cyklu po oříznutí: 21–40 dní pro dospělé ženy — Grieger &amp; Norman (2020) [5]. POZOR: tato studie zahrnovala výhradně ženy nad 18 let, proto se pro dívky (15–19 a 11–14 let) v modelu nepoužívá — tam je rozsah širší, 20–45 dní (viz tabulka a poznámka níže)</li>
       <li>délka krvácení: 5 ± 1,5 dne — klinický konsensus</li>
     </ul>
     <p>Pro každou ženu se navíc generuje náhodná počáteční fáze cyklu — kde v cyklu se nachází v den 0 akce. Bez toho by všechny ženy v simulaci menstruovaly synchronně, což by byl nesmysl.</p>
-    <p>Ve verzi s věkovou stratifikací dostane každá věková skupina vlastní parametry — mladší ženy mívají nepravidelnější cyklus [7], [5], [9], [6], [11]. Model umí zohlednit i podíl žen na hormonální antikoncepci, která cyklus zkracuje a zpravidelňuje. Tato prevalence je ale vždy expertní odhad vedoucího, ne číslo z literatury — a citlivostní analýza níže ukazuje, jak moc na ní záleží.</p>
+    <p>Ve verzi s věkovou stratifikací dostane každá věková skupina vlastní parametry — mladší ženy mívají nepravidelnější cyklus [7], [5], [9], [6], [11].</p>
 
     <table class="info-table">
       <caption>Orientační rozsahy pro dospívající — Adams Hillard (2008) [1], zkráceno a přeloženo</caption>
@@ -104,7 +145,7 @@
 
   <section class="block">
     <h2 class="section-label">průřezový pohled — kolik dívek menstruuje zrovna teď?</h2>
-    <p>Klíčová otázka pro kapacitu záchodů, soukromého prostoru nebo pauzy na řece: kolik žen menstruuje v konkrétní den? Simulace 30 žen na 4denní akci ukazuje stabilní hladinu kolem 5–6 žen denně — v souladu s baseline odhadem 18 %. Důležité jsou ale okraje: 95% interval spolehlivosti sahá od zhruba 2 do 10 žen. Při plánování kapacity je lepší počítat s horním okrajem, ne s průměrem.</p>
+    <p>Kolik žen tedy menstruuje v konkrétní den? Simulace 30 žen na 4denní akci ukazuje stabilní hladinu kolem 5–6 žen denně — v souladu s baseline odhadem 18 %. Důležité jsou ale okraje. 95% interval spolehlivosti sahá od zhruba 2 do 10 žen. Při plánování kapacity je lepší počítat s horním okrajem, ne s průměrem.</p>
 
     <div class="figure">
       <img src="../assets/img/periodsim/daily-ci.png" alt="Denní počet menstruujících žen s 95% intervalem spolehlivosti">
@@ -113,31 +154,31 @@
   </section>
 
   <section class="block">
-    <h2 class="section-label">kumulativní pohled — kolik žen bude potřebovat zásoby za celou akci?</h2>
-    <p>Druhá klíčová otázka je kumulativní: kolik <em>unikátních</em> žen bude potřebovat hygienické potřeby alespoň jednou za celou dobu akce? Nestačí počítat jen ty, kdo menstruují v den 1 — ke krvácení může u dalších žen začít i uprostřed výpravy.</p>
-    <p>Výsledek pro 30 žen a 4 dny: typicky 8–9 žen (průměr 8,6), 95% CI od 4 do 14. Analytický baseline (červená) toto číslo mírně podhodnocuje — Monte Carlo přesněji zachytí příchody nových krvácení během akce.</p>
+    <h2 class="section-label">kumulativní pohled — kolik žen bude potřebovat pomůcky za celou akci?</h2>
+    <p> Kolik žen bude potřebovat hygienické potřeby alespoň jednou za celou dobu akce? Nestačí počítat jen ty, kdo menstruují v den 1 — ke krvácení může u dalších žen začít i uprostřed výpravy.</p>
+    <p>Výsledek pro 30 žen a 4 dny: typicky 8–9 žen (průměr 8,6), 95% CI od 4 do 14. Analytický baseline (červená) toto číslo mírně podhodnocuje.</p>
 
     <div class="figure">
-      <img src="../assets/img/periodsim/total-unique-distribution.png" alt="Distribuce celkového počtu unikátních menstruujících žen za 4denní akci">
-      <p class="figure-caption">Distribuce počtu unikátních menstruujících žen za celou 4denní akci (N=30, 5 000 iterací). Histogram + KDE = MC simulace; červená přerušovaná = analytický baseline. Pro zásobování vložkami a tampony je toto číslo relevantnější než denní průměr.</p>
+      <img src="../assets/img/periodsim/total-unique-distribution.png" alt="Distribuce celkového počtu žen menstruujících alespoň 1 den během 4denní akce">
+      <p class="figure-caption">Distribuce počtu žen menstruujících alespoň 1 den za celou 4denní akci (N=30, 5 000 iterací). Červená přerušovaná = analytický baseline. Pro zásobování vložkami a tampony je toto číslo relevantnější než denní průměr.</p>
     </div>
   </section>
 
   <section class="block">
-    <h2 class="section-label">co hrozí v nejhorším dni?</h2>
-    <p>Průměr říká, co čekat za normálních okolností. Logistika ale potřebuje vědět, co nastane ve výjimečně náročný den — ne jen průměr, ale ocasek distribuce, který se musí zvládnout.</p>
-    <p>Práh 2/5 skupiny (40 % = 12 žen ze 30) je čistě ilustrativní kulaté číslo — není odvozený z žádné kapacitní ani logistické studie, jen ukazuje, že podobný souběh dat není nemožný. I tak: takový den překročí méně než 0,5 % simulací — extrémní situace, ale ne nemožná. Prakticky to znamená: pro záchody nebo klidový prostor na louce stačí konzervativní plánování pro 9–10 žen, nikoli 15.</p>
+    <h2 class="section-label">co může nastat?</h2>
+    <p>Průměr říká, co čekat za normálních okolností. Je vhodné ale vědět, co může nastrat ve výjimečných situacích — ne jen průměr, ale <em>ocas</em> distribuce, který je třeba brát při plánování akce v potaz.</p>
+    <p>Práh 2/5 skupiny (40 % = 12 žen ze 30) je čistě ilustrativní kulaté číslo — není odvozený z žádné kapacitní ani logistické studie, jen ukazuje, že podobný souběh dat není nemožný. I tak takový den překročí méně než 0,5 % simulací — extrémní situace, ale ne nemožná.
 
     <div class="figure">
       <img src="../assets/img/periodsim/black-day-risk.png" alt="Distribuce denního maxima menstruujících žen — riziko nejhoršího dne">
-      <p class="figure-caption">Distribuce maximálního počtu menstruujících žen v jediný den akce (N=30, 5 000 iterací). Červená přerušovaná = práh 40 % skupiny (12 žen). Vrchol distribuce kolem 6–8 žen je základ konzervativního odhadu pro plánování kapacit.</p>
+      <p class="figure-caption">Distribuce maximálního počtu menstruujících žen v jediný den akce (N=30, 5 000 iterací). Červená přerušovaná = práh 40 % skupiny (12 žen). Vrchol distribuce kolem 6–8 žen je základ konzervativního odhadu pro plánování.</p>
     </div>
   </section>
 
   <section class="block">
     <h2 class="section-label">záleží, kdo je v oddíle — věková stratifikace</h2>
     <p>Věkové složení skupiny mění výsledky. Dívky 15–19 mají nepravidelnější cyklus (vyšší SD — 8,95 dne dle Horský et al. 1981 [7], přímo změřeno pro tuto věkovou skupinu) a průměrně delší krvácení než vedoucí ve třiceti (SD ~6,9 dne). Porovnáváme tři scénáře: kurz dívek (A: 25 dívek + 5 vedoucích), smíšený kurz (B: 15 dívek + 15 vedoucích různého věku) a homogenní model jako reference.</p>
-    <p>Průměrné denní počty jsou si blízké — věková struktura je posouvá jen o desetiny ženy (5,0–5,4 ženy denně napříč scénáři). Překvapivý výsledek: při reálně podložených hodnotách SD (viz výše) je i <em>šířka intervalu spolehlivosti</em> mezi scénáři A a B prakticky totožná (95% CI unikátních žen [4, 13] v obou případech) — rozdíl mezi "kurzem dívek" a "smíšeným kurzem" je na této velikosti skupiny (30 žen) menší, než by se čekalo, a leží v šumu simulace. Homogenní model dává mírně širší CI ([4, 14]) a o něco vyšší průměr — zůstává tedy konzervativním, bezpečným výchozím bodem pro plánování bez znalosti věkové struktury, ale rozdíl oproti věkově stratifikovaným scénářům je malý.</p>
+    <p>Průměrné denní počty jsou si blízké — věková struktura je posouvá jen o desetiny ženy (5,0–5,4 ženy denně napříč scénáři). Překvapivý výsledek: při reálně podložených hodnotách SD (viz výše) je i <em>šířka intervalu spolehlivosti</em> mezi scénáři A a B prakticky totožná (95% CI žen menstruujících alespoň 1 den [4, 13] v obou případech) — rozdíl mezi "kurzem dívek" a "smíšeným kurzem" je na této velikosti skupiny (30 žen) menší, než by se čekalo, a leží v šumu simulace. Homogenní model dává mírně širší CI ([4, 14]) a o něco vyšší průměr — zůstává tedy konzervativním, bezpečným výchozím bodem pro plánování bez znalosti věkové struktury, ale rozdíl oproti věkově stratifikovaným scénářům je malý.</p>
 
     <div class="figure">
       <img src="../assets/img/periodsim/age-stratified-daily-ci.png" alt="Srovnání denního počtu menstruujících žen pro tři věkové scénáře">
@@ -145,20 +186,19 @@
     </div>
 
     <div class="figure">
-      <img src="../assets/img/periodsim/age-stratified-total-unique.png" alt="Celkový počet unikátních menstruujících žen za akci — srovnání věkových scénářů">
-      <p class="figure-caption">Distribuce unikátních menstruujících žen za 4denní akci — KDE pro tři scénáře. Překryv distribucí ukazuje, že věková struktura v tomto měřítku mění odhad zásobování jen minimálně. Rozptyl uvnitř každého scénáře je větší než rozdíl mezi nimi.</p>
+      <img src="../assets/img/periodsim/age-stratified-total-unique.png" alt="Celkový počet žen menstruujících alespoň 1 den akce — srovnání věkových scénářů">
+      <p class="figure-caption">Distribuce žen menstruujících alespoň 1 den za 4denní akci — KDE pro tři scénáře. Překryv distribucí ukazuje, že věková struktura v tomto měřítku mění odhad zásobování jen minimálně.</p>
     </div>
 
     <p>Scénáře výše počítají s nejmladší skupinou 15–19 let. Ve skautských oddílech ale běžně bývají mnohem mladší dívky — a menarché (první menstruace) může přijít podstatně dřív. Typicky nastává mezi 10. a 16. rokem, průměrně kolem 12,4 let; do 15 let už menstruovalo zhruba 98 % dívek [8]. První 1–2 roky po menarché (tzv. první gynekologický rok) mají navíc cyklus v průměru 32,2 dne [8] a jsou nepravidelné — teprve postupně se ustálí na typickém rozsahu 24–38 dní [2]. Dashboard níže proto nabízí i skupinu "dívky 11–14" s tímto průměrem a odpovídajícím širším rozsahem parametrů (20–45 dní, cycle_std 9,5 dne). Přesná směrodatná odchylka pro toto období v literatuře chybí (autoři citované studie [2] to sami popisují jako mezeru ve výzkumu) — jde tedy o hrubší odhad SD než u ostatních skupin, ale střední hodnota cyklu (32,2 dne) už je přímo citované číslo, ne odhad.</p>
     <p>Nezávislé potvrzení: nová analýza stejné kohorty Apple Women's Health Study (Mortimer et al., 2026 [11], 15 586 žen) odhaduje průměrnou délku cyklu pro ženy pod 20 let na 29,5–30,4 dne — prakticky totožné s Horského číslem 30,5 dne z roku 1981, přestože jde o zcela jiná data sebraná o více než 40 let později. Tahle shoda dvou nezávislých zdrojů je důvod, proč model cycle_mean pro dívky 15–19 nemění.</p>
-    <p>Model má tu ale jeden důležitý limit: neumí rozlišit dívky, které ještě menarché neprodělaly. Do počtu žen v jakékoli skupině patří jen ty, které už menstruují — pokud by vedoucí zahrnul celý počet mladších dívek v oddíle bez ohledu na to, zda už menstruují, model by počet menstruujících nadhodnotil.</p>
+    <p>Náš model má ale důležitý limit. Neumí rozlišit dívky, které ještě menarché neprodělaly. Do počtu žen v jakékoli skupině patří jen ty, které už menstruují — pokud by vedoucí zahrnuli celý počet mladších dívek v oddíle bez ohledu na to, zda už menstruují, model by počet menstruujících nadhodnotil.</p>
   </section>
 
   <section class="block">
-    <h2 class="section-label">co změní antikoncepce?</h2>
-    <p>Jedním z parametrů, který vedoucí může odhadnout, ale nikdy přesně znát, je podíl žen na hormonální antikoncepci. Tady je důležité rozlišit dvě různé věci: <em>jak</em> antikoncepce cyklus mění — to podložené je — a <em>kolik</em> žen v konkrétním oddíle ji používá — to podložené není.</p>
-    <p>Fyziologický efekt je dobře zdokumentovaný: standardní cyklické dávkování kombinované hormonální antikoncepce je buď 21 dní aktivních tablet + 7 dní bez hormonů, nebo novější režim 24 dní aktivních + 4 dny bez hormonů; krvácení v pauze bývá kratší a slabší než přirozená menstruace [4]. Model proto pro ženy na antikoncepci počítá s cyklem o délce 24 dní a kratším krvácením. Přesná prevalence pro danou skupinu ale z literatury nevychází — je to jediná neznámá, a proto ji model neodhaduje jedním číslem, ale prochází jako rozsah.</p>
-    <p>Citlivostní analýza ukazuje vliv tohoto předpokladu pro rozsah 0–60 % žen na antikoncepci. Denní průměr klesá od ~5,6 k ~4,5 ženám lineárně a bez překvapení. Ponaučení: i při velké nejistotě o tom, kolik žen antikoncepci používá, jsou odhadované rozsahy natolik podobné, že pro zásobování stačí konzervativní horní odhad bez antikoncepce.</p>
+    <h2 class="section-label">jak je to s antikoncepcí</h2>
+    <p>Standardní cyklické dávkování kombinované hormonální antikoncepce je buď 21 dní aktivních tablet + 7 dní bez hormonů, nebo novější režim 24 dní aktivních + 4 dny bez hormonů; krvácení v pauze bývá kratší a slabší než přirozená menstruace [4]. Ve fázi vývoje modelu jsem tento efekt testoval jako doplňkový parametr — ženy na antikoncepci by měly cyklus zkrácený na 24 dní s kratším krvácením. Přesná prevalence pro danou skupinu ale z literatury nevychází — byla by to jediná neznámá odhadovaná jedním číslem, a proto jsem ji procházel jako rozsah v citlivostní analýze.</p>
+    <p>Ta ukázala, že vliv tohoto předpokladu je pro rozsah 0–60 % žen na antikoncepci malý: denní průměr klesá od ~5,6 k ~4,5 ženám lineárně a bez překvapení. I při velké nejistotě o tom, kolik žen antikoncepci používá, jsou odhadované rozsahy natolik podobné, že pro zásobování stačí konzervativní horní odhad bez antikoncepce. Právě proto v modelu i dashboardu antikoncepce jako nastavitelný parametr nakonec chybí — u jednotlivého oddílu je jedno zadané procento snáz zaměnitelné za fakt než za odhad, a rozdíl ve výsledku by to stejně nezměnilo o mnoho.</p>
 
     <div class="figure">
       <img src="../assets/img/periodsim/sensitivity-contraceptive-daily.png" alt="Citlivostní analýza: vliv podílu žen na antikoncepci na denní počet menstruujících">
@@ -167,14 +207,14 @@
 
     <div class="figure">
       <img src="../assets/img/periodsim/sensitivity-contraceptive-unique.png" alt="Citlivostní analýza: vliv antikoncepce na zásobování za celou akci">
-      <p class="figure-caption">Totéž pro kumulativní zásobování: celkový počet unikátních menstruujících žen za 4denní akci. Vliv antikoncepce je zde ještě menší — potřeba zásobit se týká přibližně stejného počtu žen napříč celým rozsahem předpokladů.</p>
+      <p class="figure-caption">Totéž pro kumulativní zásobování: celkový počet žen menstruujících alespoň 1 den za 4denní akci. Vliv antikoncepce je zde ještě menší — potřeba zásobit se týká přibližně stejného počtu žen napříč celým rozsahem předpokladů.</p>
     </div>
   </section>
 
   <section class="block">
     <h2 class="section-label">menstruační bolest — neviditelná zátěž</h2>
-    <p>Kapacita záchodů a zásoby vložek jsou jedna věc. Druhou, méně viditelnou, je bolest. Primární dysmenorea — menstruační křeče v prvním dni krvácení — postihuje 50–90 % menstruujících žen obecně; těžké symptomy s dopadem na denní aktivity hlásí zhruba 30–50 % z nich [10]. Prostý součin těchto dvou rozsahů (ne přímo publikované číslo, jen aritmetický odhad) dává 15–45 % celé populace. U mladých dívek je prevalence vyšší (přesná data pro českou populaci chybí).</p>
-    <p>Simulace s expertními odhady (18 % těžká dysmenorea u dívek 15–19, 10 % u vedoucích) ukazuje: v daný jednotlivý den akce je typicky 0 žen (83 % dnů) nebo 1 žena (15 % dnů) omezena bolestí v 1. dni periody; dva a více případů najednou nastane jen zhruba v 1,4 % dnů. Za celou 4denní akci ale platí, že alespoň jeden takový den se vyskytne zhruba v polovině (52 %) simulovaných akcí — tedy zhruba každá druhá, ne každá třetí. Plánovat, jako by se to nestalo, je statistický optimismus.</p>
+    <p>Primární dysmenorea — menstruační křeče v prvním dni krvácení — postihuje 50–90 % menstruujících žen obecně; těžké symptomy s dopadem na denní aktivity hlásí zhruba 30–50 % z nich [10]. Prostý součin těchto dvou rozsahů (ne přímo publikované číslo, jen aritmetický odhad) dává 15–45 % celé populace. U mladých dívek je prevalence vyšší (přesná data pro českou populaci chybí).</p>
+    <p>Simulace s expertními odhady (18 % těžká dysmenorea u dívek 15–19, 10 % u vedoucích) ukazuje, že v daný jednotlivý den akce je typicky 0 žen (83 % dnů) nebo 1 žena (15 % dnů) omezena bolestí v 1. dni periody; dva a více případů najednou nastane jen zhruba v 1,4 % dnů. Za celou 4denní akci ale platí, že alespoň jeden takový den se vyskytne zhruba v polovině (52 %) simulovaných akcí. Plánovat, jako by se to nestalo, je statistický optimismus.</p>
 
     <div class="figure">
       <img src="../assets/img/periodsim/dysmenorrhea-distribution.png" alt="Distribuce počtu žen s těžkou dysmenoreou v daný den">
@@ -192,18 +232,17 @@
   <section class="block">
     <h2 class="section-label">co z toho plyne pro plánování</h2>
     <ul class="plain">
-      <li>Pro 30 žen na 4denní akci: každý den menstruuje 5–6 žen průměrně, ale zásobte se pro 9–10 (horní okraj 95% CI).</li>
-      <li>Za celou akci bude hygienické potřeby potřebovat průměrně 8–9 unikátních žen — s reálnou variabilitou od 4 do 14.</li>
-      <li>Věková struktura mění rozptyl víc než průměr — při reálně podložených hodnotách variability (Horský 1981) je šíře intervalu spolehlivosti mezi "kurzem dívek" a "smíšenou skupinou" na velikosti oddílu 30 žen prakticky stejná — rozdíl mezi scénáři je menší, než by se čekalo.</li>
-      <li>Zhruba každá druhá akce přinese den, kdy bude alespoň jedna žena limitována bolestí. Ibuprofen je stejně logistické opatření jako zásoby vložek.</li>
-      <li>Statistika zachytí kapacitu, ale ne sociální rozměr — kdo se odváží říci, že potřebuje pomoc? To je otázka pro navazující část s Agent-Based Modeling.</li>
+      <li>Pro 30 žen na 4denní akci: každý den menstruuje 5–6 žen průměrně, ale je vhodné počítat s 9–10 (horní okraj 95% CI).</li>
+      <li>Za celou akci bude hygienické potřeby potřebovat průměrně 8–9 žen (menstruujících alespoň 1 den) — s reálnou variabilitou od 4 do 14.</li>
+      <li>Věková struktura mění rozptyl víc než průměr — při reálně podložených hodnotách variability [7] je šíře intervalu spolehlivosti mezi "kurzem dívek" a "smíšenou skupinou" na velikosti oddílu 30 žen prakticky stejná — rozdíl mezi scénáři je menší, než by se čekalo.</li>
+      <li>Zhruba každá druhá akce přinese den, kdy bude alespoň jedna žena limitována bolestí. Analgetika jsou mohou být  logistické opatření jako zásoby vložek a tampónů.</li>
     </ul>
   </section>
 
   <section class="block">
     <h2 class="section-label">limity tohoto modelu</h2>
     <ul class="plain">
-      <li>Normální rozdělení délky cyklu je aproximace — reálná data jsou pravostranně zešikmená (<em>right-skewed</em>); log-normální nebo Weibullovo rozdělení by bylo přesnější. Ale nemáme dostatečnou odbornou literaturu pro potvrzení tohoto předpokladu.</li>
+      <li>Normální rozdělení délky cyklu je aproximace — reálná data jsou pravděpodobně pravostranně zešikmená (<em>right-skewed</em>); log-normální nebo Weibullovo rozdělení by bylo nejspíš přesnější. Ale nemáme dostatečnou odbornou literaturu pro potvrzení tohoto předpokladu.</li>
       <li>Prevalence antikoncepce a těžké dysmenorey dle věku nejsou z CZ/EU peer-reviewed dat pro tuto populaci — jsou expertním odhadem/citlivostní analýzou v rámci literaturou podloženého rozsahu, ne přímo citovaným číslem.</li>
       <li>Model neumí rozlišit dívky, které ještě neprodělaly menarché — do počtu žen v jakékoli skupině (zejména nejmladší, 11–14 let) patří jen ty, které už menstruují, jinak model výsledek nadhodnotí.</li>
       <li>Parametry pro skupinu "dívky 11–14" (první gynekologický rok) má přímo citovanou průměrnou délku cyklu 32,2 dne [8], ale směrodatná odchylka pro toto období v literatuře chybí a zůstává hrubším odhadem než u ostatních skupin.</li>
@@ -211,12 +250,13 @@
     </ul>
   </section>
 
-  <section class="block">
+  <section class="block" id="interactive-dashboard">
     <h2 class="section-label">interaktivní dashboard</h2>
-    <p>Parametry akce (počet žen, délka, věkové skupiny) si lze nastavit přímo v nástroji níže a okamžitě vidět odhad zásob a kapacit. Antikoncepce v nástroji záměrně chybí — jednotlivé zadané procento by mohlo v interaktivním nástroji působit jako fakt, ne jako odhad; citlivostní rozsah výše (grafy) je pro tento parametr poctivější způsob, jak nejistotu ukázat.</p>
+    <p>Níže můžete v interaktvním nástroji simulovat počet menstruujících žen pro libovolnou velikost akce a případně věkové složení oddílu. Vstupní parametry vycházejí z klinických dat, ale jsou zjednodušené a model je určený pro ilustrativní účely.
+    </p>
     <div class="breakout-stage">
       <div class="breakout-inner">
-        <iframe class="embed-frame" src="https://dobes-michal-tobias-periodsim.hf.space/" title="PeriodSim dashboard"></iframe>
+        <iframe class="embed-frame" id="periodsim-frame" src="https://dobes-michal-tobias-periodsim.hf.space/" title="PeriodSim dashboard"></iframe>
         <p class="embed-note">Dashboard běží jako samostatná Python aplikace (Sanic), nasazená na <a href="https://huggingface.co/spaces/Dobes-Michal-Tobias/periodsim" target="_blank" rel="noopener noreferrer">Hugging Face Spaces</a>. Zdrojový kód modelu: <a href="https://github.com/Dobes-Michal-Tobias/PeriodSimulation" target="_blank" rel="noopener noreferrer">GitHub — PeriodSimulation</a>.</p>
       </div>
     </div>
@@ -252,6 +292,39 @@
   <span>© 2026 Michal Tobiáš Dobeš</span>
   <a href="https://github.com/Dobes-Michal-Tobias" target="_blank" rel="noopener noreferrer">https://github.com/Dobes-Michal-Tobias</a>
 </footer>
+
+<a class="dashboard-hint" id="dashboard-hint" href="#interactive-dashboard">
+  <span class="dashboard-hint-arrow" aria-hidden="true">↓</span> k interaktivnímu dashboardu
+</a>
+
+<script>
+(function () {
+  var hint = document.getElementById('dashboard-hint');
+  var target = document.getElementById('interactive-dashboard');
+  if (!hint || !target || !('IntersectionObserver' in window)) return;
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      var scrolledPast = entry.boundingClientRect.bottom < 0;
+      hint.classList.toggle('is-hidden', entry.isIntersecting || scrolledPast);
+    });
+  }, { rootMargin: '0px 0px -15% 0px' });
+  observer.observe(target);
+})();
+</script>
+
+<script>
+(function () {
+  var frame = document.getElementById('periodsim-frame');
+  if (!frame) return;
+  var PERIODSIM_ORIGIN = 'https://dobes-michal-tobias-periodsim.hf.space';
+  window.addEventListener('message', function (event) {
+    if (event.origin !== PERIODSIM_ORIGIN) return;
+    var data = event.data;
+    if (!data || data.type !== 'periodsim-resize' || typeof data.height !== 'number') return;
+    frame.style.height = Math.max(500, Math.ceil(data.height) + 4) + 'px';
+  });
+})();
+</script>
 
 </div>
 </body>
