@@ -1,0 +1,120 @@
+{
+  "chi2_suffix": {
+    "chi2": 227.78110136137641,
+    "p": 3.451137783574186e-50,
+    "dof": 2
+  },
+  "chi2_land": {
+    "chi2": 14.868380707161581,
+    "p": 0.0019326521080294894,
+    "dof": 3
+  },
+  "chi2_region": {
+    "chi2": 53.928566220223246,
+    "p": 2.814108853292409e-07,
+    "dof": 12
+  },
+  "join_count": {
+    "bb_obs": 3747.0,
+    "bb_exp": 3629.529302930293,
+    "p_sim_bb": 0.0001,
+    "ww_obs": 166.5,
+    "bw_obs": 1015.5,
+    "bw_exp": 1200.7927792779278,
+    "p_sim_bw": 1.0,
+    "chi2": 79.55750736705122,
+    "chi2_p": 4.683916470615027e-19,
+    "k": 6,
+    "n": 1643,
+    "permutations": 9999,
+    "n_plural": 1410,
+    "n_singular": 233
+  },
+  "moran": {
+    "I": 0.12401302772958331,
+    "EI": -0.0006090133982947625,
+    "z_sim": 9.438922227600825,
+    "p_sim": 0.0001,
+    "k": 6,
+    "n": 1643,
+    "permutations": 9999
+  },
+  "unknown_population": {
+    "n": 1805,
+    "n_unknown": 163,
+    "median_pop_unknown": 410.0,
+    "median_pop_classified": 469.5,
+    "mannwhitney_u": 124584.5,
+    "mannwhitney_p": 0.07275731392187988,
+    "logit_coef": -0.35922542114801376,
+    "logit_p": 0.0452345978730802,
+    "logit_odds_ratio_per_10x_pop": 0.6982169407460548,
+    "logit_ci_odds_ratio": [
+      0.4912381303052588,
+      0.9924044292771809
+    ],
+    "logit_pseudo_r2": 0.0037461050349772984
+  },
+  "population_by_label": {
+    "n": 1805,
+    "medians": {
+      "singular": 551.0,
+      "plural": 460.0,
+      "unknown": 410.0
+    },
+    "kruskal_h": 10.946931498213774,
+    "kruskal_p": 0.004196662346146439,
+    "pairwise": {
+      "singular_vs_plural": {
+        "u": 184032.0,
+        "p_raw": 0.003020383609919905,
+        "p_bonferroni": 0.009061150829759716,
+        "median_a": 551.0,
+        "median_b": 460.0
+      },
+      "singular_vs_unknown": {
+        "u": 22314.0,
+        "p_raw": 0.0030227301817460786,
+        "p_bonferroni": 0.009068190545238237,
+        "median_a": 551.0,
+        "median_b": 410.0
+      },
+      "plural_vs_unknown": {
+        "u": 120747.5,
+        "p_raw": 0.2811408968414143,
+        "p_bonferroni": 0.8434226905242429,
+        "median_a": 460.0,
+        "median_b": 410.0
+      }
+    }
+  },
+  "pseudo_r2": {
+    "populace": 0.00890872417802846,
+    "region": 0.011759483521335823,
+    "sufix": 0.16835785776640255,
+    "sufix + populace": 0.17608130032862412,
+    "sufix + populace + region": 0.18594229278473207
+  },
+  "lr_tests": {
+    "populace_to_sufix_plus_populace": {
+      "lr": 224.2082550035459,
+      "df": 2.0,
+      "p": 2.0596623362726148e-49
+    },
+    "sufix_to_full": {
+      "lr": 23.583865137851717,
+      "df": 4.0,
+      "p": 9.677538678579009e-05
+    }
+  },
+  "chi2_unknown_land": {
+    "chi2": 47.68882980335759,
+    "p": 2.4802008828075636e-10,
+    "dof": 3
+  },
+  "chi2_unknown_suffix": {
+    "chi2": 2.111765690552229,
+    "p": 0.34788516291998467,
+    "dof": 2
+  }
+}
