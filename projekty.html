@@ -5,7 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Projekty — Michal Tobiáš Dobeš</title>
 <meta name="description" content="Vedlejší projekty, experimenty a popularizační texty Michala Tobiáše Dobeše.">
-<link rel="alternate" hreflang="en" href="en/projekty.html">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="cs_CZ">
+<meta property="og:title" content="Projekty — Michal Tobiáš Dobeš">
+<meta property="og:description" content="Vedlejší projekty, experimenty a popularizační texty Michala Tobiáše Dobeše.">
+<meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -20,9 +25,6 @@
     <a href="index.html">o mně</a>
     <a href="projekty.html" aria-current="page">projekty</a>
   </nav>
-  <div class="lang-switch">
-    <a class="active" href="projekty.html">CZ</a><span>/</span><a href="en/projekty.html">EN</a>
-  </div>
 </header>
 
 <main>
@@ -35,29 +37,30 @@
     <button type="button" class="sort-btn active" data-sort="created">vytvoření</button>
     <span class="sep">/</span>
     <button type="button" class="sort-btn" data-sort="updated">aktualizace</button>
+    <button type="button" class="sort-dir-btn" aria-label="Obrátit směr řazení" title="Obrátit směr řazení">↓</button>
   </div>
 
   <section class="block">
     <div class="entries">
 
-      <div class="entry" data-created="2026-07-01" data-updated="2026-07-01">
-        <p class="entry-meta"><span class="tag">Projekt</span>vytvořeno 1. 7. 2026 · aktualizováno 1. 7. 2026</p>
+      <div class="entry" data-created="2026-08-31" data-updated="2026-08-31">
+        <p class="entry-meta"><span class="tag">Projekt</span>vytvořeno 31. 8. 2026 · aktualizováno 31. 8. 2026</p>
+        <h3 class="entry-title">Vyhrává, kdo začíná?</h3>
+        <p class="entry-desc">Manželka vymyslela prstovou hru. Přesné řešení retrográdní analýzou, testování vlastních strategických hypotéz daty a jeden vyvrácený mýtus — s interaktivním nástrojem na vyzkoušení vlastní pozice.</p>
+        <p class="entry-link"><a href="projekty/prstova-hra-strategie.html">detail projektu →</a></p>
+      </div>
+
+      <div class="entry" data-created="2026-07-03" data-updated="2026-08-25">
+        <p class="entry-meta"><span class="tag">Projekt</span>vytvořeno 3. 7. 2026 · aktualizováno 25. 8. 2026</p>
         <h3 class="entry-title">Kolik žen na skautské výpravě menstruuje?</h3>
         <p class="entry-desc">Statistický odhad podílu menstruujících žen ve skautských oddílech a outdoorových skupinách — od jednoduchého výpočtu po Monte Carlo simulaci, postavené na PeriodSim.</p>
         <p class="entry-link"><a href="projekty/kolik-zen-menstruuje.html">detail projektu →</a></p>
       </div>
 
-      <div class="entry" data-created="2026-07-01" data-updated="2026-07-01">
-        <p class="entry-meta"><span class="tag">Projekt</span>vytvořeno 1. 7. 2026 · aktualizováno 1. 7. 2026</p>
-        <h3 class="entry-title">Menzerath-Altmannův zákon v urbánních datech</h3>
-        <p class="entry-desc placeholder">[Doplň krátký popis, až budou k dispozici první výsledky.] Test lingvistického zákona (čím větší celek, tím menší jeho složky) na uličních sítích a administrativním členění českých měst.</p>
-        <p class="entry-link"><a href="projekty/menzerath-altmann-urbanni-data.html">detail projektu →</a></p>
-      </div>
-
-      <div class="entry" data-created="2026-07-01" data-updated="2026-07-01">
-        <p class="entry-meta"><span class="tag">Projekt</span>vytvořeno 1. 7. 2026 · aktualizováno 1. 7. 2026</p>
-        <h3 class="entry-title">Kolik českých obcí končí na -ice?</h3>
-        <p class="entry-desc placeholder">[Doplň krátký popis, až budou k dispozici první výsledky.] Gramatické číslo a geografie sufixu -ice v místopisu ČR, s mapou výsledků.</p>
+      <div class="entry" data-created="2026-08-25" data-updated="2026-08-25">
+        <p class="entry-meta"><span class="tag">Projekt</span>vytvořeno 25. 8. 2026 · aktualizováno 25. 8. 2026</p>
+        <h3 class="entry-title">Ty Pardubice, nebo ta Kopřivnice?</h3>
+        <p class="entry-desc placeholder">[Doplň krátký popis, až budou k dispozici první výsledky.] Gramatické číslo a geografie sufixu -ice v místopisu ČR, s interaktivní mapou.</p>
         <p class="entry-link"><a href="projekty/obce-na-ice.html">detail projektu →</a></p>
       </div>
 
@@ -69,21 +72,44 @@
 (function () {
   var list = document.querySelector('.entries');
   var buttons = document.querySelectorAll('.sort-btn');
+  var dirBtn = document.querySelector('.sort-dir-btn');
   if (!list || !buttons.length) return;
 
-  function sortBy(key) {
+  var currentKey = 'created';
+  var currentDir = 'desc';
+
+  function applySort() {
     var entries = Array.prototype.slice.call(list.querySelectorAll('.entry'));
-    entries.sort(function (a, b) { return b.dataset[key].localeCompare(a.dataset[key]); });
+    entries.sort(function (a, b) {
+      var cmp = a.dataset[currentKey].localeCompare(b.dataset[currentKey]);
+      return currentDir === 'desc' ? -cmp : cmp;
+    });
     entries.forEach(function (el) { list.appendChild(el); });
+    if (dirBtn) {
+      dirBtn.textContent = currentDir === 'desc' ? '↓' : '↑';
+      dirBtn.setAttribute('aria-label', currentDir === 'desc'
+        ? 'Řazeno od nejnovějšího — přepnout na od nejstaršího'
+        : 'Řazeno od nejstaršího — přepnout na od nejnovějšího');
+    }
   }
 
   buttons.forEach(function (btn) {
     btn.addEventListener('click', function () {
       buttons.forEach(function (b) { b.classList.remove('active'); });
       btn.classList.add('active');
-      sortBy(btn.dataset.sort);
+      currentKey = btn.dataset.sort;
+      applySort();
     });
   });
+
+  if (dirBtn) {
+    dirBtn.addEventListener('click', function () {
+      currentDir = currentDir === 'desc' ? 'asc' : 'desc';
+      applySort();
+    });
+  }
+
+  applySort();
 })();
 </script>
 
