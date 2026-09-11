@@ -172,7 +172,7 @@
     <p class="stat-highlight">součet populace 1 923 253 &middot; průměr 1 065 &middot; medián 463 obyvatel</p>
 
     <div class="figure">
-      <img src="../assets/img/geogram/region_counts.png" alt="Počet obcí na -ice podle kraje">
+      <img src="../assets/img/geogram/region_counts.svg" alt="Počet obcí na -ice podle kraje">
       <p class="figure-caption">Počet obcí na -ice podle kraje. Středočeský kraj (337) a Jihomoravský kraj (276) vedou jednoznačně — částečně proto, že jsou plošně největší, ne nutně proto, že by tam byl sufix -ice frekventovanější poměrově.</p>
     </div>
   </section>
@@ -183,12 +183,12 @@
     <p>Ten rozdíl mezi skupinami není drobný stylistický detail — je to zdaleka nejsilnější prediktor, jaký jsme v datech našli. Sufix samotný vysvětlí zhruba 19× víc variance gramatického čísla než populace obce a 14× víc než to, ve kterém regionu obec leží (podrobněji v sekci Syntéza níže).</p>
 
     <div class="figure">
-      <img src="../assets/img/geogram/11_by_suffix.png" alt="Singulár vs. plurál podle sufixální skupiny">
+      <img src="../assets/img/geogram/11_by_suffix.svg" alt="Singulár vs. plurál podle sufixální skupiny">
       <p class="figure-caption">Podíl plurálu podle sufixální skupiny (jen klasifikované obce, zdroj Wikipedia): -ovice 98,1 % (583/594), holé -ice 86,5 % (623/720), -nice 62,0 % (204/329) — nejvíc singulárová skupina ze všech tří.</p>
     </div>
 
     <div class="figure">
-      <img src="../assets/img/geogram/11_suffix_overview.png" alt="Velikost jednotlivých sufixálních skupin">
+      <img src="../assets/img/geogram/11_suffix_overview.svg" alt="Velikost jednotlivých sufixálních skupin">
       <p class="figure-caption">Velikost sufixálních skupin: -ovice 662 obcí (37 % všech -ice obcí), holé -ice 787 obcí (44 %), -nice 357 obcí (20 %). Skupiny nejsou stejně velké — graf výše srovnává procenta, ne absolutní počty.</p>
     </div>
 
@@ -213,13 +213,13 @@
     <p>Konkrétně: singulárové obce netvoří na mapě náhodné tečky, ale kompaktní "kapsy" — a 34 z 49 statisticky významných shluků leží v Čechách, ne na Moravě. To je asi překvapení pro každého, kdo má intuici "pomnožná jména jsou typicky moravská" (Kopřivnice, Krnov...) — data tenhle mýtus, alespoň v tomhle měřítku, nepotvrzují. Geografický efekt se navíc částečně, ale ne úplně, překrývá s tím, které sufixy jsou v které oblasti běžnější.</p>
 
     <div class="figure">
-      <img src="../assets/img/geogram/cechy_vs_morava.png" alt="Singulár vs. plurál — Čechy vs. Morava">
+      <img src="../assets/img/geogram/cechy_vs_morava.svg" alt="Singulár vs. plurál — Čechy vs. Morava">
       <p class="figure-caption">Podíl plurálu: Čechy 83 %, Morava 90 % (Kraj Vysočina rozpuštěn podle okresů — Havlíčkův Brod a Pelhřimov do Čech, Jihlava/Třebíč/Žďár nad Sázavou do Moravy; Slezsko sloučeno do Moravy jen pro tento graf). Rozdíl je menší, než by naznačoval mýtus "pomnožná jména jsou moravská" — podrobnější obrázek dá až mapa níže.</p>
     </div>
 
     <div class="figure">
-      <img src="../assets/img/geogram/08_lisa_map.png" alt="Mapa lokálních prostorových shluků gramatického čísla (LISA)">
-      <p class="figure-caption">Statisticky významné (p &lt; 0,05) lokální shluky: HL/LH (terakota, n = 302) jsou obce, jejichž gramatické číslo se liší od okolí — hraniční/anomální body. LL (šedá, n = 49) je kompaktní shluk singulárových obcí, soustředěný hlavně v Čechách, ne na Moravě.</p>
+      <img src="../assets/img/geogram/08_lisa_map.svg" alt="Mapa lokálních prostorových shluků gramatického čísla (LISA)">
+      <p class="figure-caption">Statisticky významné (p &lt; 0,05) lokální shluky (LISA). Značení: první písmeno je vlastní hodnota obce, druhé je průměr jejích sousedů — <strong>H</strong> (high) = plurál, <strong>L</strong> (low) = singulár. <strong>LH</strong> a <strong>HL</strong> (obě terakota, n = 302) jsou obce, jejichž gramatické číslo se liší od okolí — hraniční/anomální body, ne typický shluk (proto stejná barva pro oba směry neshody). <strong>LL</strong> (šedá, n = 49) je naopak typický shluk: singulárová obec obklopená singulárovými sousedy, soustředěný hlavně v Čechách, ne na Moravě. Čtvrtá kombinace, HH (plurál obklopený plurálem), by byla analogický typický shluk na straně plurálu, ale v datech nevyšla jako statisticky významná, proto v grafu chybí.</p>
     </div>
 
     <details class="stat-details">
@@ -242,12 +242,12 @@
     <p>Stojí za zmínku i to, co "neznámé" <em>není</em>: není to jen zamaskovaná geografie ani zamaskovaná populace. Obce bez rozpoznaného gramatického čísla nejsou o moc víc soustředěné v jedné konkrétní oblasti nebo systematicky menší/větší, než ukazují čísla níže.</p>
 
     <div class="figure">
-      <img src="../assets/img/geogram/09_population_boxplot_by_label.png" alt="Distribuce populace podle gramatického čísla a podle labelu 'neznámé'">
+      <img src="../assets/img/geogram/09_population_boxplot_by_label.svg" alt="Distribuce populace podle gramatického čísla a podle labelu 'neznámé'">
       <p class="figure-caption">Mediány populace: singulár 551 obyvatel (n = 233), plurál 460 (n = 1 409), neznámé 410 (n = 163). Rozdíly existují, ale rozpětí (krabice) se ze tří čtvrtin překrývají — viz test níže.</p>
     </div>
 
     <div class="figure">
-      <img src="../assets/img/geogram/09_population_density_by_label.png" alt="Rozdělení populace podle labelu — hustotní odhad (KDE)">
+      <img src="../assets/img/geogram/09_population_density_by_label.svg" alt="Rozdělení populace podle labelu — hustotní odhad (KDE)">
       <p class="figure-caption">Stejná data jako boxplot výše, jako překrývající se hustoty (KDE): tvar rozdělení je pro všechny tři skupiny podobný, jen mírně posunutý — žádná skupina není soustředěná jen v malých nebo jen ve velkých obcích.</p>
     </div>
 
@@ -278,7 +278,7 @@
     <p>Jednou větou: sufix vysvětluje zhruba 19× víc variance gramatického čísla než populace obce a 14× víc než to, ve kterém je regionu — viz graf níže. To ale neznamená, že na populaci a regionu vůbec nezáleží: statistický test (likelihood-ratio, viz box níže) potvrzuje, že obě proměnné přidávají k modelu se sufixem měřitelně něco navíc. Jen ten přídavek je malý ve srovnání se skokem, který udělá samotný sufix — sufix zůstává zdaleka nejdůležitější proměnná.</p>
 
     <div class="figure">
-      <img src="../assets/img/geogram/12_pseudo_r2_progression.png" alt="Kolik variance gramatického čísla vysvětlí populace, region a sufix">
+      <img src="../assets/img/geogram/12_pseudo_r2_progression.svg" alt="Kolik variance gramatického čísla vysvětlí populace, region a sufix">
       <p class="figure-caption">McFadden pseudo-R²: populace samotná 0,009, region samotný 0,012, sufix samotný 0,168 — sufix vysvětlí zhruba 19× víc než populace a 14× víc než region. Přidání populace a regionu k sufixu zvýší pseudo-R² jen na 0,176, resp. 0,186.</p>
     </div>
 
@@ -302,7 +302,7 @@
     <p>A ještě jedna věc na okraj, přímo k titulku tohohle článku: Kopřivnice patří do koncovkové skupiny -vnice, jedné z nejvíc singulárových vůbec (33 % plurálu) — hned vedle "-šnice" nejnižší ze všech zkoumaných pětipísmenných koncovek. Kopřivnice je tedy vlastně v menšině i mezi menšinou.</p>
 
     <div class="figure">
-      <img src="../assets/img/geogram/11_suffix_detail.png" alt="Podíl plurálu podle pětipísmenné koncovky jména">
+      <img src="../assets/img/geogram/11_suffix_detail.svg" alt="Podíl plurálu podle pětipísmenné koncovky jména">
       <p class="figure-caption">Podíl plurálu podle posledních pěti písmen jména (jen koncovky s n ≥ 15 obcí). Popisný pohled, ne formální test — skupiny jsou malé a početné, takže by měl málo síly. -rtice/-ešice/-etice/-otice na 100 %, -vnice a -šnice naopak nejníž (33 %, resp. 13 %).</p>
     </div>
   </section>
