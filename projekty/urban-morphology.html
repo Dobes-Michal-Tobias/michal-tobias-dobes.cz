@@ -38,59 +38,64 @@
   <a class="back-link" href="../projekty.html">&larr; zpět na projekty</a>
 
   <p class="eyebrow">Projekt · první díl</p>
-  <h1 class="page-title">Kolik řádu je v ulicích českých měst?</h1>
+  <h1 class="page-title">Doprava a rovně! Orientace ulic českých měst</h1>
   <p class="subtitle with-dates">Orientace a topologie uličních sítí 33 českých měst a obcí, inspirováno posterem Geoffa Boeinga</p>
-  <p class="page-dates">vytvořeno 11. 9. 2026 · aktualizováno 13. 9. 2026</p>
+  <p class="page-dates">vytvořeno 11. 9. 2026 · aktualizováno 14. 9. 2026</p>
 
   <section class="block">
-    <p>Některá města mají ulice narovnané do pravidelné mřížky, jinde se klikatí, jak se kdysi vinula stezka mezi poli. Dá se tenhle rozdíl změřit — ne jen "od oka", ale číslem? A dá se na základě takových čísel poznat, že si jsou dvě česká města morfologicky podobná, i když leží na opačných koncích republiky?</p>
-    <p>Přímou inspirací je <a href="https://www.fa.cvut.cz/cs/aktualne/144447-prednaska-geoff-boeing-universal-patterns-in-urban-street-networks" target="_blank" rel="noopener noreferrer">poster</a> k přednášce na FA ČVUT Geoffa Boeinga <em>"Universal Patterns in Urban Street Networks"</em>, který stejným způsobem srovnal stovku měst světa. Tohle je první díl obdobného, zatím menšího pokusu pro česká sídla.</p>
+    <p>Některá města mají ulice narovnané do pravidelné mřížky, jinde se klikatí, jak se kdysi vinula dopravní cesta či řeka. Dá se tenhle rozdíl změřit — ne jen "od oka", ale číslem? A dá se na základě takových čísel poznat, že si jsou dvě česká města morfologicky podobná, i když leží na opačných koncích republiky?</p>
+    <p>Přímou inspirací je <a href="https://www.fa.cvut.cz/cs/aktualne/144447-prednaska-geoff-boeing-universal-patterns-in-urban-street-networks" target="_blank" rel="noopener noreferrer">poster</a> k přednášce na FA ČVUT Geoffa Boeinga <em>"Universal Patterns in Urban Street Networks"</em>, který obdobně srovnával velká světová města. Tohle je první díl pokusu pro česká sídla.</p>
   </section>
 
   <section class="block">
     <h2 class="section-label">co je orientace ulic</h2>
-    <p><span class="tag">vysvětlení pro každého</span>Každý úsek ulice má svůj azimut (kterým směrem míří vzhledem k severu). Když si azimuty všech ulic ve městě spočítáte a vynesete do kruhového histogramu (tzv. polar/rose graf), vznikne obrazec, který napoví, jak moc je síť "grid" — pravidelná mřížka dá pár ostrých výběžků (typicky sever-jih a východ-západ), organicky rostlé město dá spíš rozmazanou, nepravidelnou kytičku.</p>
-    <p>Míra téhle nepravidelnosti se dá vyjádřit jedním číslem — <em>orientační entropií</em> (Shannonova entropie přes rozdělení azimutů). Nízká entropie = ulice směřují jen do pár směrů (grid). Vysoká entropie = směry jsou rozptýlené skoro rovnoměrně (organický půdorys).</p>
+    <p>Každý úsek ulice má svůj azimut, tj. kterým směrem míří vzhledem k severu. Když si azimuty všech ulic ve městě spočítáme a vyneseme do kruhového histogramu (tzv. polar/rose graf), vznikne obrazec, který napoví, jak jsou ulice orientované. Pravidelná mřížka dá pár ostrých výběžků (typicky sever-jih a východ-západ), organicky rostlé město dá spíše graf rozmazaný a nepravidelný nebo se například blíží ke kruhovitému tvaru.</p>
+    <p>Míra téhle nepravidelnosti se dá vyjádřit jedním číslem — <em>orientační entropií</em> (Shannonova entropie přes rozdělení azimutů). Nízká entropie říká, že ulice směřují jen do pár směrů (grid). Vysokou entropii naopak interpretujem tak, že směry jsou rozptýlené skoro rovnoměrně (organický půdorys).</p>
   </section>
 
   <section class="block">
     <h2 class="section-label">jak jsme to spočítali</h2>
-    <p>Uliční sítě se stahují přes <a href="https://osmnx.readthedocs.io/" target="_blank" rel="noopener noreferrer">OSMnx</a> (Geoff Boeing) nad daty OpenStreetMap jako grafy v <a href="https://networkx.org/" target="_blank" rel="noopener noreferrer">NetworkX</a> — pro každé sídlo `network_type="drive"` (síť pro auta, stejná volba jako u Boeinga). Kromě orientační entropie se pro každé město počítá i pár topologických metrik: průměrná okružnost cesty (circuity), hustota křižovatek a průměrný počet ulic na uzel.</p>
-    <p>Vzorek zatím tvoří 33 sídel: všech 13 krajských měst + Praha, a menší regionální shluk měst a městeček na pomezí Pardubického a Olomouckého kraje (Šumpersko, Svitavsko, Ústeckoorlicko), plus Havířov jako příklad plánovaného socialistického sídliště. Je to malý zlomek z 6 259 obcí ČR — cílem první fáze bylo hlavně ověřit, že celý postup (stažení sítě → metriky → vizualizace) funguje, ne pokrýt celou republiku.</p>
+    <p>Uliční sítě se stahují přes <a href="https://osmnx.readthedocs.io/" target="_blank" rel="noopener noreferrer">OSMnx</a> (autorem je <a href="https://geoffboeing.com" target="_blank" rel="noopener noreferrer">Geoff Boeing</a>) nad daty OpenStreetMap jako grafy v <a href="https://networkx.org/" target="_blank" rel="noopener noreferrer">NetworkX</a> — pro každé sídlo `network_type="drive"` (síť pro auta). Kromě orientační entropie se pro každé město počítá i pár topologických metrik: průměrná okružnost cesty (circuity), hustota křižovatek a průměrný počet ulic na uzel.</p>
+    <p>Vzorek zatím tvoří 33 sídel složených ze všech 13 krajských měst + Praha, a menší regionální shluk měst a městeček na pomezí Pardubického a Olomouckého kraje (Šumpersko, Svitavsko, Ústeckoorlicko), plus Havířov jako příklad plánovaného socialistického sídliště. Je to malý zlomek z 6 259 obcí ČR — cílem první fáze bylo hlavně ověřit, že celý postup (stažení sítě → metriky → vizualizace) funguje.</p>
   </section>
 
   <section class="block">
     <h2 class="section-label">poster — 33 měst vedle sebe</h2>
-    <p>Hlavní výstup zatím je tahle mřížka: jeden polar graf orientace na město, seřazené podle výsledku shlukování (viz níže). Větší krajská města mají typicky hustší, pravidelnější růžice; menší městečka na Šumpersku a Svitavsku často jeden až dva ostré, dominantní směry — pravděpodobně stopa jedné historické hlavní ulice/cesty, kolem které město vyrostlo.</p>
+    <p>Výstupem je zatím následující obrázek. Jeden polar graf orientace na město, seřazené podle výsledku shlukování (viz níže). Větší krajská města mají typicky hustší, pravidelnější růžice; menší městečka na Šumpersku a Svitavsku často jeden až dva ostré, dominantní směry — pravděpodobně stopa jedné historické hlavní ulice/cesty, kolem které město vyrostlo.</p>
 
     <div class="figure">
       <img src="../assets/img/urbanmorfologie/poster-orientace-ulic.svg" alt="Mřížka 33 polar grafů orientace uličních sítí českých měst a obcí, seřazená podle shluku">
-      <p class="figure-caption">Orientace uliční sítě (délkově vážený, symetrizovaný histogram azimutů) pro 33 českých sídel, seřazeno podle shluku (c0–c3, viz níže).</p>
+      <p class="figure-caption">Orientace uliční sítě (délkově vážený, symetrizovaný histogram azimutů) pro 33 českých sídel, seřazeno podle shluků (c0–c3, viz níže).</p>
     </div>
   </section>
 
   <section class="block">
     <h2 class="section-label">shlukování — hledání morfologických typů</h2>
-    <p>Zkusil jsem sídla na základě těchto metrik i automaticky seskupit (K-Means nad standardizovanými metrikami, počet shluků <em>k</em> zvolen podle silhouette skóre). Vyšla 4 skupiny — ale s poctivým varováním: silhouette skóre finálního shlukování je jen 0,195, což je slabé až sporné oddělení, ne přesvědčivý důkaz čtyř jasně odlišných morfologických typů. Jeden ze čtyř shluků navíc tvoří jediné město (Jevíčko) — spíš odlehlá hodnota než plnohodnotná kategorie.</p>
-    <p>Shluky zatím beru jako pracovní řazení pro poster, ne jako hotový závěr o typologii českých měst.</p>
+    <p>Zkusil jsem sídla na základě těchto metrik i automaticky seskupit (K-Means nad standardizovanými metrikami, počet shluků <em>k</em> zvolen podle silhouette skóre). Vyšly 4 skupiny, Silhouette skóre finálního shlukování je ale jen 0,195, což je slabé až sporné oddělení, ne přesvědčivý důkaz čtyř jasně odlišných morfologických typů. Jeden ze čtyř shluků navíc tvoří jediné město (Jevíčko) — to bychom označli spíš jako odlehlou hodnotu než coby plnohodnotnou kategorii.</p>
+    <p>Shluky je zatím nutno považovat jako proof-of-concept, ne jako hotový závěr o typologii českých měst.</p>
   </section>
 
   <section class="block">
-    <h2 class="section-label">co z toho (zatím) plyne — a co ne</h2>
+    <h2 class="section-label">co z toho (zatím) plyne</h2>
     <ul class="plain">
-      <li>Ano, orientace ulic se dá smysluplně změřit a vizuálně i číselně srovnat mezi městy — technický postup funguje.</li>
-      <li class="placeholder">[Doplň: interpretace shluků vůči kraji/velikosti/historickému typu osídlení — v datech zatím neprovedeno, je to další krok.]</li>
-      <li>Automatické shlukování na tomhle vzorku a s touhle sadou metrik dává jen slabě oddělené skupiny (silhouette 0,195) — čtyři shluky ber jako orientační, ne jako prokázanou typologii.</li>
-      <li>Vzorek (33 sídel) je zatím malý a nenáhodný — vybraný ručně tak, aby obsahoval kontrastní případy (krajská města, malá městečka, plánované sídliště), ne jako reprezentativní výběr ČR.</li>
+      <li>Orientace ulic se dá smysluplně změřit a vizuálně i číselně srovnat mezi městy — technický postup funguje.</li>
+      <li>Automatické shlukování na tomhle vzorku a s touhle sadou metrik dává jen slabě oddělené skupiny (silhouette 0,195) — čtyři shluky nutno brát jako orientační, ne jako prokázanou typologii.</li>
+      <li>Vzorek (33 sídel) je zatím malý a nenáhodný — vybraný ručně tak, aby obsahoval kontrastní případy, ne jako reprezentativní výběr ČR.</li>
     </ul>
   </section>
 
   <section class="block">
     <h2 class="section-label">limity a co bude dál</h2>
     <ul class="plain">
-      <li>Vzorek plánuji rozšířit na 50–100 sídel — teprve na větším vzorku dává smysl shluky pořádně interpretovat proti geografii a historii osídlení.</li>
+      <li>Vzorek plánuji rozšířit na všechny obce s mětským statutem.</li>
       <li>`network_type="drive"` u malých obcí (např. Loštice, Štíty) dává řidší síť než u velkých měst — může to metriky menších sídel mírně zkreslovat. Zkoušel jsem i `"all"` (všechny typy cest), ale u velkých měst (Brno) opakovaně selhávalo stahování přes veřejný Overpass server.</li>
       <li>Binning azimutového histogramu (počet výsečí v polar grafu) je zatím na jedné zafixované hodnotě — ještě jsem nesrovnal, jak moc mění čitelnost posteru.</li>
+    </ul>
+    <p>Výzkumné otázky, na které má projekt odpovědět:</p>
+    <ul class="plain">
+      <li><strong>RQ1 (deskriptivní):</strong> mají historická jádra a plánovaná (průmyslová/socialistická sídla) rozpoznatelně odlišné polar histogramy orientace ulic?</li>
+      <li><strong>RQ2 (klasifikační):</strong> dá se na základě síťových a prostorových metrik (orientační entropie, hustota křižovatek, průměrný stupeň uzlu, podíl čtyřcestných křižovatek) sídla smysluplně shlukovat do morfologických typů?</li>
+      <li><strong>RQ3 (explorativní):</strong> odpovídají takové shluky nějakému geografickému nebo historickému vzorci (Čechy vs. Morava, velikost obce, kraj), nebo je morfologický typ na geografii nezávislý?</li>
     </ul>
   </section>
 
@@ -105,8 +110,8 @@
   <section class="block">
     <h2 class="section-label">kód a data</h2>
     <ul class="plain">
-      <li class="placeholder"><span class="tag">repo</span>[Doplň odkaz na repozitář, jakmile bude veřejný.]</li>
-      <li>Data: OpenStreetMap (přes OSMnx), registr obcí ČR migrovaný z projektu o obcích na -ice.</li>
+      <li><span class="tag">repo</span><a href="https://github.com/Dobes-Michal-Tobias/UrbanMorphology" target="_blank" rel="noopener noreferrer">github.com/Dobes-Michal-Tobias/UrbanMorphology</a></li>
+      <li>Data: OpenStreetMap (přes OSMnx), ČSÚ, RÚIAN.</li>
     </ul>
   </section>
 </main>
