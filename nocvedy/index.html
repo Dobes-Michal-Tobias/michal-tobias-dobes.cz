@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Noc vědy — Katedra obecné lingvistiky</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="Interaktivní stanoviště Katedry obecné lingvistiky na Noci vědy.">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<style>
+  body { margin: 0; background: #fff; color: #111; font-family: "IBM Plex Sans", system-ui, sans-serif; }
+  main { max-width: 36rem; margin: 20vh auto 0; padding: 0 16px; }
+  .eyebrow { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: #555; }
+  h1 { font-size: 1.4rem; margin: .4rem 0 1rem; }
+  a { color: inherit; }
+  #offline { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">Noc vědy · Katedra obecné lingvistiky</div>
+  <div id="loading">
+    <h1>Přesměrovávám na stanoviště…</h1>
+    <noscript><p>Pro přesměrování je potřeba zapnout JavaScript.</p></noscript>
+  </div>
+  <div id="offline">
+    <h1>Stanoviště je teď offline</h1>
+    <p>Interaktivní úkoly běží jen během akce. Zkuste to prosím za chvíli znovu.</p>
+  </div>
+</main>
+<script>
+  // Aktuální adresu tunelu zapisuje NocVědy/scripts/publish_tunnel_url.ps1.
+  // Parametr t obchází cache GitHub Pages, aby změna adresy platila hned.
+  function offline() {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('offline').style.display = 'block';
+  }
+  fetch('target.json?t=' + Date.now(), { cache: 'no-store' })
+    .then(function (r) { return r.json(); })
+    .then(function (d) { if (d.url) location.replace(d.url); else offline(); })
+    .catch(offline);
+</script>
+</body>
+</html>
