@@ -1,120 +1,345 @@
 {
   "chi2_suffix": {
-    "chi2": 227.78110136137641,
-    "p": 3.451137783574186e-50,
+    "chi2": 255.22444599948363,
+    "p": 3.790667814496244e-56,
     "dof": 2
   },
   "chi2_land": {
-    "chi2": 14.868380707161581,
-    "p": 0.0019326521080294894,
+    "chi2": 15.125420628834423,
+    "p": 0.0017125453028915911,
     "dof": 3
   },
   "chi2_region": {
-    "chi2": 53.928566220223246,
-    "p": 2.814108853292409e-07,
+    "chi2": 55.197470930296404,
+    "p": 1.668202104719579e-07,
     "dof": 12
   },
   "join_count": {
-    "bb_obs": 3747.0,
-    "bb_exp": 3629.529302930293,
+    "bb_obs": 3989.5,
+    "bb_exp": 3875.0098509850986,
     "p_sim_bb": 0.0001,
-    "ww_obs": 166.5,
-    "bw_obs": 1015.5,
-    "bw_exp": 1200.7927792779278,
+    "ww_obs": 176.0,
+    "bw_obs": 1108.5,
+    "bw_exp": 1291.8043304330433,
     "p_sim_bw": 1.0,
-    "chi2": 79.55750736705122,
-    "chi2_p": 4.683916470615027e-19,
+    "chi2": 73.99988337177132,
+    "chi2_p": 7.812164482513538e-18,
     "k": 6,
-    "n": 1643,
+    "n": 1758,
     "permutations": 9999,
-    "n_plural": 1410,
-    "n_singular": 233
+    "n_plural": 1507,
+    "n_singular": 251
   },
   "moran": {
-    "I": 0.12401302772958331,
-    "EI": -0.0006090133982947625,
-    "z_sim": 9.438922227600825,
+    "I": 0.11616925353221048,
+    "EI": -0.0005691519635742744,
+    "z_sim": 9.029089507282704,
     "p_sim": 0.0001,
     "k": 6,
-    "n": 1643,
+    "n": 1758,
     "permutations": 9999
   },
   "unknown_population": {
-    "n": 1805,
-    "n_unknown": 163,
-    "median_pop_unknown": 410.0,
-    "median_pop_classified": 469.5,
-    "mannwhitney_u": 124584.5,
-    "mannwhitney_p": 0.07275731392187988,
-    "logit_coef": -0.35922542114801376,
-    "logit_p": 0.0452345978730802,
-    "logit_odds_ratio_per_10x_pop": 0.6982169407460548,
+    "n": 1905,
+    "n_unknown": 148,
+    "median_pop_unknown": 400.5,
+    "median_pop_classified": 485.0,
+    "mannwhitney_u": 117126.0,
+    "mannwhitney_p": 0.022431734690410397,
+    "logit_coef": -0.4682744712655284,
+    "logit_p": 0.01250819384086108,
+    "logit_odds_ratio_per_10x_pop": 0.6260816586474584,
     "logit_ci_odds_ratio": [
-      0.4912381303052588,
-      0.9924044292771809
+      0.4335421091135485,
+      0.9041295760087058
     ],
-    "logit_pseudo_r2": 0.0037461050349772984
+    "logit_pseudo_r2": 0.006170462813426036
   },
   "population_by_label": {
-    "n": 1805,
+    "n": 1905,
     "medians": {
-      "singular": 551.0,
-      "plural": 460.0,
-      "unknown": 410.0
+      "singular": 604.0,
+      "plural": 465.5,
+      "unknown": 400.5
     },
-    "kruskal_h": 10.946931498213774,
-    "kruskal_p": 0.004196662346146439,
+    "kruskal_h": 23.571930598564958,
+    "kruskal_p": 7.610624706250135e-06,
     "pairwise": {
       "singular_vs_plural": {
-        "u": 184032.0,
-        "p_raw": 0.003020383609919905,
-        "p_bonferroni": 0.009061150829759716,
-        "median_a": 551.0,
-        "median_b": 460.0
+        "u": 221895.0,
+        "p_raw": 9.873042321949154e-06,
+        "p_bonferroni": 2.9619126965847465e-05,
+        "median_a": 604.0,
+        "median_b": 465.5
       },
       "singular_vs_unknown": {
-        "u": 22314.0,
-        "p_raw": 0.0030227301817460786,
-        "p_bonferroni": 0.009068190545238237,
-        "median_a": 551.0,
-        "median_b": 410.0
+        "u": 23196.0,
+        "p_raw": 3.279398461595182e-05,
+        "p_bonferroni": 9.838195384785547e-05,
+        "median_a": 604.0,
+        "median_b": 400.5
       },
       "plural_vs_unknown": {
-        "u": 120747.5,
-        "p_raw": 0.2811408968414143,
-        "p_bonferroni": 0.8434226905242429,
-        "median_a": 460.0,
-        "median_b": 410.0
+        "u": 119714.0,
+        "p_raw": 0.1358260171036777,
+        "p_bonferroni": 0.4074780513110331,
+        "median_a": 465.5,
+        "median_b": 400.5
       }
     }
   },
   "pseudo_r2": {
-    "populace": 0.00890872417802846,
-    "region": 0.011759483521335823,
-    "sufix": 0.16835785776640255,
-    "sufix + populace": 0.17608130032862412,
-    "sufix + populace + region": 0.18594229278473207
+    "populace": 0.01720149351844813,
+    "region": 0.011190267893626538,
+    "sufix": 0.1757206098410108,
+    "sufix + populace": 0.1915453510549363,
+    "sufix + populace + region": 0.2026574230435504
   },
   "lr_tests": {
     "populace_to_sufix_plus_populace": {
-      "lr": 224.2082550035459,
+      "lr": 251.2554310486521,
       "df": 2.0,
-      "p": 2.0596623362726148e-49
+      "p": 2.757886403009507e-55
     },
     "sufix_to_full": {
-      "lr": 23.583865137851717,
+      "lr": 38.819954473386815,
       "df": 4.0,
-      "p": 9.677538678579009e-05
+      "p": 7.589208991466378e-08
     }
   },
   "chi2_unknown_land": {
-    "chi2": 47.68882980335759,
-    "p": 2.4802008828075636e-10,
+    "chi2": 36.11101312869766,
+    "p": 7.094401596015743e-08,
     "dof": 3
   },
   "chi2_unknown_suffix": {
-    "chi2": 2.111765690552229,
-    "p": 0.34788516291998467,
+    "chi2": 1.5329112197075085,
+    "p": 0.4646570790547724,
     "dof": 2
+  },
+  "text": {
+    "n_total": 1906,
+    "n_plural": 1507,
+    "n_singular": 251,
+    "n_unknown": 148,
+    "n_classified": 1758,
+    "name_type": {
+      "simple": 1778,
+      "complement": 96,
+      "compound": 27,
+      "numbered": 5
+    },
+    "population_sum": 2072757,
+    "population_mean": 1087.4905561385099,
+    "population_median": 472.0,
+    "population_share_cz": 0.1899956001649938,
+    "region_counts": {
+      "Středočeský kraj": 347,
+      "Jihomoravský kraj": 288,
+      "Jihočeský kraj": 200,
+      "Kraj Vysočina": 171,
+      "Královéhradecký kraj": 143,
+      "Olomoucký kraj": 124,
+      "Plzeňský kraj": 121,
+      "Pardubický kraj": 117,
+      "Ústecký kraj": 111,
+      "Moravskoslezský kraj": 107,
+      "Zlínský kraj": 107,
+      "Liberecký kraj": 51,
+      "Karlovarský kraj": 19
+    },
+    "region_rank_count": {
+      "Středočeský kraj": 1,
+      "Jihomoravský kraj": 2,
+      "Jihočeský kraj": 3,
+      "Kraj Vysočina": 4,
+      "Královéhradecký kraj": 5,
+      "Olomoucký kraj": 6,
+      "Plzeňský kraj": 7,
+      "Pardubický kraj": 8,
+      "Ústecký kraj": 9,
+      "Moravskoslezský kraj": 10,
+      "Zlínský kraj": 10,
+      "Liberecký kraj": 12,
+      "Karlovarský kraj": 13
+    },
+    "region_rank_density": {
+      "Jihomoravský kraj": 1,
+      "Jihočeský kraj": 9,
+      "Karlovarský kraj": 13,
+      "Kraj Vysočina": 6,
+      "Královéhradecký kraj": 3,
+      "Liberecký kraj": 11,
+      "Moravskoslezský kraj": 10,
+      "Olomoucký kraj": 7,
+      "Pardubický kraj": 5,
+      "Plzeňský kraj": 12,
+      "Středočeský kraj": 2,
+      "Zlínský kraj": 4,
+      "Ústecký kraj": 8
+    },
+    "region_rank_area": {
+      "Jihomoravský kraj": 4,
+      "Jihočeský kraj": 2,
+      "Karlovarský kraj": 12,
+      "Kraj Vysočina": 5,
+      "Královéhradecký kraj": 9,
+      "Liberecký kraj": 13,
+      "Moravskoslezský kraj": 6,
+      "Olomoucký kraj": 8,
+      "Pardubický kraj": 10,
+      "Plzeňský kraj": 3,
+      "Středočeský kraj": 1,
+      "Zlínský kraj": 11,
+      "Ústecký kraj": 7
+    },
+    "region_density": {
+      "Jihomoravský kraj": 40.07,
+      "Jihočeský kraj": 19.88,
+      "Karlovarský kraj": 5.74,
+      "Kraj Vysočina": 25.16,
+      "Královéhradecký kraj": 30.05,
+      "Liberecký kraj": 16.12,
+      "Moravskoslezský kraj": 19.7,
+      "Olomoucký kraj": 23.52,
+      "Pardubický kraj": 25.89,
+      "Plzeňský kraj": 15.82,
+      "Středočeský kraj": 31.75,
+      "Zlínský kraj": 27.0,
+      "Ústecký kraj": 20.79
+    },
+    "suffix_sizes": {
+      "bare_ice": 831,
+      "ovice": 703,
+      "nice": 372
+    },
+    "suffix_share_of_all": {
+      "bare_ice": 0.4359916054564533,
+      "ovice": 0.3688352570828961,
+      "nice": 0.19517313746065057
+    },
+    "suffix_plural": {
+      "bare_ice": {
+        "n": 773,
+        "n_plural": 667,
+        "pct_plural": 0.8628719275549805
+      },
+      "nice": {
+        "n": 343,
+        "n_plural": 209,
+        "pct_plural": 0.60932944606414
+      },
+      "ovice": {
+        "n": 642,
+        "n_plural": 631,
+        "pct_plural": 0.9828660436137072
+      }
+    },
+    "land_binary_pct_plural": {
+      "Morava": 0.895774647887324,
+      "Čechy": 0.8311068702290076
+    },
+    "lisa_counts": {
+      "HL": 73,
+      "LL": 53
+    },
+    "lisa_ll_by_land": {
+      "Čechy": 33,
+      "Vysočina": 11,
+      "Morava": 7,
+      "Morava+Slezsko": 2
+    },
+    "end5_pct_plural": {
+      "šnice": {
+        "n": 15,
+        "pct_plural": 0.13333333333333333
+      },
+      "tnice": {
+        "n": 18,
+        "pct_plural": 0.16666666666666666
+      },
+      "vnice": {
+        "n": 15,
+        "pct_plural": 0.3333333333333333
+      },
+      "ěnice": {
+        "n": 18,
+        "pct_plural": 0.6111111111111112
+      },
+      "avice": {
+        "n": 49,
+        "pct_plural": 0.6938775510204082
+      },
+      "enice": {
+        "n": 79,
+        "pct_plural": 0.7088607594936709
+      },
+      "ušice": {
+        "n": 16,
+        "pct_plural": 0.75
+      },
+      "ořice": {
+        "n": 22,
+        "pct_plural": 0.8636363636363636
+      },
+      "anice": {
+        "n": 38,
+        "pct_plural": 0.8947368421052632
+      },
+      "onice": {
+        "n": 30,
+        "pct_plural": 0.9333333333333333
+      },
+      "atice": {
+        "n": 17,
+        "pct_plural": 0.9411764705882353
+      },
+      "ěřice": {
+        "n": 20,
+        "pct_plural": 0.95
+      },
+      "ětice": {
+        "n": 22,
+        "pct_plural": 0.9545454545454546
+      },
+      "ovice": {
+        "n": 642,
+        "pct_plural": 0.9828660436137072
+      },
+      "otice": {
+        "n": 27,
+        "pct_plural": 1.0
+      },
+      "ešice": {
+        "n": 15,
+        "pct_plural": 1.0
+      },
+      "rtice": {
+        "n": 16,
+        "pct_plural": 1.0
+      },
+      "etice": {
+        "n": 30,
+        "pct_plural": 1.0
+      }
+    },
+    "ovice_singular": [
+      "Dobrovice",
+      "Tuchlovice",
+      "Jílovice",
+      "Otvovice",
+      "Jenišovice",
+      "Bukovice",
+      "Libovice",
+      "Nenačovice",
+      "Jílovice",
+      "Pavlovice",
+      "Bukovice"
+    ],
+    "olesnice_lisnice": {
+      "Olešnice": "unknown",
+      "Líšnice": "singular",
+      "Olešnice v Orlických horách": "singular"
+    }
   }
 }
