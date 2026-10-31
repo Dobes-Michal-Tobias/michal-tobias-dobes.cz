@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Posunout, zkrátit, nebo rozložit? Letní prázdniny v datech — Michal Tobiáš Dobeš</title>
+<meta name="description" content="Datová analýza návrhů z debaty o letních prázdninách. Co by posun léta do června, kratší léto nebo konec roku v pátek udělaly s výukou, vedrem ve třídách a hlídáním dětí, a kde stojí Česko v Evropě.">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="cs_CZ">
+<meta property="og:title" content="Posunout, zkrátit, nebo rozložit? Letní prázdniny v datech — Michal Tobiáš Dobeš">
+<meta property="og:description" content="Datová analýza návrhů z debaty o letních prázdninách. Co by posun léta do června, kratší léto nebo konec roku v pátek udělaly s výukou, vedrem ve třídách a hlídáním dětí, a kde stojí Česko v Evropě.">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../assets/holidaycalc/holidaycalc-widget.css">
+<style>
+  .figure { margin: 2rem 0; }
+  .figure img { width: 100%; display: block; border: 1px solid var(--rule); }
+  .figure-caption { font-family: var(--font-mono); font-size: .78rem; color: var(--muted); margin-top: .6rem; }
+  .back-link { font-family: var(--font-mono); font-size: .8rem; margin-bottom: 1.5rem; display: inline-block; }
+  .stat-highlight { font-family: var(--font-mono); font-size: 1.1rem; text-align: center; margin: 1.5rem 0; }
+  .info-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: .92rem; }
+  .info-table th, .info-table td { border: 1px solid var(--rule); padding: .55rem .8rem; text-align: left; vertical-align: top; }
+  .info-table th { font-family: var(--font-mono); font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); font-weight: 600; }
+  .info-table caption { font-family: var(--font-mono); font-size: .78rem; color: var(--muted); text-align: left; margin-bottom: .5rem; caption-side: top; }
+  .info-table td.num { font-family: var(--font-mono); text-align: right; white-space: nowrap; }
+  blockquote { border-left: 2px solid var(--rule); margin: 1.5rem 0; padding: .2rem 0 .2rem 1rem; }
+  blockquote p { margin: 0 0 .4rem; }
+  blockquote cite { font-family: var(--font-mono); font-size: .75rem; color: var(--muted); font-style: normal; }
+
+  .stat-details { border-top: 1px solid var(--rule); padding: .9rem 0; }
+  .stat-details:last-of-type { border-bottom: 1px solid var(--rule); }
+  .stat-details summary {
+    font-family: var(--font-mono);
+    font-size: .78rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: .6em;
+  }
+  .stat-details summary::-webkit-details-marker { display: none; }
+  .stat-details summary::before { content: '+'; color: var(--accent); font-weight: 600; width: 1em; }
+  .stat-details[open] summary::before { content: '\2212'; }
+  .stat-details summary:hover { color: var(--ink); }
+  .stat-details .stat-body { margin-top: 1rem; font-size: .95rem; }
+  .stat-body dl { display: grid; grid-template-columns: max-content 1fr; gap: .3rem 1.2rem; font-family: var(--font-mono); font-size: .8rem; margin: .8rem 0; }
+  .stat-body dt { color: var(--muted); }
+  .stat-body dd { margin: 0; }
+  .formula { font-family: var(--font-mono); font-size: .85rem; border-left: 2px solid var(--rule); padding: .4rem 0 .4rem 1rem; margin: 1rem 0; overflow-x: auto; white-space: pre; }
+</style>
+<script data-goatcounter="https://michaltobiasdobes.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header class="site">
+  <div class="site-name"><a href="../index.html">Michal Tobiáš Dobeš</a></div>
+  <nav class="site-nav" aria-label="Hlavní navigace">
+    <a href="../index.html">o mně</a>
+    <a href="../projekty.html" aria-current="page">projekty</a>
+  </nav>
+</header>
+
+<main>
+  <a class="back-link" href="../projekty.html">&larr; zpět na projekty</a>
+
+  <p class="eyebrow">Projekt</p>
+  <h1 class="page-title">Posunout, zkrátit, nebo rozložit? Letní prázdniny v datech</h1>
+  <p class="subtitle with-dates">Návrhy z letošní debaty přepočítané podle vyhlášky, 20 let termínů MŠMT, teplot ČHMÚ od roku 1961 a dovolené rodičů</p>
+  <p class="page-dates">vytvořeno 1. 10. 2026 · aktualizováno 31. 10. 2026</p>
+
+  <!-- ============================================================ ÚVOD -->
+  <section class="block">
+    <p>Letos v srpnu se ministr školství Robert Plaga <a href="https://www.facebook.com/photo.php?fbid=1578415584062853&amp;set=a.151080243463068&amp;type=3&amp;ref=embed_post" target="_blank" rel="noopener noreferrer">zeptal na Facebooku</a>, jestli dva měsíce letních prázdnin ještě dávají smysl. Připomněl, že léto od konce června do 31. srpna <a href="https://www.echo24.cz/a/HQwQk/zpravy-domaci-zmena-letnich-prazdnin-plaga-ministerstvo-skolstvi" target="_blank" rel="noopener noreferrer">sjednotil československý stát v roce 1925</a> a že za sto let se změnila práce, rodiny i škola. Konkrétní plán za otázkou nebyl a ministr později podle Deníku N <a href="https://denikn.cz/2169557/kratsi-prazdniny-zakaz-mobilu-a-konec-devitek-vlada-se-utrhla-ze-retezu-pro-rodice-jsou-to-vystrely-zpoza-rohu-rika-psycholozka-bartakova/" target="_blank" rel="noopener noreferrer">vysvětloval</a>, že se prázdniny zatím měnit nebudou.</p>
+    <blockquote>
+      <p>„Dávají dva měsíce prázdnin v červenci a srpnu smysl i dnes? Nebo je čas přemýšlet, jestli by se volno během roku nedalo rozložit jinak?“</p>
+      <cite>Robert Plaga, ministr školství, <a href="https://www.facebook.com/photo.php?fbid=1578415584062853&amp;set=a.151080243463068&amp;type=3&amp;ref=embed_post" target="_blank" rel="noopener noreferrer">příspěvek na Facebooku</a>, srpen 2026</cite>
+    </blockquote>
+    <p>Pod ministrovým příspěvkem by podle Novinek <a href="https://www.novinky.cz/clanek/domaci-maji-se-letni-prazdniny-zkratit-plaga-duma-o-zmenach-40592615" target="_blank" rel="noopener noreferrer">část lidí léto kvůli horku v učebnách prodloužila</a>, zatímco rodiče malých dětí by ho spíš zachovali nebo zkrátili. Předseda školských odborů František Dobšík podle Seznam Zpráv bral ministrův příspěvek <a href="https://www.seznamzpravy.cz/clanek/domaci-davaji-dva-mesice-prazdnin-smysl-plaga-testuje-reakce-verejnosti-312884" target="_blank" rel="noopener noreferrer">jako výstřelek v letních měsících</a>. Většina lidí je totiž se současným stavem spokojená. V průzkumu Ipsos pro Seznam Zprávy z roku 2025 to <a href="https://www.seznamzpravy.cz/clanek/kampus-zrusit-pololetni-prodlouzit-podzimni-jak-by-se-detem-mohly-zmenit-prazdniny-270045" target="_blank" rel="noopener noreferrer">uvedlo skoro 62 % lidí</a>.</p>
+    <p>Tenhle text nechce rozhodnout, která varianta je nejlepší. Chce do debaty přidat čísla. Podle <a href="https://www.zakonyprolidi.cz/cs/2005-16" target="_blank" rel="noopener noreferrer">vyhlášky o organizaci školního roku</a> jsem přepočítal školní kalendář na desítky let dopředu i dozadu a ověřil ho proti všemu, co ministerstvo za dvacet let vyhlásilo. Přidal jsem evropské srovnání, teploty z meteorologických stanic a zákonnou dovolenou rodičů. Pak jsem stejným kalendářem projel tři směry, které podle mého v debatě zaznívají nejčastěji, tedy posun léta do června, kratší léto s volnem rozloženým do roku a konec školního roku vždy v pátek.</p>
+  </section>
+
+  <!-- ============================================================ 1. DÉLKA LÉTA -->
+  <section class="block">
+    <h2 class="section-label">62, nebo 65 dní</h2>
+    <p>Než se dá mluvit o změnách, je dobré vědět, jak dlouhé léto je dnes. Podle vyhlášky má letní volno vždy buď 62, nebo 65 dní. Oba konce prázdnin totiž určuje jediný údaj, a to den v týdnu, na který padne 1. července. Když je to středa, čtvrtek nebo pátek, prázdniny začínají 1. července a končí 31. srpna, tedy přesně 62 dní. V ostatních případech se přes víkend „přilepí“ tři dny navíc, buď v červnu, nebo v září, nebo část na začátku a část na konci. Delší léto (65 dní) tak vychází zhruba ve čtyřech letech ze sedmi.</p>
+    <p>Jedinou výjimkou za posledních dvacet let bylo letošní léto, které mělo 66 dní. Podle vyhlášky by mělo jen 62, ministr ale na jaře <a href="https://edu.gov.cz/obdobi-skolniho-vyucovani-ve-skolnim-roce-2025-2026-konci-drive/" target="_blank" rel="noopener noreferrer">ukončil školní rok</a> už v pátek 26. června místo v úterý 30. června. Ministerstvo podle Hospodářských novin <a href="https://domaci.hn.cz/c1-67862170-zaci-a-studenti-budou-mit-letos-delsi-letni-prazdniny-skolni-rok-skonci-driv" target="_blank" rel="noopener noreferrer">zohlednilo chování značné části rodin</a>. Odjezdy na dovolenou ještě před koncem roku vidí i školy. Šéf Unie školských asociací Jiří Nekuda <a href="https://www.seznamzpravy.cz/clanek/domaci-davaji-dva-mesice-prazdnin-smysl-plaga-testuje-reakce-verejnosti-312884" target="_blank" rel="noopener noreferrer">pro Seznam Zprávy uvedl</a>, že „v červnu a září zaznamenáváme poměrně dost odjezdů žáků a jejich rodin na dovolené“. Pořadatelům táborů ale změna přišla pozdě. „Tábory se obyčejně plánují již v lednu či únoru,“ <a href="https://www.denik.cz/skolstvi-a-vzdelavani/cesko-letni-prazdniny-skoly-zaci-rodice-tabory-robert-plaga-zadelal-na-chaos.html" target="_blank" rel="noopener noreferrer">upozornil v Deníku</a> předseda České rady dětí a mládeže Aleš Sedláček.</p>
+    <p>Jedno ministerské rozhodnutí tak změnilo délku léta víc, než kolik kalendář kolísá sám od sebe. Návrhy z debaty přitom nepracují s dny, ale s týdny.</p>
+    <p class="stat-highlight">62 dní · 65 dní · 66 dní (2026, výjimka MŠMT)</p>
+
+    <div class="figure">
+      <img src="../assets/img/prazdniny/fig01_leto_podle_dne.svg" alt="Délka letních prázdnin podle dne v týdnu, na který padne 1. července: 65 dní pro pondělí, úterý, sobotu a neděli, 62 dní pro středu až pátek; čára na 67 dnech označuje údaj z Wikipedie." loading="lazy">
+      <p class="figure-caption">Délka hlavních prázdnin podle dne v týdnu, na který připadne 1. července. Šedě červenec a srpen (62 dní), žlutě dny navíc v červnu a září. Vínová čára označuje údaj „až 67 dnů“ z české Wikipedie. Zdroj: vyhláška č. 16/2005 Sb., § 2 odst. 3; vlastní výpočet.</p>
+    </div>
+
+    <div class="figure">
+      <img src="../assets/img/prazdniny/fig02_leto_casova_osa.svg" alt="Začátek a konec letních prázdnin v letech 2005 až 2035; jediný rok s odchylkou od vyhlášky je 2026." loading="lazy">
+      <p class="figure-caption">Začátek a konec letních prázdnin 2005–2035 vůči 1. 7. a 31. 8., číslo udává délku ve dnech. Vínově rok 2026, kdy MŠMT ukončilo vyučování dříve, než stanoví vyhláška. Zdroj: vyhláška č. 16/2005 Sb., MŠMT; vlastní výpočet.</p>
+    </div>
+
+    <details class="stat-details">
+      <summary>Jak vyhláška určuje začátek a konec školního roku</summary>
+      <div class="stat-body">
+        <p>Vyhláška č. 16/2005 Sb. stanoví, že školní vyučování začíná 1. září a končí 30. června. Výjimky jsou jen dvě a § 2 odst. 3 je popisuje takto. <em>„Připadne-li začátek prvního pololetí na pátek, začíná vyučování následující pondělí. Připadne-li konec druhého pololetí na pondělí, končí vyučování předcházející pátek.“</em> Víkendy pravidlo řešit nemusí, škola v sobotu nezačíná ani nekončí, takže se posouvají samy.</p>
+        <p>Červenec a srpen mají dohromady 62 dní a 62 = 8 × 7 + 6. Den v týdnu, na který padne 1. září, je proto vždy o jeden „dřív“ než den, na který padne 1. července. Oba konce prázdnin tak určuje jediný údaj, jak ukazuje tabulka.</p>
+        <table class="info-table">
+          <caption>Délka letních prázdnin podle dne v týdnu, na který připadne 1. července</caption>
+          <thead><tr><th>1. 7. je</th><th>poslední školní den</th><th>první školní den</th><th>dny v červnu</th><th>dny v září</th><th>délka</th></tr></thead>
+          <tbody>
+            <tr><td>pondělí</td><td>pá 28. 6.</td><td>po 2. 9.</td><td class="num">2</td><td class="num">1</td><td class="num"><strong>65</strong></td></tr>
+            <tr><td>úterý</td><td>pá 27. 6.</td><td>po 1. 9.</td><td class="num">3</td><td class="num">0</td><td class="num"><strong>65</strong></td></tr>
+            <tr><td>středa</td><td>út 30. 6.</td><td>út 1. 9.</td><td class="num">0</td><td class="num">0</td><td class="num">62</td></tr>
+            <tr><td>čtvrtek</td><td>st 30. 6.</td><td>st 1. 9.</td><td class="num">0</td><td class="num">0</td><td class="num">62</td></tr>
+            <tr><td>pátek</td><td>čt 30. 6.</td><td>čt 1. 9.</td><td class="num">0</td><td class="num">0</td><td class="num">62</td></tr>
+            <tr><td>sobota</td><td>pá 30. 6.</td><td>po 4. 9.</td><td class="num">0</td><td class="num">3</td><td class="num"><strong>65</strong></td></tr>
+            <tr><td>neděle</td><td>pá 29. 6.</td><td>po 3. 9.</td><td class="num">1</td><td class="num">2</td><td class="num"><strong>65</strong></td></tr>
+          </tbody>
+        </table>
+        <p>Délku počítám od dne po vysvědčení do dne před prvním školním dnem, včetně víkendů. V celém 400letém cyklu gregoriánského kalendáře vychází 65 dní v 228 letech (57 %) a průměrná délka je 63,7 dne. Pondělní pravidlo platilo prokazatelně už v roce 2008, kdy 30. 6. připadl na pondělí a školní rok skončil v pátek 27. 6.</p>
+      </div>
+    </details>
+
+    <p>Celý model stojí na vyhlášce. Ministerstvo ale každý rok vydává <a href="https://msmt.gov.cz/organizace-skolniho-roku" target="_blank" rel="noopener noreferrer">vlastní dokument</a> s konkrétními termíny a ve vyhlášce není úplně všechno, přesné dny podzimních prázdnin si například určuje samo. Než jsem z modelu začal vyvozovat závěry, porovnal jsem ho proto se vším, co MŠMT za posledních dvacet let skutečně vyhlásilo. Ve 140 porovnaných termínech (začátky a konce školního roku a všechny prázdniny) se model s ministerstvem shoduje ve všech. Jedna z těch shod je ovšem letošní ministerská výjimka, kterou model nevypočítá z vyhlášky, ale vede ji zvlášť.</p>
+    <p>Česká <a href="https://cs.wikipedia.org/wiki/Pr%C3%A1zdniny" target="_blank" rel="noopener noreferrer">Wikipedie</a> a s ní řada webů, které od ní přebírají, tvrdí, že letní prázdniny mohou být „až 67 dnů dlouhé“. Podle vyhlášky to nejde. Odkud se číslo nejspíš vzalo, vysvětluji v posledním rámečku této části.</p>
+
+    <details class="stat-details">
+      <summary>Jak jsem model ověřil proti 20 letům dokumentů MŠMT</summary>
+      <div class="stat-body">
+        <p>MŠMT každý rok zveřejňuje dokument „Organizace školního roku“ se všemi termíny. Web msmt.gov.cz byl ale v roce 2025 přestavěn a starší ročníky z něj zmizely. Dokumenty jsem proto stáhl z <a href="https://web.archive.org/" target="_blank" rel="noopener noreferrer">Internet Archive</a>. Přes rozhraní Wayback Machine (CDX API) jsem vyhledal všechny archivované stránky „organizace-skolniho-roku“ a pro každý rok stáhl nejnovější snímek, celkem 25 stránek. Ke každému souboru si ukládám původní adresu, adresu snímku a čas stažení.</p>
+        <p>MŠMT však často přepisovalo starou adresu textem nového roku. <a href="https://web.archive.org/web/20210909081809/https://www.msmt.cz/vzdelavani/skolstvi-v-cr/organizace-skolniho-roku-2015-2016" target="_blank" rel="noopener noreferrer">Stránka s „2015-2016“ v adrese</a> tak obsahuje i rok 2016/17. Školní rok proto čtu z textu dokumentu, ne z adresy. Z textů jsem automaticky vytěžil sedm údajů za každý rok (první a poslední vyučovací den, začátek dalšího roku, podzimní, vánoční, pololetní a velikonoční prázdniny) a porovnal je s výpočtem podle vyhlášky.</p>
+        <dl>
+          <dt>porovnání</dt><dd>20 školních let (2005/06–2027/28) × 7 údajů = 140</dd>
+          <dt>shoda</dt><dd>140 / 140, z toho 139 podle pravidel vyhlášky a 1 známá výjimka (konec roku 2025/26); po opravě pravidla pro podzimní prázdniny v letech, kdy 28. 10. padne na neděli</dd>
+          <dt>chybí</dt><dd>plné dokumenty pro 2009/10, 2011/12 a 2018/19 (v archivu nejsou)</dd>
+        </dl>
+        <p>Vánoční prázdniny porovnávám jen na všedních dnech, protože MŠMT je uvádí jednou včetně víkendů, jindy bez nich. Rok 2025/26 <a href="https://web.archive.org/web/20230605124257/https://www.msmt.cz/vzdelavani/organizace-skolniho-roku-2025-2026-v-zs-ss-zus-a-1" target="_blank" rel="noopener noreferrer">dokument MŠMT</a> původně ukončil 30. 6. 2026, ministerstvo ho později zkrátilo na 26. 6. (<a href="https://edu.gov.cz/obdobi-skolniho-vyucovani-ve-skolnim-roce-2025-2026-konci-drive/" target="_blank" rel="noopener noreferrer">edu.gov.cz</a>). Takové odchylky od vyhlášky vedu v modelu zvlášť, se zdrojem. Zajímavost z archivu ukazuje, že vybrané pražské školy končily školní rok 2005/06 už ve středu 28. 6. 2006, protože ubytovávaly cvičence XIV. všesokolského sletu (<a href="https://web.archive.org/web/20071209045334/http://www.msmt.cz:80/vzdelavani/opatreni-msmt-ze-dne-15-kvetna-2006-kterym-se-stanovi-odlisnosti-v-organizaci-skolniho-roku-2005-2006-ve-vybranych-skolach-v-souvislosti-s-konanim-xiv-vsesokolskeho-sletu" target="_blank" rel="noopener noreferrer">opatření MŠMT č. j. 12386/2006-20</a>).</p>
+      </div>
+    </details>
+
+    <details class="stat-details">
+      <summary>Odkud se mohlo vzít 67 dní z Wikipedie</summary>
+      <div class="stat-body">
+        <p>Článek <a href="https://cs.wikipedia.org/wiki/Pr%C3%A1zdniny" target="_blank" rel="noopener noreferrer">Prázdniny</a> na české Wikipedii uvádí, že letní prázdniny „nejdelší dobu mohou být (včetně víkendů) až 67 dnů dlouhé“ (staženo 29. 9. 2026). 67 dní by vyšlo, kdybychom k 62 dnům přičetli přesah do června z jednoho roku (+3 dny, když 1. 7. padne na úterý) a přesah do září z jiného (+2 dny, když 1. 7. padne na neděli). Takové přesahy ale nemohou nastat ve stejném roce, protože oba konce určuje týž den v týdnu (viz tabulka výše). Součet dvou největších přesahů by dal dokonce 68 dní, do září totiž mohou přibýt až 3 dny, když 1. 7. padne na sobotu.</p>
+        <p>Zmatek nejspíš přiživuje, že ani úřady nepočítají délku prázdnin jednotně. MŠMT v dokumentech „Organizace školního roku“ uvádí začátek hlavních prázdnin někdy až v pondělí, bez víkendu, který jim předchází („od pondělí 2. července 2007“ v <a href="https://web.archive.org/web/20080615132719/http://www.msmt.cz:80/vzdelavani/organizace-skolniho-roku-2006-2007-v-zakladnich-skolach-strednich-skolach-zakladnich-umeleckych-skolach-a-konzervatorich" target="_blank" rel="noopener noreferrer">dokumentu pro 2006/07</a>, stejně v <a href="https://web.archive.org/web/20210909065553/https://www.msmt.cz/vzdelavani/skolstvi-v-cr/organizace-skolniho-roku-2017-2018" target="_blank" rel="noopener noreferrer">dokumentu pro 2017/18</a>), jindy už od soboty („od soboty 29. června 2013“ v <a href="https://web.archive.org/web/20210307162416/https://www.msmt.cz/vzdelavani/organizace-skolniho-roku-2012-2013" target="_blank" rel="noopener noreferrer">dokumentu pro 2012/13</a>). Evropská síť Eurydice ve <a href="https://eurydice.eacea.ec.europa.eu/sites/default/files/2023-09/Calendars_Country_Sheets_2023_2024_0.xlsx" target="_blank" rel="noopener noreferrer">svých kalendářích pro 2023/24</a> uvádí české léto 2024 jako 63 dní (1. 7.–1. 9.), přestože vysvědčení se rozdávalo v pátek 28. 6., a podle stejné logiky jako jinde v článku tak léto mělo 65 dní.</p>
+        <p><a href="https://cs.wikipedia.org/wiki/Pr%C3%A1zdniny" target="_blank" rel="noopener noreferrer">Wikipedie</a> má naopak pravdu u Vánoc. Vánoční prázdniny trvají podle § 4 odst. 3 od 23. 12. do 2. 1. (začínají už v pondělí, je-li 23. 12. úterý, a končí v pátek, je-li 3. 1. pátek). Včetně navazujících víkendů tak vychází 11, 12, nebo 16 dní.</p>
+        <div class="figure">
+          <img src="../assets/img/prazdniny/fig03_vanoce_podle_dne.svg" alt="Délka vánočních prázdnin včetně víkendů podle dne, na který padne Štědrý den: 16 dní pro úterý a středu, 12 pro pondělí a čtvrtek, 11 jinak." loading="lazy">
+          <p class="figure-caption">Vánoční volno včetně navazujících víkendů podle dne v týdnu, na který připadne Štědrý den. Zdroj: vyhláška č. 16/2005 Sb., § 4 odst. 3; vlastní výpočet.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============================================================ 5. EVROPA -->
+  <section class="block">
+    <h2 class="section-label">je devět týdnů evropský průměr?</h2>
+    <p>Ministr svou otázku opřel o srovnání s Evropou. „Českých zhruba 9 týdnů je v Evropě v zásadě průměr,“ napsal podle <a href="https://www.echo24.cz/a/HQwQk/zpravy-domaci-zmena-letnich-prazdnin-plaga-ministerstvo-skolstvi" target="_blank" rel="noopener noreferrer">Echo24</a>. Německo má podle něj léto zpravidla jen šestitýdenní a Francie zhruba osmitýdenní, volno jim ale nezmizelo, jen je rozložené do roku.</p>
+    <p>Jednotlivá čísla v <a href="https://eurydice.eacea.ec.europa.eu/sites/default/files/2023-09/Calendars_Country_Sheets_2023_2024_0.xlsx" target="_blank" rel="noopener noreferrer">datech evropské sítě Eurydice</a> sedí. V létě 2024 měla Francie 56 dní, Česko 63 a Německo v mediánu spolkových zemí 42. S průměrem je to ale jinak. Medián 39 evropských vzdělávacích systémů je 10 týdnů a delší léto než Česko má 25 z nich, kratší jen 10. Česko tak není uprostřed, ale blíž kratšímu konci. Rozptyl je přitom obrovský. Kolem šesti týdnů mají vedle Německa i Nizozemsko, Dánsko nebo část Švýcarska, Itálie, Lotyšsko nebo Malta naopak 13 týdnů i víc.</p>
+    <p>Seznam Zprávy už loni z dat Eurydice <a href="https://www.seznamzpravy.cz/clanek/kampus-zrusit-pololetni-prodlouzit-podzimni-jak-by-se-detem-mohly-zmenit-prazdniny-270045" target="_blank" rel="noopener noreferrer">vyvodily</a>, že české školy mají v porovnání s evropskými zeměmi i celkově méně volných dní. Kratší léto by tedy Česko od Evropy spíš vzdálilo, pokud by se volno nepřidalo jinde. Právě tím se zabývají scénáře dál v textu.</p>
+
+    <div class="figure">
+      <img src="../assets/img/prazdniny/fig09_evropa_leto.svg" alt="Délka letních prázdnin v týdnech v 39 evropských vzdělávacích systémech; Česko kolem 9 týdnů, mírně pod mediánem." loading="lazy">
+      <p class="figure-caption">Délka letních prázdnin na 1. stupni (ISCED 1) ve 39 vzdělávacích systémech; u zemí s regionálními kalendáři medián a rozpětí. Školní rok 2023/24. Zdroj: Eurydice, School calendars 2023/24.</p>
+    </div>
+
+    <details class="stat-details">
+      <summary>Proč srovnávám v týdnech, ne ve dnech</summary>
+      <div class="stat-body">
+        <p>Data pocházejí z tabulky <a href="https://eurydice.eacea.ec.europa.eu/sites/default/files/2023-09/Calendars_Country_Sheets_2023_2024_0.xlsx" target="_blank" rel="noopener noreferrer">Eurydice School calendars 2023/24</a> (1. stupeň, ISCED 1). Je to nejnovější ročník, který Eurydice zveřejnila jako soubor; novější kalendáře jsou jen v interaktivním dashboardu. Za letní prázdniny beru nejdelší volný úsek, který začíná v květnu až srpnu. U zemí, kde se kalendář liší podle regionu (Německo, Španělsko, Itálie, Švýcarsko a další), ukazuji medián a rozpětí přes regiony.</p>
+        <p>Země ale nepočítají délku léta stejně, například jestli započítat víkend před začátkem prázdnin. <a href="https://eurydice.eacea.ec.europa.eu/sites/default/files/2023-09/Calendars_Country_Sheets_2023_2024_0.xlsx" target="_blank" rel="noopener noreferrer">Eurydice</a> uvádí české léto 2024 jako 63 dní, podle definice v tomto článku to bylo 65. Rozdíly několika dní jsou proto šum a země srovnávám v týdnech. Medián 39 vzdělávacích systémů je 10 týdnů, Česko má kolem 9.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============================================================ 2. ROK BEZ PŘESTÁVKY -->
+  <section class="block">
+    <h2 class="section-label">13 týdnů bez jediného volného dne</h2>
+    <p>Druhá půlka ministrovy otázky se týká toho, jak je volno rozložené během roku. Analytik vzdělávací politiky Karel Gargulák z PAQ Research debatu <a href="https://www.seznamzpravy.cz/clanek/domaci-davaji-dva-mesice-prazdnin-smysl-plaga-testuje-reakce-verejnosti-312884" target="_blank" rel="noopener noreferrer">uvítal</a>, protože „dva měsíce prázdnin jsou opravdu dlouhá doba na to, aby děti vypadly z nějaké rutiny, vztahů, učení“. Dlouhé ale bývají i úseky mezi prázdninami. Letošní školní rok 2026/27 je v tom výjimečný. Po Velikonocích čeká děti 67 vyučovacích dní v kuse. Od úterý 30. března do konce června nebude ani jeden volný den kromě víkendů. Velikonoce jsou v tomto školním roce brzy (28. března 2027) a oba květnové svátky, 1. i 8. května, padnou na sobotu.</p>
+    <p>Taková konstelace se opakuje zhruba jednou za pár let. Naposledy to bylo ve školním roce 2015/16 (68 dní v kuse), příště to bude v roce 2031/32. V běžném roce má nejdelší úsek bez volna 37 až 48 vyučovacích dní, tedy zhruba osm až deset týdnů.</p>
+    <p>Na druhé straně stojí krátká volna. Podzimní prázdniny mají podle vyhlášky dva dny přilepené ke 28. říjnu a pololetní jen jeden. Tehdejší předseda sněmovního školského výboru Matěj Ondřej Havel (TOP 09) proto už loni <a href="https://www.seznamzpravy.cz/clanek/kampus-zrusit-pololetni-prodlouzit-podzimni-jak-by-se-detem-mohly-zmenit-prazdniny-270045" target="_blank" rel="noopener noreferrer">navrhoval</a> pololetní prázdniny zrušit a podzimní i velikonoční prodloužit na celý týden. Část škol si podle téhož článku týdenní podzimní volno už dnes skládá z ředitelského volna. Týdenní podzimní prázdniny jsou proto součástí jednoho ze scénářů níže.</p>
+
+    <div class="figure">
+      <img src="../assets/img/prazdniny/fig06_kalendar_2026.svg" alt="Kalendář školního roku 2026/27 po týdnech: zeleně vyučování, žlutě prázdniny, fialově státní svátky; vínový rámeček vyznačuje nepřerušený úsek od Velikonoc do konce června." loading="lazy">
+      <p class="figure-caption">Školní rok 2026/27 (okresy se 3. týdnem jarních prázdnin). Zeleně vyučování, žlutě prázdniny, fialově státní svátky, šedě víkendy. Vínový rámeček vyznačuje nejdelší úsek bez volného dne. Zdroj: vyhláška č. 16/2005 Sb., MŠMT; vlastní výpočet.</p>
+    </div>
+
+    <div class="figure">
+      <img src="../assets/img/prazdniny/fig05_nejdelsi_usek.svg" alt="Nejdelší úsek bez volna v jednotlivých školních letech 2005 až 2040; vínově roky 2015/16, 2026/27 a 2031/32 s 67 až 68 vyučovacími dny." loading="lazy">
+      <p class="figure-caption">Nejdelší úsek bez volného dne (počet vyučovacích dní) ve školních letech 2005/06–2040/41. Vínově rekordní roky. Zdroj: vlastní výpočet podle vyhlášky č. 16/2005 Sb.</p>
+    </div>
+
+    <details class="stat-details">
+      <summary>Jak měřím „úsek bez volna“ a počet vyučovacích dní</summary>
+      <div class="stat-body">
+        <p><strong>Vyučovací den</strong> je všední den, který není státním ani ostatním svátkem (<a href="https://www.zakonyprolidi.cz/cs/2000-245" target="_blank" rel="noopener noreferrer">zákon č. 245/2000 Sb.</a>) a nepatří do prázdnin. Ředitelské volno nezapočítávám, protože ho každá škola vyhlašuje jinak.</p>
+        <dl>
+          <dt>volný blok</dt><dd>souvislá řada dní bez výuky, která obsahuje aspoň jeden všední den (víc než obyčejný víkend); do délky se počítají i víkendy</dd>
+          <dt>úsek bez volna</dt><dd>doba mezi dvěma volnými bloky (nebo mezi začátkem či koncem roku a nejbližším blokem), kterou přerušují jen obyčejné víkendy; měří se počtem vyučovacích dní</dd>
+        </dl>
+        <p>Většinu termínů určuje vyhláška přesně. Výjimkou jsou podzimní prázdniny, které vyhláška definuje jen větou „Podzimní prázdniny trvají 2 dny a přičleňují se ke státnímu svátku 28. října“ (<a href="https://www.zakonyprolidi.cz/cs/2005-16" target="_blank" rel="noopener noreferrer">§ 4 odst. 2</a>) a jejich termín stanoví MŠMT. Pravidlo jsem odvodil z 20 let vyhlášených termínů. MŠMT vždy volí ty dva dny, které spojí 28. říjen s víkendem. Když 28. 10. padne na víkend, dává je na čtvrtek a pátek před ním. Podzimní volno tak má 5 dní, případně 4.</p>
+        <p>Rekordní roky (67–68 vyučovacích dní v kuse) vznikají souhrou dvou podmínek. Velikonoce jsou brzy, takže velikonoční volno je už koncem března, a 1. i 8. května padnou na víkend, takže květen žádné volno nepřidá. Počet vyučovacích dní za rok se pohybuje mezi 190 a 196. Nejméně jich měl rok 2025/26 se zkráceným červnem.</p>
+        <div class="figure">
+          <img src="../assets/img/prazdniny/fig04_vyucovaci_dny.svg" alt="Počet vyučovacích dní ve školních letech 2005 až 2040, mezi 190 a 196; nejméně 2025/26." loading="lazy">
+          <p class="figure-caption">Počet vyučovacích dní ve školních letech 2005/06–2040/41 (okresy s 1. týdnem jarních prázdnin). Vínově 2025/26 se zkráceným červnem. Zdroj: vlastní výpočet.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============================================================ 4. JARNÍ PRÁZDNINY -->
+  <section class="block">
+    <h2 class="section-label">jarní prázdniny v šesti týdnech</h2>
+    <p>Jarní prázdniny jsou v Česku jediné, které nemají všichni najednou. Okresy jsou podle <a href="https://www.zakonyprolidi.cz/cs/2005-16" target="_blank" rel="noopener noreferrer">přílohy vyhlášky</a> rozdělené do šesti skupin a každá má volno v jiném týdnu mezi začátkem února a polovinou března. Každá skupina má prázdniny rok od roku o týden později a kdo měl letos prázdniny nejpozději, bude je mít příští rok nejdřív. Celý rozpis, který vyhláška vypisuje v dlouhé tabulce, se dá shrnout do jediného pravidla s šestiletým cyklem.</p>
+    <p>Důvod rozložení vyhláška neuvádí. Předpokládám, že jde hlavně o hory, protože kdyby měli všichni jarní prázdniny stejný týden, potkali by se na sjezdovkách. Skupiny ale nejsou stejně velké. Podle počtu dětí ve věku 6–18 let (<a href="https://data.csu.gov.cz/opendata/sady/OBY02B/distribuce/csv" target="_blank" rel="noopener noreferrer">ČSÚ</a>, stav k 31. 12. 2025) má nejsilnější skupina (Praha 1 až 5, Brno, Blansko a další) 21 % dětí, nejslabší (Mladá Boleslav, Příbram a další) jen 14 %. Týden, kdy má volno Praha s Brnem, je tak o polovinu „plnější“ než ten nejslabší.</p>
+    <blockquote>
+      <p>„Myslím, že k větší diskuzi je rozložení jarních prázdnin do šesti týdnů, to je opravdu přežitek.“</p>
+      <cite>Jiří Nekuda, šéf Unie školských asociací, pro <a href="https://www.seznamzpravy.cz/clanek/domaci-davaji-dva-mesice-prazdnin-smysl-plaga-testuje-reakce-verejnosti-312884" target="_blank" rel="noopener noreferrer">Seznam Zprávy</a></cite>
+    </blockquote>
+
+    <div class="figure">
+      <img src="../assets/img/prazdniny/fig07_jarni_rotace.svg" alt="Rotace šesti skupin okresů v týdnech jarních prázdnin 2022/23 až 2033/34; tmavší = pozdější týden." loading="lazy">
+      <p class="figure-caption">Začátek jarních prázdnin pro šest skupin okresů, 2022/23–2033/34. Tmavší odstín = pozdější týden. Vpravo od čárkované čáry extrapolace pravidla (příloha vyhlášky končí rokem 2027/28). Zdroj: příloha vyhlášky č. 16/2005 Sb.; vlastní výpočet.</p>
+    </div>
+
+    <div class="figure">
+      <img src="../assets/img/prazdniny/fig08_jarni_podil_deti.svg" alt="Podíl dětí ve věku 6 až 18 let v jednotlivých skupinách jarních prázdnin: od 14,3 do 20,9 procenta." loading="lazy">
+      <p class="figure-caption">Podíl dětí ve věku 6–18 let v jednotlivých skupinách jarních prázdnin (čárkovaně rovnoměrné rozdělení, 1/6). Zdroj: ČSÚ (OBY02B, stav k 31. 12. 2025; věkové složení městských částí Prahy 2025), MŠMT; vlastní výpočet.</p>
+    </div>
+
+    <details class="stat-details">
+      <summary>Jak jsem počítal děti ve skupinách</summary>
+      <div class="stat-body">
+        <p>Aktuální počty žáků podle okresů jsem nenašel. Místo nich používám počet obyvatel ve věku 6–18 let, tedy zhruba věk povinné školní docházky a střední školy (ČSÚ, otevřená data <a href="https://data.csu.gov.cz/opendata/sady/OBY02B/distribuce/csv" target="_blank" rel="noopener noreferrer">OBY02B</a>, stav k 31. 12. 2025, celkem 1 570 853 dětí). Je to přibližná míra, protože nezachytí děti, které dojíždějí do školy v jiném okrese, což je nejvýraznější kolem Prahy.</p>
+        <p>Skupiny jarních prázdnin jsou dané přílohou vyhlášky. Praha v nich ale není rozdělená na staré obvody. „Praha 1 až 5“ a „Praha 6 až 10“ jsou podle poznámky v dokumentech MŠMT seznamy městských částí. Například Praha 11, 12, 13 a 16 patří k „Praze 1 až 5“, Praha 14, 15 a 17–22 k „Praze 6 až 10“. Pražské děti proto dělím podle podílu obyvatel 5–19 let v jednotlivých městských částech, což je nejjemnější věkové členění, které ČSÚ po městských částech publikuje (<a href="https://csu.gov.cz/docs/107839/afefbae8-c12f-7944-fe52-ce39f88da593/1_PHA_VEK_obyv_mc.xlsx?version=1.6" target="_blank" rel="noopener noreferrer">XLSX</a>). Vychází poměr 46 : 54.</p>
+        <p>Rotaci popisuje jediné pravidlo. První týden jarních prázdnin začíná v pondělí po pololetním pátku a každá skupina se rok od roku posune o týden později (ze 6. týdne zpět na 1.), takže se cyklus opakuje po šesti letech. Pravidlo reprodukuje všech 36 řádků <a href="https://www.zakonyprolidi.cz/cs/2005-16" target="_blank" rel="noopener noreferrer">přílohy vyhlášky</a> (2022/23–2027/28).</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============================================================ 6. SCÉNÁŘE -->
+  <section class="block">
+    <h2 class="section-label">tři směry reformy</h2>
+    <p>Konkrétní návrh na stole není. V debatě ale opakovaně zaznívají tři směry, které se dají namodelovat a projet stejným kalendářem.</p>
+    <ul class="plain">
+      <li><strong>konec vždy v pátek</strong> — letošní výjimka by se stala pravidlem,</li>
+      <li><strong>prázdniny 15. 6.–15. 8.</strong> — stejně dlouhé léto, jen o dva týdny dřív. Navrhuje to klimatolog Radim Tolasz z ČHMÚ, podle kterého by šlo o „normální adaptační opatření, nad kterým bychom neměli ani moc přemýšlet“ (<a href="https://www.echo24.cz/a/Hgsew/zpravy-domov-letni-vedra-mozna-prodlouzi-detem-prazdniny-mluvi-se-i-o-presunuti" target="_blank" rel="noopener noreferrer">řekl Echo24</a>),</li>
+      <li><strong>kratší léto</strong> — šest týdnů v létě a zbytek rozložit do roku. Ředitel pražského Gymnázia Elišky Krásnohorské Martin Švejnoha by podle Novinek <a href="https://www.novinky.cz/clanek/domaci-maji-se-letni-prazdniny-zkratit-plaga-duma-o-zmenach-40592615" target="_blank" rel="noopener noreferrer">„na úkor letních prázdnin přidal volno do podzimních, vánočních, možná i velikonočních prázdnin“</a>. Ve scénáři počítám s celým týdnem podzimních prázdnin, jak ho navrhuje i Havel, a s jedním volným týdnem v květnu, který jsem zvolil sám.</li>
+    </ul>
+    <p>Konec v pátek léto prodlouží na 65 až 68 dní a ubere v průměru jeden až dva vyučovací dny ročně. Posun na polovinu června nemění skoro nic na počtu vyučovacích dní, jen přesune zhruba 11 dní výuky z konce června do srpna. A kratší léto znamená zhruba o osm vyučovacích dní ročně víc, pokud se k němu nepřidá ještě další volno. Co varianty udělají s vedrem ve třídách a s hlídáním dětí, ukazují další dvě části.</p>
+
+    <div class="figure">
+      <img src="../assets/img/prazdniny/fig10_scenare_rok_2027.svg" alt="Kalendářní rok 2027 ve čtyřech variantách kalendáře: dnešní vyhláška, konec vždy v pátek, léto 15. 6. až 15. 8., šestitýdenní léto s podzimním a květnovým týdnem." loading="lazy">
+      <p class="figure-caption">Rok 2027 ve čtyřech variantách školního kalendáře. Zeleně vyučování, žlutě prázdniny, fialově svátky, šedě víkendy. Zdroj: vlastní model.</p>
+    </div>
+
+    <div class="figure">
+      <img src="../assets/img/prazdniny/fig11_scenare_metriky.svg" alt="Srovnání scénářů v pěti ukazatelích: délka léta, vyučovací dny, nejdelší úsek bez volna, výuka po 15. červnu a výuka v srpnu." loading="lazy">
+      <p class="figure-caption">Scénáře v pěti ukazatelích, průměr za celý 28letý kalendářní cyklus (2026/27–2053/54). Čárkovaně dnešní vyhláška. Zdroj: vlastní model.</p>
+    </div>
+
+    <details class="stat-details">
+      <summary>Jak přesně jsou scénáře definované</summary>
+      <div class="stat-body">
+        <p>Všechny scénáře mění jen začátek a konec léta, případně přidávají volno. Vánoční, pololetní, jarní a velikonoční prázdniny i svátky zůstávají podle vyhlášky.</p>
+        <dl>
+          <dt>konec v pátek</dt><dd>poslední vyučovací den = poslední pátek do 30. 6. (z výjimky 2025/26 se stane pravidlo); začátek roku podle vyhlášky</dd>
+          <dt>15. 6.–15. 8.</dt><dd>poslední vyučovací den = poslední pátek do 15. 6., výuka začíná pondělím po přesně 9 týdnech (léto 65 dní včetně víkendů)</dd>
+          <dt>6 týdnů léta</dt><dd>poslední vyučovací den = poslední pátek do 30. 6., výuka začíná pondělím po 6 týdnech (44 dní); podzimní prázdniny = celý týden (po–pá) s 28. 10., navíc volný týden s 8. 5. (připadne-li datum na víkend, bere se týden před ním)</dd>
+        </dl>
+        <p>Čísla jsou průměrem přes celý 28letý kalendářní cyklus, školní roky 2026/27–2053/54, aby výsledek nezávisel na tom, jak padnou dny v týdnu v jednom konkrétním roce. Počítám s okresy, které mají jarní prázdniny ve 3. týdnu.</p>
+        <p><strong>Pracovní den bez školy</strong> je všední den, který není svátkem a neučí se. Dovolenou určuje <a href="https://www.zakonyprolidi.cz/cs/2006-262" target="_blank" rel="noopener noreferrer">§ 212 zákoníku práce</a>, a to nejméně 4 týdny, ve veřejném sektoru 5 a pedagogům 8 týdnů; při pětidenním pracovním týdnu je týden dovolené 5 pracovních dní. Zjednodušeně porovnávám školní rok (od září do září, včetně následujícího léta) s dovolenou za kalendářní rok a předpokládám, že se dva rodiče s dovolenou vystřídají.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============================================================ 7. VEDRO -->
+  <section class="block">
+    <h2 class="section-label">pomohl by posun proti vedru?</h2>
+    <blockquote>
+      <p>„Od půlky června až do září zažíváme ve třídách peklo. Snažíme se dostat děti ven, mít venkovní učebny. Nemyslím si, že termín letních prázdnin je téma, které by se mělo řešit.“</p>
+      <cite>Jiří Ptáčník, ředitel ZŠ Zeleneč, pro <a href="https://www.seznamzpravy.cz/clanek/domaci-davaji-dva-mesice-prazdnin-smysl-plaga-testuje-reakce-verejnosti-312884" target="_blank" rel="noopener noreferrer">Seznam Zprávy</a></cite>
+    </blockquote>
+    <p>Nejčastějším argumentem pro posun prázdnin je horko. Na konci června bývá ve třídách k nevydržení, a tak se nabízí poslat děti na prázdniny dřív a vrátit je do škol dřív i na konci léta. Klimatolog Radim Tolasz navrhoval termín 15. 6.–15. 8. podle Echo24 <a href="https://www.echo24.cz/a/Hgsew/zpravy-domov-letni-vedra-mozna-prodlouzi-detem-prazdniny-mluvi-se-i-o-presunuti" target="_blank" rel="noopener noreferrer">už v polovině 90. let</a>. Zdůvodňuje to tím, že konec června bývá velmi teplý, zatímco druhá polovina srpna může být chladnější.</p>
+    <p>Podíval jsem se proto na denní maximální teploty z meteorologických stanic ČHMÚ od roku 1961 (<a href="https://opendata.chmi.cz/meteorology/climate/" target="_blank" rel="noopener noreferrer">otevřená data ČHMÚ</a>). Konec června i konec srpna se za tu dobu výrazně oteplily, zhruba o půl až tři čtvrtě stupně za každých deset let. Rozdíl mezi nimi se ale prokazatelně nezměnil. V průměru let 1991–2025 je konec června asi o půl stupně chladnější než konec srpna, a to je méně, než kolik se počasí liší rok od roku. Prakticky jsou tedy oba konce léta stejně horké.</p>
+    <p>Co by to znamenalo pro výuku? Spočítal jsem, kolik vyučovacích dní s tropickým vedrem (přes 30 °C) by v jednotlivých variantách kalendáře připadlo do školy. Posun prázdnin na polovinu června by počet takových dní <em>nesnížil</em>. Zhruba stejně horkých dní by se do školy přesunulo ze srpna, jako by se jich ušetřilo v červnu. Kratší léto by naopak tropické dny ve škole zhruba zdvojnásobilo, protože by se učilo i v nejteplejších týdnech. Rozhodují budovy, tedy stínění, větrání a chlazení. Že řada škol nemá klimatizaci, <a href="https://tn.nova.cz/zpravodajstvi/clanek/654305-evropa-kvuli-vedrum-meni-delku-prazdnin-plaga-se-posunuti-terminu-nebrani" target="_blank" rel="noopener noreferrer">připouští i sám ministr</a>, a jeho úřad podle Novinek <a href="https://www.novinky.cz/clanek/domaci-maji-se-letni-prazdniny-zkratit-plaga-duma-o-zmenach-40592615" target="_blank" rel="noopener noreferrer">doporučuje</a>, aby se školy podle možností zřizovatelů vybavovaly klimatizací či rekuperací.</p>
+
+    <div class="figure">
+      <img src="../assets/img/prazdniny/fig12_tropicke_dny_leto.svg" alt="Pravděpodobnost tropického dne pro každý den od 1. června do 15. září, v obdobích 1991 až 2020 a 2011 až 2025, s vyznačením dnešních prázdnin a varianty 15. 6. až 15. 8." loading="lazy">
+      <p class="figure-caption">Pravděpodobnost tropického dne (Tmax ≥ 30 °C) v jednotlivých dnech léta, sedmidenní klouzavý průměr přes 25 nížinných stanic. Šedě 1991–2020, vínově 2011–2025. Žlutě dnešní prázdniny a varianta 15. 6.–15. 8. Zdroj: ČHMÚ, denní data; vlastní výpočet.</p>
+    </div>
+
+    <div class="figure">
+      <img src="../assets/img/prazdniny/fig15_rozdil_cerven_srpen_1961_2025.svg" alt="Roční rozdíl průměrného maxima teploty mezi koncem června a koncem srpna, 1961 až 2025, s plochým trendem." loading="lazy">
+      <p class="figure-caption">Rozdíl průměrného denního maxima 16.–30. 6. a 16.–31. 8. v každém roce 1961–2025 (14 stanic s úplnou řadou). Zeleně roky s teplejším koncem června, žlutě s teplejším koncem srpna. Čárkovaně Theil–Senův trend s 95% intervalem. Zdroj: ČHMÚ; vlastní výpočet.</p>
+    </div>
+
+    <div class="figure">
+      <img src="../assets/img/prazdniny/fig16_scenare_vedro_is.svg" alt="Změna počtu tropických dní při výuce oproti dnešnímu kalendáři: konec v pátek mírně méně, léto 15. 6. až 15. 8. beze změny v rámci nejistoty, šestitýdenní léto o dva dny víc." loading="lazy">
+      <p class="figure-caption">O kolik tropických dní (≥ 30 °C) za školní rok by se ve scénářích změnila výuka ve vedru oproti dnešku; bod = odhad, čára = 95% interval spolehlivosti (bootstrap přes roky). Klima 1996–2025. Zdroj: ČHMÚ; vlastní výpočet.</p>
+    </div>
+
+    <details class="stat-details">
+      <summary>Data ČHMÚ a výběr stanic</summary>
+      <div class="stat-body">
+        <p>Používám denní maximální teplotu vzduchu (měřenou ve 2 m v meteorologické budce) z <a href="https://opendata.chmi.cz/meteorology/climate/historical_csv/data/daily/temperature/" target="_blank" rel="noopener noreferrer">otevřených dat ČHMÚ</a>, a to z 41 profesionálních stanic s mezinárodním identifikátorem WMO. Historická řada končí 31. 12. 2025, léto 2026 jsem doplnil z průběžných (provozních) dat, která ČHMÚ ještě může opravit.</p>
+        <dl>
+          <dt>hlavní soubor</dt><dd>25 stanic pod 600 m n. m. s ≥ 98 % dní v letech 1991–2025 (158–569 m n. m., medián 364 m)</dd>
+          <dt>dlouhá řada</dt><dd>14 z nich s úplnou řadou 1961–2025: Brno-Tuřany, Cheb, Chotusice, Doksany, Holešov, Kostelní Myslová, Kuchařovice, Liberec, Mošnov, Praha-Karlov, Praha-Kbely, Praha-Ruzyně, Přibyslav, Ústí nad Orlicí</dd>
+          <dt>vynechané</dt><dd>horské stanice (Sněžka, Lysá hora, Churáňov, Milešovka…), kde se neučí, a stanice s kratší řadou</dd>
+          <dt>letní den</dt><dd>Tmax ≥ 25 °C</dd>
+          <dt>tropický den</dt><dd>Tmax ≥ 30 °C (obojí terminologie ČHMÚ)</dd>
+        </dl>
+        <p>Venkovní teplota je jen přibližná míra toho, jak je ve třídě. Učebny se ohřívají se zpožděním a hodně záleží na budově (orientace oken, stínění, větrání).</p>
+      </div>
+    </details>
+
+    <details class="stat-details">
+      <summary>Jak jsem testoval, jestli se konec června otepluje rychleji</summary>
+      <div class="stat-body">
+        <p>Stanice měří z velké části totéž počasí a dny uvnitř vlny veder na sobě závisí. Nezávislých pozorování proto není „tisíce stanicodní“, ale zhruba tolik, kolik je let. Jednotkou analýzy je tedy rok. Pro každý rok a stanici spočítám průměrné denní maximum ve dvou oknech, 16.–30. 6. a 16.–31. 8., a jejich rozdíl D zprůměruji přes stanice.</p>
+        <p>Rozdíl na <em>téže</em> stanici v <em>témže</em> roce má ještě jednu výhodu. Používám naměřené hodnoty tak, jak je ČHMÚ publikuje, bez vlastní homogenizace. Stanice se přitom v průběhu let přemisťovaly (<a href="https://opendata.chmi.cz/meteorology/climate/historical_csv/metadata/meta1.csv" target="_blank" rel="noopener noreferrer">metadata ČHMÚ</a> uvádějí u řady z nich víc poloh) a mění se i přístroje a okolí, například růstem měst. To by mohlo vytvořit falešný trend. Takové změny ale zasáhnou červen i srpen stejně a v rozdílu se z velké části vyruší.</p>
+        <p>Primární test se ptá, jestli má D v letech 1961–2025 nenulový lineární trend. Trend odhaduji metodou nejmenších čtverců se směrodatnou chybou podle Neweyho a Westa, která je odolná vůči autokorelaci mezi sousedními roky (3 zpoždění). Pro kontrolu počítám i robustní Theil–Senův odhad sklonu (medián sklonů mezi všemi dvojicemi let) a Mann–Kendallův test.</p>
+        <p class="formula">trend D (1961–2025) = −0,19 °C / 10 let    95% IS −0,62 až +0,24    p = 0,38  (OLS, Newey–West)
+konec června: +0,54 °C / 10 let   (p = 0,008)
+konec srpna:  +0,73 °C / 10 let   (p &lt; 0,001)</p>
+        <p>Theil–Sen dává −0,23 °C za 10 let (95% interval −0,65 až +0,18), Mann–Kendall τ = −0,10, p = 0,26. Prokazatelnou změnu rozdílu mezi koncem června a koncem srpna tedy data neukazují a konec srpna se oteplil spíš o něco víc. Meziroční kolísání D je přitom velké, se směrodatnou odchylkou zhruba 2,9 °C, tedy mnohem víc než rozdíl, o který jde.</p>
+        <p>Na 25 stanicích za kratší období 1991–2025 vychází trend kladný (+0,84 °C za 10 let podle OLS), ale robustní metody ho nepotvrzují (Theil–Sen −0,13 až +1,85, Mann–Kendall p = 0,07). Výsledek tak závisí na tom, že řada začíná po chladných červnech 80. let. Srovnání nepřekrývajících se období 1991–2010 a 2011–2025 dává rozdíl +1,0 °C s 95% intervalem −0,9 až +2,9 (permutační test p = 0,32). V průměru let 1991–2025 je konec června o 0,6 °C chladnější než konec srpna (95% interval −1,5 až +0,4).</p>
+      </div>
+    </details>
+
+    <details class="stat-details">
+      <summary>Jak jsem počítal vedro při výuce a jeho nejistotu</summary>
+      <div class="stat-body">
+        <p>Pro každý kalendářní den (např. 23. června) spočítám, jak často v něm bylo tropicky, tedy podíl stanic s Tmax ≥ 30 °C zprůměrovaný přes roky 1996–2025. Tyto pravděpodobnosti pak sečtu přes všechny vyučovací dny daného kalendáře. Výsledek je očekávaný počet vyučovacích dní s tropickým vedrem za školní rok. Dnešní kalendář jich má 2,2 (95% interval 1,7–2,7).</p>
+        <p>Nejistotu odhaduji bootstrapem přes roky. Desettisíckrát náhodně vyberu (s opakováním) 30 let z období 1996–2025, přepočítám pravděpodobnosti a expozici všech scénářů. Výběr je párový, takže všechny scénáře se počítají na týchž vybraných letech a interval rozdílu oproti dnešku nezatěžuje kolísání, které je všem scénářům společné.</p>
+        <dl>
+          <dt>konec v pátek</dt><dd>−0,14 dne (−0,22 až −0,07)</dd>
+          <dt>15. 6.–15. 8.</dt><dd>+0,17 dne (−0,34 až +0,69); méně než dnes vychází jen v 26 % opakování</dd>
+          <dt>6 týdnů léta</dt><dd>+2,00 dne (+1,38 až +2,68)</dd>
+        </dl>
+        <p>S klimatem 2011–2025 vychází posun prázdnin +0,36 (−0,46 až +1,22) a šestitýdenní léto +2,72 (+1,77 až +3,76). S prahem 25 °C (letní dny) je posun +0,49 (−0,68 až +1,58), resp. −0,08 (−1,62 až +1,39), a šestitýdenní léto +6,7 až +7,3 dne. Předpokládám, že klima zůstane na úrovni zvoleného období. Další oteplování by zvýšilo expozici ve všech scénářích.</p>
+        <p class="formula">očekávané tropické dny = Σ_den  (vyučovací dny v daný den) × P(Tmax ≥ 30 °C v daný den)</p>
+      </div>
+    </details>
+
+    <details class="stat-details">
+      <summary>Kontrola se stanicemi váženými počtem dětí a s létem 2026</summary>
+      <div class="stat-body">
+        <p>Průměr přes stanice váží každou stanici stejně, děti ale nežijí rovnoměrně. Jako kontrolu jsem proto každý ze 205 správních obvodů obcí s rozšířenou působností (ORP) a Prahu přiřadil nejbližší stanici podle vzdušné vzdálenosti od sídla obvodu. Sídlo je od přiřazené stanice v mediánu 24 km daleko, nejdál Broumov (68 km). Váhou stanice je počet dětí ve věku 6–18 let v jejích obvodech (<a href="https://data.csu.gov.cz/opendata/sady/OBY02B/distribuce/csv" target="_blank" rel="noopener noreferrer">ČSÚ, OBY02B</a>), souřadnice sídel pocházejí z <a href="https://www.wikidata.org/wiki/Property:P7606" target="_blank" rel="noopener noreferrer">Wikidat</a>. Nejvíc váží Praha-Karlov (12 %; Praha je pro ČSÚ jeden obvod), Mošnov (11 %) a Brno-Tuřany (9 %).</p>
+        <table class="info-table">
+          <caption>Hlavní výsledky ve čtyřech variantách</caption>
+          <thead><tr><th>varianta</th><th>trend D (°C / 10 let)</th><th>15. 6.–15. 8. (tropické dny)</th><th>6 týdnů léta</th></tr></thead>
+          <tbody>
+            <tr><td>nevážené, do 2025</td><td class="num">−0,19 (−0,62; 0,24)</td><td class="num">+0,17 (−0,34; 0,69)</td><td class="num">+2,00</td></tr>
+            <tr><td>vážené dětmi, do 2025</td><td class="num">−0,20 (−0,63; 0,24)</td><td class="num">+0,15 (−0,38; 0,68)</td><td class="num">+2,06</td></tr>
+            <tr><td>nevážené, s létem 2026</td><td class="num">−0,10 (−0,56; 0,37)</td><td class="num">−0,02 (−0,64; 0,57)</td><td class="num">+1,99</td></tr>
+            <tr><td>vážené dětmi, s létem 2026</td><td class="num">−0,10 (−0,57; 0,37)</td><td class="num">−0,04 (−0,68; 0,57)</td><td class="num">+2,04</td></tr>
+          </tbody>
+        </table>
+        <p>Závěry se nemění. Vážená expozice je jen o zhruba 8 % vyšší (2,34 místo 2,17 tropického dne ročně), protože děti žijí v průměru v teplejších oblastech, hlavně v Praze, na Brněnsku a na Ostravsku. Chybějící září až prosinec 2026 doplňuji průměrem ostatních let; stanice Chotusice data za rok 2026 nemá.</p>
+        <div class="figure">
+          <img src="../assets/img/prazdniny/fig17_stanice_vahy_mapa.svg" alt="Mapa přiřazení správních obvodů ORP k nejbližším meteorologickým stanicím; velikost stanice odpovídá podílu dětí, které zastupuje." loading="lazy">
+          <p class="figure-caption">Sídla správních obvodů ORP (šedě, velikost podle počtu dětí) a nejbližší meteorologická stanice (zeleně, velikost podle váhy). Zdroj: ČSÚ (OBY02B), Wikidata, ČHMÚ; vlastní výpočet.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============================================================ 7b. RODIČE -->
+  <section class="block">
+    <h2 class="section-label">kdo pohlídá děti</h2>
+    <p>Debata o prázdninách je i debatou o tom, kdo pohlídá děti. Jedna z komentujících pod ministrovým příspěvkem to podle Novinek <a href="https://www.novinky.cz/clanek/domaci-maji-se-letni-prazdniny-zkratit-plaga-duma-o-zmenach-40592615" target="_blank" rel="noopener noreferrer">shrnula</a> slovy „Spíš bych řešila, jak to mají všechno rodiče vykrýt, když mají 20 dní dovolené.“ To se dá spočítat přesně.</p>
+    <p>Dnešní kalendář má ročně zhruba 57 pracovních dní, kdy děti nejsou ve škole, asi 14 během školního roku a 43 v létě. Zákonná dovolená je nejméně čtyři týdny, tedy opravdu 20 pracovních dní (<a href="https://www.zakonyprolidi.cz/cs/2006-262" target="_blank" rel="noopener noreferrer">§ 212 zákoníku práce</a>). I když se dva rodiče s dovolenou vystřídají, zbývá kolem 17 dní, které musí pokrýt prarodiče, tábory nebo neplacené volno. Ve veřejném sektoru, kde je dovolená pět týdnů, je to kolem sedmi dní.</p>
+    <p>Posun léta na 15. 6.–15. 8. na tom nezmění skoro nic, mezera vyjde na 18 dní. To přesně odpovídá tomu, co <a href="https://www.seznamzpravy.cz/clanek/domaci-davaji-dva-mesice-prazdnin-smysl-plaga-testuje-reakce-verejnosti-312884" target="_blank" rel="noopener noreferrer">říkala Seznam Zprávám</a> Angelika Gergelová z Unie rodičů. „Pokud by se prázdniny jen posunuly, pro rodiny by se v zásadě nic nezměnilo.“ Rodiny by podle ní ocenily spíš větší rozložení prázdnin do celého roku. Kratší léto s volnem rozloženým do roku by mezeru zmenšilo zhruba na devět dní. Pro pracující rodiče tak kratší léto nemusí být horší, i když Unie rodičů se podle téhož článku s přáním kratšího léta nesetkává.</p>
+
+    <div class="figure">
+      <img src="../assets/img/prazdniny/fig18_dovolena_rodicu.svg" alt="Počet pracovních dní bez školy za školní rok ve čtyřech scénářích, rozdělený na volno během roku a v létě, ve srovnání s dovolenou jednoho a dvou rodičů." loading="lazy">
+      <p class="figure-caption">Pracovní dny bez školy za školní rok (tmavě během roku, žlutě v létě), průměr 2026/27–2053/54. Čárkované čáry ukazují dovolenou jednoho rodiče se 4 týdny a dvou rodičů, každého se 4, resp. 5 týdny. Zdroj: zákoník práce č. 262/2006 Sb., § 212; vlastní model.</p>
+    </div>
+
+    <details class="stat-details">
+      <summary>Svátky, které děti nevidí</summary>
+      <div class="stat-body">
+        <p>Zákon č. 245/2000 Sb. zná 13 dní státních a ostatních svátků. Dětem přidá volno jen svátek, který padne na den, kdy by se jinak učilo. Ten, který připadne na víkend nebo do prázdnin, pro ně „propadne“. Ve školních letech 2026/27–2053/54 přidají svátky dětem v průměru 5,6 volného dne ročně (podle roku 4–7), 4,3 svátku padnou do prázdnin a 3,1 na víkend.</p>
+        <ul class="plain">
+          <li><strong>vždy volno navíc</strong> přinesou Velký pátek a Velikonoční pondělí (Velikonoce jsou vždy ve školním roce a vždy ve všední den),</li>
+          <li><strong>nikdy</strong> ho nepřinesou Štědrý den, oba svátky vánoční a Nový rok (vždy ve vánočních prázdninách), 5. a 6. července (vždy v létě),</li>
+          <li><strong>v 71 % let</strong> ho přinesou 28. 9., 28. 10., 17. 11., 1. 5. a 8. 5. Svátek s pevným datem padne na víkend vždy ve 2 ze 7 případů.</li>
+        </ul>
+        <div class="figure">
+          <img src="../assets/img/prazdniny/fig19_ztracene_svatky.svg" alt="Pro každý ze 13 svátků podíl let, kdy připadne na školní den, do prázdnin, nebo na víkend." loading="lazy">
+          <p class="figure-caption">Podíl let 2026/27–2053/54, kdy svátek připadne na den, kdy by se jinak učilo (fialově), do prázdnin (žlutě) nebo na víkend (šedě). Zdroj: zákon č. 245/2000 Sb., vyhláška č. 16/2005 Sb.; vlastní výpočet.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============================================================ 8. INTERAKTIVNÍ KALENDÁŘ -->
+  <section class="block">
+    <h2 class="section-label">vyzkoušej si svůj školní rok</h2>
+    <p>Jak vypadá školní rok tam, kde bydlíte? Vyberte okres (nebo pražský obvod) a školní rok. Kalendář ukáže prázdniny, svátky i nejdelší úsek bez volna a pod ním najdete, kolik dní má léto a kolik pracovních dní bez školy musí rodiče pokrýt. Roky, které ministerstvo ještě nevyhlásilo, jsou vypočtené podle pravidel vyhlášky.</p>
+    <div id="holidaycalc-app" class="hc-app">
+      <div class="hc-controls">
+        <label><span class="hc-label">okres / obvod Prahy</span><select data-role="district"></select></label>
+        <label><span class="hc-label">školní rok</span><select data-role="year"></select></label>
+      </div>
+      <div class="hc-legend">
+        <span><i class="hc-t"></i>vyučování</span>
+        <span><i class="hc-b"></i>prázdniny</span>
+        <span><i class="hc-h"></i>státní svátek</span>
+        <span><i class="hc-w"></i>víkend</span>
+        <span><i class="hc-t hc-long"></i>nejdelší úsek bez volna</span>
+      </div>
+      <div class="hc-calendar" data-role="calendar"></div>
+      <div class="hc-stats" data-role="stats"></div>
+      <div class="hc-note" data-role="note"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ ZÁVĚR -->
+  <section class="block">
+    <h2 class="section-label">co z toho plyne pro debatu</h2>
+    <p>Gergelová z Unie rodičů v srpnu <a href="https://www.seznamzpravy.cz/clanek/domaci-davaji-dva-mesice-prazdnin-smysl-plaga-testuje-reakce-verejnosti-312884" target="_blank" rel="noopener noreferrer">řekla</a>, že „pokud se při rozhodování budeme opírat o data a nějaké analýzy, dává mi to smysl“. Tady je, co z dat vychází.</p>
+    <ul class="plain">
+      <li><strong>Délka léta.</strong> Letní prázdniny mají podle vyhlášky vždy 62, nebo 65 dní. Letošních 66 dní způsobilo jedno rozhodnutí ministerstva, ne kalendář.</li>
+      <li><strong>Evropa.</strong> Devět týdnů sedí, „evropský průměr“ už méně. Medián je 10 týdnů a kratší léto než Česko má jen 10 z 39 evropských systémů.</li>
+      <li><strong>Rozložení.</strong> Letošní školní rok má od Velikonoc do konce června 13 týdnů bez jediného volného dne a podobně dlouhý úsek se vrací jednou za několik let. Jarní prázdniny rozkládají děti do šesti týdnů nerovnoměrně, od 14 do 21 % dětí na týden.</li>
+      <li><strong>Vedro.</strong> Posun léta na 15. 6.–15. 8. by počet tropických dní ve škole nesnížil, protože konec června a konec srpna jsou dnes prakticky stejně teplé. Kratší léto by ho zhruba zdvojnásobilo.</li>
+      <li><strong>Rodiče.</strong> Posun léta by na hlídání nezměnil nic. Kratší léto s volnem rozloženým do roku by mezeru, kterou musí rodiče pokrýt, zhruba zpolovičilo.</li>
+    </ul>
+    <p>Žádná varianta tak není zadarmo. Kdo chce méně vedra ve třídách, musí sáhnout na budovy, ne na kalendář. Kdo chce pomoct pracujícím rodičům nebo zkrátit dlouhé úseky bez volna, musí počítat s tím, že část výuky se přesune do teplejších týdnů.</p>
+  </section>
+
+  <section class="block">
+    <h2 class="section-label">limity</h2>
+    <ul class="plain">
+      <li>Počet obyvatel 6–18 let je jen přibližná míra počtu žáků, protože nezachytí dojíždění do škol v jiném okrese, nejvíc kolem Prahy.</li>
+      <li>Venkovní teplota z meteorologických stanic je přibližná míra teploty ve třídách, která závisí na budově.</li>
+      <li>Scénáře jsou ilustrativní, protože konkrétní návrh zatím neexistuje. Termín 15. 6.–15. 8. a týdenní podzimní prázdniny přebírám z debaty, délku kratšího léta (6 týdnů) a volný týden v květnu jsem zvolil sám.</li>
+      <li>Analýza vedra vznikla nejdřív popisně, hypotézy jsem formuloval až potom; není tedy předregistrovaná (viz rámeček o testování).</li>
+      <li>Dovolenou porovnávám zjednodušeně, školní rok proti kalendářnímu roku a se dvěma rodiči, kteří se vystřídají; ředitelské volno ani školní družinu nezapočítávám.</li>
+      <li>Plné dokumenty MŠMT chybí pro tři roky (2009/10, 2011/12, 2018/19); u nich je ověřen jen začátek roku.</li>
+      <li>Eurydice počítá délku léta po zemích různě, rozdíly několika dní nejsou interpretovatelné.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h2 class="section-label">data a zdroje</h2>
+    <p>U každého zdroje uvádím, kdy jsem ho stáhl. Surové kopie všech souborů i s adresou a časem stažení si archivuji.</p>
+    <ul class="plain">
+      <li><span class="tag">legislativa</span><a href="https://www.zakonyprolidi.cz/cs/2005-16" target="_blank" rel="noopener noreferrer">Vyhláška č. 16/2005 Sb., o organizaci školního roku</a>, znění od 1. 9. 2022, včetně přílohy s jarními prázdninami (staženo 29. 9. 2026).</li>
+      <li><span class="tag">legislativa</span><a href="https://www.zakonyprolidi.cz/cs/2000-245" target="_blank" rel="noopener noreferrer">Zákon č. 245/2000 Sb., o státních svátcích</a> a <a href="https://www.zakonyprolidi.cz/cs/2006-262" target="_blank" rel="noopener noreferrer">zákoník práce č. 262/2006 Sb.</a>, § 212 o výměře dovolené, znění od 29. 8. 2026 (staženo 1. 10. 2026).</li>
+      <li><span class="tag">MŠMT</span>Organizace školního roku 2005/06–2027/28, skutečně vyhlášené termíny. Aktuální ročníky na <a href="https://msmt.gov.cz/organizace-skolniho-roku" target="_blank" rel="noopener noreferrer">msmt.gov.cz</a>, starší přes <a href="https://web.archive.org/web/*/msmt.cz/vzdelavani/*organizace-skolniho-roku*" target="_blank" rel="noopener noreferrer">Internet Archive</a> (25 dokumentů, staženo 29. 9. 2026). Zkrácení školního roku 2025/26 <a href="https://edu.gov.cz/obdobi-skolniho-vyucovani-ve-skolnim-roce-2025-2026-konci-drive/" target="_blank" rel="noopener noreferrer">na edu.gov.cz</a>.</li>
+      <li><span class="tag">ČSÚ</span><a href="https://data.csu.gov.cz/opendata/sady/OBY02B/distribuce/csv" target="_blank" rel="noopener noreferrer">Obyvatelstvo podle pohlaví a jednotek věku (OBY02B)</a>, okresy a správní obvody ORP, stav k 31. 12. 2025, a <a href="https://csu.gov.cz/docs/107839/afefbae8-c12f-7944-fe52-ce39f88da593/1_PHA_VEK_obyv_mc.xlsx?version=1.6" target="_blank" rel="noopener noreferrer">Věkové složení obyvatel v městských částech Prahy 2011–2025</a> (obojí staženo 29. 9. 2026).</li>
+      <li><span class="tag">ČHMÚ</span><a href="https://opendata.chmi.cz/meteorology/climate/historical_csv/data/daily/temperature/" target="_blank" rel="noopener noreferrer">Denní maximální teplota (TMA)</a> 41 profesionálních stanic do 31. 12. 2025, <a href="https://opendata.chmi.cz/meteorology/climate/historical_csv/metadata/meta1.csv" target="_blank" rel="noopener noreferrer">metadata stanic</a> a <a href="https://opendata.chmi.cz/meteorology/climate/recent/data/daily/" target="_blank" rel="noopener noreferrer">průběžná data</a> za leden až srpen 2026 (staženo 30. 9. 2026); <a href="https://opendata.chmi.cz/meteorology/climate/Klimatologicka_data_popis.pdf" target="_blank" rel="noopener noreferrer">popis dat</a>.</li>
+      <li><span class="tag">Eurydice</span><a href="https://eurydice.eacea.ec.europa.eu/sites/default/files/2023-09/Calendars_Country_Sheets_2023_2024_0.xlsx" target="_blank" rel="noopener noreferrer">School calendars 2023/24, Country sheets</a> (staženo 29. 9. 2026); novější ročníky jen v <a href="https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars" target="_blank" rel="noopener noreferrer">interaktivním přehledu</a>.</li>
+      <li><span class="tag">Wikidata</span><a href="https://www.wikidata.org/wiki/Property:P7606" target="_blank" rel="noopener noreferrer">Souřadnice obcí</a> (kód obce P7606, souřadnice P625; dotaz SPARQL 30. 9. 2026).</li>
+      <li><span class="tag">Wikipedie</span><a href="https://cs.wikipedia.org/wiki/Pr%C3%A1zdniny" target="_blank" rel="noopener noreferrer">Prázdniny</a>, česká Wikipedie, tvrzení o délce letních a vánočních prázdnin (staženo 29. 9. 2026).</li>
+      <li><span class="tag">média</span><a href="https://www.facebook.com/photo.php?fbid=1578415584062853&amp;set=a.151080243463068&amp;type=3&amp;ref=embed_post" target="_blank" rel="noopener noreferrer">Příspěvek Roberta Plagy na Facebooku</a> (srpen 2026). Texty všech článků níže jsem stáhl 1. 10. 2026.</li>
+      <li><span class="tag">média</span>M. Kopecká, <a href="https://www.seznamzpravy.cz/clanek/domaci-davaji-dva-mesice-prazdnin-smysl-plaga-testuje-reakce-verejnosti-312884" target="_blank" rel="noopener noreferrer">Dávají dva měsíce prázdnin smysl? Plaga testuje reakce veřejnosti</a>, Seznam Zprávy, 11. 8. 2026 (výroky J. Ptáčníka, F. Dobšíka, K. Garguláka, A. Gergelové a J. Nekudy).</li>
+      <li><span class="tag">média</span><a href="https://www.seznamzpravy.cz/clanek/kampus-zrusit-pololetni-prodlouzit-podzimni-jak-by-se-detem-mohly-zmenit-prazdniny-270045" target="_blank" rel="noopener noreferrer">Zrušit pololetní, prodloužit podzimní. Jak by se dětem mohly změnit prázdniny</a>, Seznam Zprávy, 17. 2. 2025 (návrh M. O. Havla, průzkum Ipsos, srovnání s Eurydice).</li>
+      <li><span class="tag">média</span><a href="https://www.echo24.cz/a/HQwQk/zpravy-domaci-zmena-letnich-prazdnin-plaga-ministerstvo-skolstvi" target="_blank" rel="noopener noreferrer">Plaga opakovaně mluví o změně rozložení školních prázdnin</a>, Echo24, 24. 8. 2026 (citace ministrova příspěvku), a V. Horák, <a href="https://www.echo24.cz/a/Hgsew/zpravy-domov-letni-vedra-mozna-prodlouzi-detem-prazdniny-mluvi-se-i-o-presunuti" target="_blank" rel="noopener noreferrer">Delší prázdniny kvůli vedrům? Odborníci se přou</a>, Echo24, 7. 8. 2026 (návrh R. Tolasze).</li>
+      <li><span class="tag">média</span><a href="https://www.novinky.cz/clanek/domaci-maji-se-letni-prazdniny-zkratit-plaga-duma-o-zmenach-40592615" target="_blank" rel="noopener noreferrer">Mají se letní prázdniny zkrátit? Plaga dumá o změnách</a>, Novinky.cz, 14. 8. 2026 (M. Švejnoha, O. Macura, reakce veřejnosti).</li>
+      <li><span class="tag">média</span><a href="https://domaci.hn.cz/c1-67862170-zaci-a-studenti-budou-mit-letos-delsi-letni-prazdniny-skolni-rok-skonci-driv" target="_blank" rel="noopener noreferrer">Žáci a studenti budou mít letos delší letní prázdniny</a>, Hospodářské noviny (ČTK), 31. 3. 2026; <a href="https://www.denik.cz/skolstvi-a-vzdelavani/cesko-letni-prazdniny-skoly-zaci-rodice-tabory-robert-plaga-zadelal-na-chaos.html" target="_blank" rel="noopener noreferrer">Křížení táborů i tlak na pořadatele</a>, Deník.cz, 2. 4. 2026 (A. Sedláček).</li>
+      <li><span class="tag">média</span>F. Titlbach, <a href="https://denikn.cz/2169557/kratsi-prazdniny-zakaz-mobilu-a-konec-devitek-vlada-se-utrhla-ze-retezu-pro-rodice-jsou-to-vystrely-zpoza-rohu-rika-psycholozka-bartakova/" target="_blank" rel="noopener noreferrer">Kratší prázdniny, zákaz mobilů a konec devítek?</a>, Deník N, 2. 9. 2026; <a href="https://tn.nova.cz/zpravodajstvi/clanek/654305-evropa-kvuli-vedrum-meni-delku-prazdnin-plaga-se-posunuti-terminu-nebrani" target="_blank" rel="noopener noreferrer">Evropa kvůli vedrům mění délku prázdnin</a>, TN.cz, 9. 8. 2026.</li>
+      <li><span class="tag">metoda</span>Newey, W. K., &amp; West, K. D. (1987). A simple, positive semi-definite, heteroskedasticity and autocorrelation consistent covariance matrix. <em>Econometrica</em>, 55(3), 703–708.</li>
+      <li><span class="tag">metoda</span>Newey, W. K., &amp; West, K. D. (1994). Automatic lag selection in covariance matrix estimation. <em>Review of Economic Studies</em>, 61(4), 631–653.</li>
+      <li><span class="tag">metoda</span>Theil, H. (1950). A rank-invariant method of linear and polynomial regression analysis. <em>Proceedings of the Koninklijke Nederlandse Akademie van Wetenschappen</em>, 53.</li>
+      <li><span class="tag">metoda</span>Sen, P. K. (1968). Estimates of the regression coefficient based on Kendall's tau. <em>Journal of the American Statistical Association</em>, 63(324), 1379–1389.</li>
+      <li><span class="tag">metoda</span>Mann, H. B. (1945). Nonparametric tests against trend. <em>Econometrica</em>, 13(3), 245–259.</li>
+      <li><span class="tag">metoda</span>Efron, B., &amp; Tibshirani, R. J. (1993). <em>An Introduction to the Bootstrap</em>. Chapman &amp; Hall.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h2 class="section-label">kód a data</h2>
+    <ul class="plain">
+      <li><span class="tag">repo</span>Kód, notebooky, testy a podrobnou metodiku zveřejním v repozitáři HolidayCalc na <a href="https://github.com/Dobes-Michal-Tobias" target="_blank" rel="noopener noreferrer">GitHubu</a>.</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="site">
+  <span>© 2026 Michal Tobiáš Dobeš</span>
+  <a href="https://github.com/Dobes-Michal-Tobias" target="_blank" rel="noopener noreferrer">https://github.com/Dobes-Michal-Tobias</a>
+</footer>
+
+</div>
+<script src="../assets/holidaycalc/holidaycalc-widget.js"></script>
+</body>
+</html>
